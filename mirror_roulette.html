@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>거울 던전 인격 룰렛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0b0908;
+    --bg-1:#151009;
+    --panel:#1c1611;
+    --panel-2:#221a13;
+    --line:#3c2e20;
+    --line-soft:#2a2019;
+    --gold:#b8934a;
+    --gold-bright:#dab86a;
+    --crimson:#7d2430;
+    --crimson-bright:#a53341;
+    --ink:#e9ddc6;
+    --ink-dim:#a89777;
+    --ink-faint:#6f6250;
+    --serif:'Noto Serif KR', serif;
+    --sans:'Noto Sans KR', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(125,36,48,0.18), transparent 55%),
+      radial-gradient(ellipse at 50% 110%, rgba(125,36,48,0.10), transparent 60%),
+      var(--bg-0);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding:48px 20px 80px;
+  }
+
+  .stage{
+    max-width:1400px;
+    margin:0 auto;
+  }
+
+  /* ---------- Header ---------- */
+  .crest{
+    width:64px;height:64px;margin:0 auto 18px;
+    position:relative;
+  }
+  .crest svg{width:100%;height:100%;display:block;}
+
+  header{
+    text-align:center;
+    margin-bottom:40px;
+  }
+  .eyebrow{
+    font-family:var(--serif);
+    font-size:13px;
+    letter-spacing:0.3em;
+    color:var(--ink-faint);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(28px,4vw,42px);
+    margin:0 0 12px;
+    color:var(--gold-bright);
+    text-shadow:0 0 24px rgba(184,147,74,0.25);
+  }
+  .sub{
+    font-size:14px;
+    color:var(--ink-dim);
+    max-width:520px;
+    margin:0 auto;
+    line-height:1.7;
+  }
+
+  .divider{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin:26px auto 0;
+    max-width:360px;
+    color:var(--line);
+  }
+  .divider::before,.divider::after{
+    content:'';flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--line), transparent);
+  }
+  .divider svg{width:14px;height:14px;flex-shrink:0;color:var(--gold);}
+
+  /* ---------- Controls bar ---------- */
+  .controls{
+    display:flex;justify-content:center;align-items:center;gap:10px;
+    flex-wrap:wrap;
+    margin:32px 0 30px;
+  }
+  .btn{
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.02em;
+    padding:10px 20px;
+    border-radius:3px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink-dim);
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .btn.primary{
+    background:linear-gradient(180deg, #8a2733, #6a1c26);
+    border-color:#5a1a22;
+    color:#f0ddd0;
+  }
+  .btn.primary:hover{border-color:var(--gold);}
+
+  /* ---------- Grid of 12 columns ---------- */
+  .roster{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:10px;
+  }
+  @media (max-width:1100px){
+    .roster{grid-template-columns:repeat(6,1fr);}
+  }
+  @media (max-width:620px){
+    .roster{grid-template-columns:repeat(3,1fr);}
+  }
+
+  .col{
+    background:var(--panel);
+    border:1px solid var(--line-soft);
+    border-radius:4px;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+  .col::before{
+    content:'';
+    position:absolute;inset:0;
+    border:1px solid transparent;
+    border-radius:4px;
+    pointer-events:none;
+    transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .col.spinning::before{
+    border-color:rgba(184,147,74,0.5);
+    box-shadow:0 0 16px rgba(184,147,74,0.15) inset;
+  }
+  .col.landed::before{
+    border-color:var(--gold-bright);
+    box-shadow:0 0 20px rgba(218,184,106,0.35);
+  }
+
+  .name-cell{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:13px;
+    text-align:center;
+    padding:12px 4px 10px;
+    color:var(--ink);
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line-soft);
+    letter-spacing:0.02em;
+  }
+  .no-jp{
+    display:block;
+    font-family:var(--sans);
+    font-size:9px;
+    color:var(--ink-faint);
+    margin-top:3px;
+    letter-spacing:0.08em;
+  }
+
+  .identity-cell{
+    flex:1;
+    display:flex;flex-direction:column;
+    padding:14px 6px 12px;
+    align-items:center;
+    gap:10px;
+  }
+
+  .identity-display{
+    min-height:54px;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    font-size:12.5px;
+    line-height:1.4;
+    color:var(--ink-dim);
+    padding:4px 2px;
+    word-break:keep-all;
+  }
+  .identity-display.empty{
+    color:var(--ink-faint);
+    font-size:11px;
+  }
+  .identity-display.spinning{
+    color:var(--gold-bright);
+  }
+  .identity-display.landed{
+    color:var(--gold-bright);
+    font-weight:500;
+    animation:land-pulse .5s ease;
+  }
+  @keyframes land-pulse{
+    0%{transform:scale(0.92);opacity:0.4;}
+    60%{transform:scale(1.05);}
+    100%{transform:scale(1);opacity:1;}
+  }
+
+  .roll-btn{
+    width:100%;
+    font-family:var(--sans);
+    font-size:12px;
+    font-weight:500;
+    padding:8px 4px;
+    border-radius:3px;
+    border:1px solid var(--line);
+    background:var(--bg-1);
+    color:var(--ink-dim);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .roll-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .roll-btn.is-spinning{
+    background:linear-gradient(180deg,#8a2733,#6a1c26);
+    border-color:#5a1a22;
+    color:#f0ddd0;
+  }
+  .roll-btn.is-stopping{
+    opacity:0.5;
+    cursor:default;
+  }
+  .roll-btn.is-empty{
+    opacity:0.4;
+  }
+
+  .edit-link{
+    font-size:10px;
+    color:var(--ink-faint);
+    text-align:center;
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    margin-top:2px;
+  }
+  .edit-link:hover{color:var(--gold);}
+
+  footer{
+    text-align:center;
+    margin-top:50px;
+    font-size:11px;
+    color:var(--ink-faint);
+    line-height:1.8;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(6,4,3,0.78);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+    padding:24px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--panel);
+    border:1px solid var(--gold);
+    border-radius:6px;
+    width:100%;max-width:980px;
+    max-height:86vh;
+    display:flex;flex-direction:column;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+  .modal-head{
+    padding:20px 24px 14px;
+    border-bottom:1px solid var(--line-soft);
+    display:flex;align-items:baseline;justify-content:space-between;
+  }
+  .modal-head h2{
+    font-family:var(--serif);font-size:18px;color:var(--gold-bright);margin:0;
+  }
+  .modal-head p{font-size:12px;color:var(--ink-faint);margin:6px 0 0;}
+  .modal-close{
+    background:none;border:none;color:var(--ink-dim);font-size:20px;cursor:pointer;line-height:1;
+  }
+  .modal-close:hover{color:var(--gold-bright);}
+  .modal-body{
+    padding:20px 24px;
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    gap:14px;
+  }
+  .edit-block{
+    background:var(--bg-1);
+    border:1px solid var(--line-soft);
+    border-radius:4px;
+    padding:12px;
+  }
+  .edit-block label.block-title{
+    display:flex;align-items:baseline;justify-content:space-between;
+    font-family:var(--serif);font-size:13px;color:var(--ink);margin-bottom:8px;
+  }
+  .edit-block .count{
+    font-family:var(--sans);font-size:10px;color:var(--ink-faint);font-weight:400;
+  }
+  .add-row{
+    display:flex;gap:6px;margin-bottom:8px;
+  }
+  .add-row input{
+    flex:1;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:11px;
+    padding:6px 8px;
+  }
+  .add-row input:focus{outline:none;border-color:var(--gold);}
+  .add-row .add-btn{
+    font-family:var(--sans);
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:3px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--ink-dim);
+    cursor:pointer;
+  }
+  .add-row .add-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .check-list{
+    max-height:220px;
+    overflow-y:auto;
+    display:flex;flex-direction:column;
+    gap:2px;
+    padding-right:4px;
+  }
+  .check-row{
+    display:flex;align-items:flex-start;gap:7px;
+    font-size:11.5px;
+    color:var(--ink-dim);
+    padding:4px 4px;
+    border-radius:3px;
+    cursor:pointer;
+    line-height:1.4;
+  }
+  .check-row:hover{background:rgba(184,147,74,0.08);color:var(--ink);}
+  .check-row input{
+    margin-top:2px;
+    accent-color:var(--gold);
+    flex-shrink:0;
+  }
+  .check-row.new-item span{color:var(--gold-bright);}
+  .modal-foot{
+    padding:14px 24px 20px;
+    border-top:1px solid var(--line-soft);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <header>
+    <div class="crest">
+      <svg viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" stroke="#b8934a" stroke-width="1"/>
+        <circle cx="32" cy="32" r="24" stroke="#7d2430" stroke-width="1"/>
+        <g stroke="#b8934a" stroke-width="1">
+          <line x1="32" y1="4" x2="32" y2="14"/>
+          <line x1="32" y1="50" x2="32" y2="60"/>
+          <line x1="4" y1="32" x2="14" y2="32"/>
+          <line x1="50" y1="32" x2="60" y2="32"/>
+        </g>
+        <circle cx="32" cy="32" r="4.5" fill="#dab86a"/>
+      </svg>
+    </div>
+    <div class="eyebrow">MIRROR DUNGEON RECORD</div>
+    <h1>거울 던전 인격 룰렛</h1>
+    <p class="sub">각 수감자 칸의 뽑기 버튼을 누르면 슬롯이 돌아가고, 정지 버튼으로 결과를 확정합니다.<br>지금까지 출시된 모든 인격이 체크박스로 등록되어 있으며, "인격 목록 편집"에서 보유한 인격만 체크하거나 새 인격을 추가할 수 있습니다.</p>
+    <div class="divider">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/></svg>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button class="btn" id="openEdit">인격 목록 편집</button>
+    <button class="btn primary" id="rollAll">전체 뽑기</button>
+    <button class="btn" id="stopAll">전체 정지</button>
+    <button class="btn" id="resetAll">전체 초기화</button>
+    <button class="btn" id="copyResults">결과 복사</button>
+  </div>
+
+  <div class="roster" id="roster"></div>
+
+  <footer>
+    편집한 인격 목록은 이 브라우저에 자동 저장되며, 다른 사람이나 다른 기기에는 영향을 주지 않습니다. 브라우저 저장 공간을 지우면 초기화됩니다.
+  </footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>인격 목록 편집</h2>
+        <p>체크된 인격만 룰렛에 포함됩니다. 미보유 인격은 체크 해제하세요. 새로 나온 인격은 각 칸의 입력창에 추가하면 자동으로 체크된 상태로 목록에 들어갑니다. 변경 사항은 이 브라우저에 자동 저장됩니다.</p>
+      </div>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <button class="btn" id="modalResetList">전체 목록 초기화</button>
+      <button class="btn primary" id="modalSave">완료</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SINNERS = [
+  {id:'yisang',   name:'이상'},
+  {id:'faust',    name:'파우스트'},
+  {id:'donquixote',name:'돈키호테'},
+  {id:'ryoshu',   name:'료슈'},
+  {id:'meursault',name:'뫼르소'},
+  {id:'honglu',   name:'홍루'},
+  {id:'heathcliff',name:'히스클리프'},
+  {id:'ishmael',  name:'이스마엘'},
+  {id:'rodion',   name:'로쟈'},
+  {id:'sinclair', name:'싱클레어'},
+  {id:'outis',    name:'오티스'},
+  {id:'gregor',   name:'그레고르'},
+];
+
+// 지금까지 출시된 모든 인격의 초기 목록. "[등급] | 인격명" 형태의 문자열이며,
+// 아래에서 {text, checked} 객체 배열(identities)로 변환되어 체크박스와 연동됩니다.
+const SEED_IDENTITIES = {
+  yisang: [
+    "[000] | LCE E.G.O::차원찢개 이상",
+    "[000] | 거미집 검지 아비 이상",
+    "[000] | 흑수 - 오 필두 이상",
+    "[000] | N사 E.G.O::흉탄 이상",
+    "[000] | 남부 리우 협회 3과 이상",
+    "[000] | 로보토미 E.G.O::엄숙한 애도 이상",
+    "[000] | 약지 점묘파 스튜던트 이상",
+    "[000] | W사 3등급 정리 요원 이상",
+    "[000] | 개화 E.G.O::동백 이상",
+    "[000] | 검계 살수 이상",
+    "[00] | LCE E.G.O::초롱 이상",
+    "[00] | 남부 디에치 협회 4과 이상",
+    "[00] | 피쿼드호 일등 항해사 이상",
+    "[00] | 어금니 사무소 해결사 이상",
+    "[00] | 남부 세븐 협회 6과 이상",
+    "[0] | LCB 수감자 이상"
+  ],
+  faust: [
+    "[000] | 새벽 사무소 해결사 파우스트",
+    "[000] | 거미집 약지 제자 파우스트",
+    "[000] | 검지 수행자:【쪽지】파우스트",
+    "[000] | 동부 시 협회 3과 파우스트",
+    "[000] | 흑수 - 묘 필두 파우스트",
+    "[000] | LCE E.G.O::홍염살 파우스트",
+    "[000] | 멀티크랙 사무소 대표 파우스트",
+    "[000] | 검계 살수 파우스트",
+    "[000] | 로보토미 E.G.O::후회 파우스트",
+    "[000] | 남부 세븐 협회 4과 파우스트",
+    "[000] | 쥐는 자 파우스트",
+    "[00] | 워더링하이츠 버틀러 파우스트",
+    "[00] | 남부 츠바이 협회 4과 파우스트",
+    "[00] | W사 2등급 정리 요원 파우스트",
+    "[00] | 살아남은 로보토미 직원 파우스트",
+    "[0] | LCB 수감자 파우스트"
+  ],
+  donquixote: [
+    "[000] | 검지 대행자 - 개화 E.G.O::대행 돈키호테",
+    "[000] | 흑수 - 미 돈키호테",
+    "[000] | 로보토미 E.G.O::사랑과 증오의 이름으로 돈키호테",
+    "[000] | 동부 섕크 협회 3과 돈키호테",
+    "[000] | 라만차랜드 실장 돈키호테",
+    "[000] | T사 3등급 징수직 직원 돈키호테",
+    "[000] | 중지 작은 아우 돈키호테",
+    "[000] | 남부 섕크 협회 5과 부장 돈키호테",
+    "[000] | W사 3등급 정리 요원 돈키호테",
+    "[00] | 검계 살수 돈키호테",
+    "[00] | 로보토미 E.G.O::초롱 돈키호테",
+    "[00] | N사 중간 망치 돈키호테",
+    "[00] | 남부 시 협회 5과 부장 돈키호테",
+    "[0] | LCB 수감자 돈키호테"
+  ],
+  ryoshu: [
+    "[000] | 거미집의 검 료슈",
+    "[000] | 로보토미 E.G.O::잔향 · 외로움 료슈",
+    "[000] | 홍원 방랑무사 료슈",
+    "[000] | N사 E.G.O::경멸, 경외 료슈",
+    "[000] | 흑수 - 묘 료슈",
+    "[000] | 로보토미 E.G.O::적안 · 참회 료슈",
+    "[000] | 에드가 가문 치프 버틀러 료슈",
+    "[000] | W사 3등급 정리 요원 료슈",
+    "[000] | 료.고.파. 주방장 료슈",
+    "[000] | 흑운회 와카슈 료슈",
+    "[00] | 20구 유로지비 료슈",
+    "[00] | 남부 리우 협회 4과 료슈",
+    "[00] | LCCB 대리 료슈",
+    "[00] | 남부 세븐 협회 6과 료슈",
+    "[0] | LCB 수감자 료슈"
+  ],
+  meursault: [
+    "[000] | 약지 야수파 스튜던트 뫼르소",
+    "[000] | 로보토미 E.G.O::호넷【변조】뫼르소",
+    "[000] | 라만차랜드 왕자 뫼르소",
+    "[000] | 동부 엄지 카포 IIII 뫼르소",
+    "[000] | 서부 섕크 협회 3과 뫼르소",
+    "[000] | 남부 디에치 협회 4과 부장 뫼르소",
+    "[000] | 검계 우두머리 뫼르소",
+    "[000] | R사 제 4무리 코뿔소팀 뫼르소",
+    "[000] | N사 큰 망치 뫼르소",
+    "[000] | W사 2등급 정리 요원 뫼르소",
+    "[00] | 데드레빗츠 보스 뫼르소",
+    "[00] | 중지 작은 아우 뫼르소",
+    "[00] | 장미스패너 공방 해결사 뫼르소",
+    "[00] | 남부 리우 협회 6과 뫼르소",
+    "[0] | LCB 수감자 뫼르소"
+  ],
+  honglu: [
+    "[000] | 동부 섕크 협회 3과 홍루",
+    "[000] | S사 추노꾼 홍루",
+    "[000] | 거미집 약지 아비 홍루",
+    "[000] | 홍원 군주 홍루",
+    "[000] | R사 제 4무리 순록팀 홍루",
+    "[000] | 마침표 사무소 대표 홍루",
+    "[000] | 20구 유로지비 홍루",
+    "[000] | 남부 디에치 협회 4과 홍루",
+    "[000] | K사 3등급 적출직 직원 홍루",
+    "[000] | 콩콩이파 두목 홍루",
+    "[00] | 송곳니 사냥 사무소 해결사 홍루",
+    "[00] | 갈고리 사무소 해결사 홍루",
+    "[00] | W사 2등급 정리 요원 홍루",
+    "[00] | 남부 리우 협회 5과 홍루",
+    "[00] | 흑운회 와카슈 홍루",
+    "[0] | LCB 수감자 홍루"
+  ],
+  heathcliff: [
+    "[000] | 거미집 엄지 제자 히스클리프",
+    "[000] | 중지 작은 형님 히스클리프",
+    "[000] | 흑수 - 유 필두 히스클리프",
+    "[000] | W사 4등급 정리 요원 - CCA 히스클리프",
+    "[000] | 흑운회 와카슈 히스클리프",
+    "[000] | 마침표 사무소 해결사 히스클리프",
+    "[000] | 와일드헌트 히스클리프",
+    "[000] | 남부 외우피 협회 3과 히스클리프",
+    "[000] | 피쿼드호 작살잡이 히스클리프",
+    "[000] | 로보토미 E.G.O::여우비 히스클리프",
+    "[000] | R사 제 4무리 토끼팀 히스클리프",
+    "[00] | 멀티크랙 사무소 해결사 히스클리프",
+    "[00] | 남부 세븐 협회 4과 히스클리프",
+    "[00] | N사 작은 망치 히스클리프",
+    "[00] | 남부 시 협회 5과 히스클리프",
+    "[0] | LCB 수감자 히스클리프"
+  ],
+  ishmael: [
+    "[000] | LCD 현장추리팀 이스마엘",
+    "[000] | 거미집 중지 제자 이스마엘",
+    "[000] | 정사무소 대표 이스마엘",
+    "[000] | 가주 후보 이스마엘",
+    "[000] | 흑운회 부조장 이스마엘",
+    "[000] | 서부 츠바이 협회 3과 이스마엘",
+    "[000] | 피쿼드호 선장 이스마엘",
+    "[000] | 어금니 보트 센터 해결사 이스마엘",
+    "[000] | 남부 리우 협회 4과 이스마엘",
+    "[000] | R사 제 4무리 순록팀 이스마엘",
+    "[00] | 에드가 가문 버틀러 이스마엘",
+    "[00] | 로보토미 E.G.O::출렁임 이스마엘",
+    "[00] | 남부 시 협회 5과 이스마엘",
+    "[00] | LCCB 대리 이스마엘",
+    "[0] | LCB 수감자 이스마엘"
+  ],
+  rodion: [
+    "[000] | 거미집 엄지 아비 로쟈",
+    "[000] | 약지 야수파 도슨트 로쟈",
+    "[000] | R사 제 4무리 순록팀 로쟈",
+    "[000] | 로보토미 E.G.O::눈물로 벼려낸 검 로쟈",
+    "[000] | 흑수 - 사 로쟈",
+    "[000] | 라만차랜드 공주 로쟈",
+    "[000] | 북부 제뱌찌 협회 3과 로쟈",
+    "[000] | 남부 리우 협회 4과 부장 로쟈",
+    "[000] | 남부 디에치 협회 4과 로쟈",
+    "[000] | 장미스패너 공방 대표 로쟈",
+    "[000] | 흑운회 와카슈 로쟈",
+    "[00] | T사 2등급 징수직 직원 로쟈",
+    "[00] | 남부 츠바이 협회 5과 로쟈",
+    "[00] | N사 중간 망치 로쟈",
+    "[00] | LCCB 대리 로쟈",
+    "[0] | LCB 수감자 로쟈"
+  ],
+  sinclair: [
+    "[000] | 거미집 소지 제자 싱클레어",
+    "[000] | 흑수 - 유 싱클레어",
+    "[000] | 동부 엄지 솔다토 II 싱클레어",
+    "[000] | 중지 작은 아우 싱클레어",
+    "[000] | 북부 제뱌찌 협회 3과 싱클레어",
+    "[000] | 새벽 사무소 해결사 싱클레어",
+    "[000] | 남부 섕크 협회 4과 부장 싱클레어",
+    "[000] | 쥐어들 자 싱클레어",
+    "[000] | 검계 살수 싱클레어",
+    "[00] | 서부 츠바이 협회 3과 싱클레어",
+    "[00] | 어금니 보트 센터 해결사 싱클레어",
+    "[00] | 로보토미 E.G.O::홍적 싱클레어",
+    "[00] | 남부 츠바이 협회 6과 싱클레어",
+    "[00] | 마리아치 보스 싱클레어",
+    "[0] | LCB 수감자 싱클레어"
+  ],
+  outis: [
+    "[000] | 거미집 중지 아비 오티스",
+    "[000] | LCA 우제트 선봉 3팀 팀장 오티스",
+    "[000] | T사 3등급 강력징수직 직원 오티스",
+    "[000] | 흑수 - 묘 오티스",
+    "[000] | 라만차랜드 이발사 오티스",
+    "[000] | W사 3등급 정리 요원 팀장 오티스",
+    "[000] | 워더링하이츠 치프 버틀러 오티스",
+    "[000] | 로보토미 E.G.O::마탄 오티스",
+    "[000] | 어금니 사무소 해결사 오티스",
+    "[000] | 남부 세븐 협회 6과 부장 오티스",
+    "[00] | 약지 점묘파 스튜던트 오티스",
+    "[00] | 남부 섕크 협회 4과 오티스",
+    "[00] | 검계 살수 오티스",
+    "[00] | G사 부장 오티스",
+    "[0] | LCB 수감자 오티스"
+  ],
+  gregor: [
+    "[000] | 새벽 사무소 대표 그레고르",
+    "[000] | LCE E.G.O::AEDD 그레고르",
+    "[000] | 로보토미 E.G.O::램프 그레고르",
+    "[000] | 밤의 송곳 카피타노 그레고르",
+    "[000] | 흑수 - 사 그레고르",
+    "[000] | 불주먹 사무소 생존자 그레고르",
+    "[000] | 라만차랜드 신부 그레고르",
+    "[000] | 에드가 가문 승계자 그레고르",
+    "[000] | 쌍갈고리 해적단 부선장 그레고르",
+    "[000] | 남부 츠바이 협회 4과 그레고르",
+    "[000] | G사 일등대리 그레고르",
+    "[00] | 흑운회 부조장 그레고르",
+    "[00] | 장미스패너 공방 해결사 그레고르",
+    "[00] | 료.고.파. 조수 그레고르",
+    "[00] | 남부 리우 협회 6과 그레고르",
+    "[0] | LCB 수감자 그레고르"
+  ],
+};
+
+// 세션 동안 유지되는 실제 인격 목록. 각 항목은 {text, checked} 형태이며,
+// checked가 true인 항목만 룰렛 풀에 포함됩니다. "새 인격 추가"로 넣은 항목은 자동으로 체크된 채 추가됩니다.
+const identities = {};
+SINNERS.forEach(s=>{
+  identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true}));
+});
+
+// ---- 브라우저별 자동 저장 (계정/서버 없이, 이 브라우저에만 저장되어 다른 사용자에게 영향 없음) ----
+const STORAGE_KEY = 'mirror-dungeon-roulette-v1';
+
+function saveIdentities(){
+  try{
+    const payload = {};
+    SINNERS.forEach(s=>{
+      payload[s.id] = identities[s.id].map(it=>({text: it.text, checked: !!it.checked}));
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  }catch(e){
+    // 저장소를 쓸 수 없는 환경(시크릿 모드 등)이면 조용히 무시하고 세션 동안만 동작
+  }
+}
+
+function loadIdentities(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const payload = JSON.parse(raw);
+    SINNERS.forEach(s=>{
+      if(Array.isArray(payload[s.id])){
+        identities[s.id] = payload[s.id].map(it=>({
+          text: String(it.text || ''),
+          checked: !!it.checked
+        })).filter(it=>it.text);
+      }
+    });
+  }catch(e){
+    // 저장된 값이 손상된 경우 기본값 그대로 사용
+  }
+}
+loadIdentities();
+
+function resetIdentitiesToDefault(){
+  SINNERS.forEach(s=>{
+    identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true}));
+  });
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+}
+
+const state = {}; // per-sinner: {mode:'idle'|'spinning'|'stopping', timer:null, current:null}
+SINNERS.forEach(s=>{ state[s.id] = {mode:'idle', timer:null, current:null}; });
+
+
+const rosterEl = document.getElementById('roster');
+
+function renderRoster(){
+  rosterEl.innerHTML = '';
+  SINNERS.forEach(s=>{
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.id = 'col-'+s.id;
+
+    col.innerHTML = `
+      <div class="name-cell">${s.name}</div>
+      <div class="identity-cell">
+        <div class="identity-display empty" id="display-${s.id}">인격을 뽑아보세요</div>
+        <button class="roll-btn" id="btn-${s.id}">뽑기</button>
+        <div class="edit-link" data-target="${s.id}">이 칸만 편집</div>
+      </div>
+    `;
+    rosterEl.appendChild(col);
+
+    document.getElementById('btn-'+s.id).addEventListener('click', ()=>handleRollClick(s.id));
+  });
+
+  rosterEl.querySelectorAll('.edit-link').forEach(el=>{
+    el.addEventListener('click', ()=>openModal(el.dataset.target));
+  });
+}
+renderRoster();
+
+function randomFrom(list){
+  return list[Math.floor(Math.random()*list.length)];
+}
+
+function activePool(id){
+  return identities[id].filter(it=>it.checked).map(it=>it.text);
+}
+
+function handleRollClick(id){
+  const s = state[id];
+  if(s.mode === 'idle'){
+    startSpin(id);
+  } else if(s.mode === 'spinning'){
+    startStop(id);
+  }
+  // 'stopping' 중에는 클릭 무시
+}
+
+function startSpin(id){
+  const list = activePool(id);
+  if(!list || list.length === 0){
+    alert('먼저 "인격 목록 편집"에서 해당 칸의 인격을 1개 이상 체크해주세요.');
+    return;
+  }
+  const s = state[id];
+  s.mode = 'spinning';
+
+  const colEl = document.getElementById('col-'+id);
+  const btnEl = document.getElementById('btn-'+id);
+  const dispEl = document.getElementById('display-'+id);
+
+  colEl.classList.remove('landed');
+  colEl.classList.add('spinning');
+  dispEl.classList.remove('empty','landed');
+  dispEl.classList.add('spinning');
+  btnEl.textContent = '정지';
+  btnEl.classList.add('is-spinning');
+  btnEl.classList.remove('is-empty');
+
+  s.timer = setInterval(()=>{
+    dispEl.textContent = randomFrom(list);
+  }, 55);
+}
+
+function startStop(id){
+  const list = activePool(id);
+  const s = state[id];
+  clearInterval(s.timer);
+  s.mode = 'stopping';
+
+  const btnEl = document.getElementById('btn-'+id);
+  btnEl.classList.remove('is-spinning');
+  btnEl.classList.add('is-stopping');
+
+  const dispEl = document.getElementById('display-'+id);
+  const colEl = document.getElementById('col-'+id);
+
+  const final = randomFrom(list);
+  const duration = 1500;
+  const startTime = performance.now();
+
+  function tick(now){
+    const elapsed = now - startTime;
+    if(elapsed >= duration){
+      dispEl.textContent = final;
+      dispEl.classList.remove('spinning');
+      dispEl.classList.add('landed');
+      colEl.classList.remove('spinning');
+      colEl.classList.add('landed');
+      btnEl.textContent = '뽑기';
+      btnEl.classList.remove('is-stopping');
+      s.mode = 'idle';
+      s.current = final;
+      return;
+    }
+    dispEl.textContent = randomFrom(list);
+    const progress = elapsed / duration;
+    const nextDelay = 45 + Math.pow(progress, 2) * 260; // 점점 느려지는 간격
+    s.timer = setTimeout(()=>requestAnimationFrame(tick), nextDelay);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ---- 전체 제어 ----
+document.getElementById('rollAll').addEventListener('click', ()=>{
+  SINNERS.forEach((s, i)=>{
+    setTimeout(()=>{
+      if(state[s.id].mode === 'idle') startSpin(s.id);
+    }, i * 70);
+  });
+});
+document.getElementById('stopAll').addEventListener('click', ()=>{
+  SINNERS.forEach((s, i)=>{
+    setTimeout(()=>{
+      if(state[s.id].mode === 'spinning') startStop(s.id);
+    }, i * 60);
+  });
+});
+document.getElementById('resetAll').addEventListener('click', ()=>{
+  SINNERS.forEach(s=>{
+    const st = state[s.id];
+    clearInterval(st.timer);
+    clearTimeout(st.timer);
+    st.mode = 'idle';
+    st.current = null;
+    const colEl = document.getElementById('col-'+s.id);
+    const btnEl = document.getElementById('btn-'+s.id);
+    const dispEl = document.getElementById('display-'+s.id);
+    colEl.classList.remove('spinning','landed');
+    btnEl.textContent = '뽑기';
+    btnEl.classList.remove('is-spinning','is-stopping');
+    dispEl.textContent = '인격을 뽑아보세요';
+    dispEl.className = 'identity-display empty';
+  });
+});
+
+// ---- 결과 복사 ----
+function buildResultText(){
+  return SINNERS.map(s=>{
+    const cur = state[s.id].current;
+    return `${s.name} : ${cur ? cur : '(미뽑음)'}`;
+  }).join('\n');
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+document.getElementById('copyResults').addEventListener('click', ()=>{
+  const btn = document.getElementById('copyResults');
+  const text = buildResultText();
+  const flash = ()=>{
+    const original = btn.textContent;
+    btn.textContent = '복사됨!';
+    btn.disabled = true;
+    setTimeout(()=>{ btn.textContent = original; btn.disabled = false; }, 1400);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(flash).catch(()=>{ fallbackCopy(text); flash(); });
+  } else {
+    fallbackCopy(text);
+    flash();
+  }
+});
+
+// ---- 편집 모달 ----
+const modalOverlay = document.getElementById('modalOverlay');
+const modalBody = document.getElementById('modalBody');
+
+function buildModal(focusId){
+  modalBody.innerHTML = '';
+  SINNERS.forEach(s=>{
+    const block = document.createElement('div');
+    block.className = 'edit-block';
+    block.id = 'block-'+s.id;
+    block.innerHTML = `
+      <label class="block-title">${s.name} <span class="count" id="count-${s.id}"></span></label>
+      <div class="add-row">
+        <input type="text" id="newinput-${s.id}" placeholder="새 인격 추가 (예: [000] | 새 인격명)">
+        <button type="button" class="add-btn" data-add="${s.id}">추가</button>
+      </div>
+      <div class="check-list" id="checklist-${s.id}"></div>
+    `;
+    modalBody.appendChild(block);
+    renderCheckList(s.id);
+  });
+
+  modalBody.querySelectorAll('.add-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>addIdentity(btn.dataset.add));
+  });
+  modalBody.querySelectorAll('.add-row input').forEach(inp=>{
+    inp.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        addIdentity(inp.id.replace('newinput-',''));
+      }
+    });
+  });
+
+  if(focusId){
+    setTimeout(()=>{
+      const block = document.getElementById('block-'+focusId);
+      if(block) block.scrollIntoView({block:'center'});
+      const inp = document.getElementById('newinput-'+focusId);
+      if(inp) inp.focus();
+    }, 30);
+  }
+}
+
+function renderCheckList(id){
+  const container = document.getElementById('checklist-'+id);
+  if(!container) return;
+  container.innerHTML = '';
+  identities[id].forEach((item, idx)=>{
+    const row = document.createElement('label');
+    row.className = 'check-row' + (item.isNew ? ' new-item' : '');
+    row.innerHTML = `<input type="checkbox" data-sinner="${id}" data-idx="${idx}" ${item.checked ? 'checked' : ''}><span></span>`;
+    row.querySelector('span').textContent = item.text;
+    container.appendChild(row);
+  });
+  container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', (e)=>{
+      const sid = e.target.dataset.sinner;
+      const idx = parseInt(e.target.dataset.idx, 10);
+      identities[sid][idx].checked = e.target.checked;
+      updateCount(sid);
+      saveIdentities();
+    });
+  });
+  updateCount(id);
+}
+
+function updateCount(id){
+  const el = document.getElementById('count-'+id);
+  if(!el) return;
+  const total = identities[id].length;
+  const checked = identities[id].filter(x=>x.checked).length;
+  el.textContent = `${checked} / ${total}`;
+}
+
+function addIdentity(id){
+  const inp = document.getElementById('newinput-'+id);
+  if(!inp) return;
+  const val = inp.value.trim();
+  if(!val) return;
+  identities[id].push({text: val, checked: true, isNew: true});
+  inp.value = '';
+  renderCheckList(id);
+  saveIdentities();
+  inp.focus();
+}
+
+function openModal(focusId){
+  buildModal(focusId);
+  modalOverlay.classList.add('open');
+}
+function closeModal(){
+  modalOverlay.classList.remove('open');
+}
+
+document.getElementById('openEdit').addEventListener('click', ()=>openModal());
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e)=>{ if(e.target === modalOverlay) closeModal(); });
+document.getElementById('modalSave').addEventListener('click', closeModal);
+document.getElementById('modalResetList').addEventListener('click', ()=>{
+  if(!confirm('이 브라우저에 저장된 인격 목록을 모두 기본값으로 되돌립니다. 계속할까요?')) return;
+  resetIdentitiesToDefault();
+  buildModal();
+});
+</script>
+</body>
+</html>

@@ -768,16 +768,23 @@ function resetIdentitiesToDefault(){
     identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true, img:''}));
   });
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  if(isAdmin) pushIdentitiesToServer();
 }
 
 // ---- 관리자 모드 ----
 // 비밀번호는 이 페이지에 저장되지 않습니다. 입력한 값을 Cloudflare Worker로 보내서
 // 서버 쪽에서만 대조하고, 맞다/틀리다 결과만 돌려받습니다.
-const ADMIN_CHECK_URL = 'https://mirror-roulette-admin.mirror-roulette-admin.workers.dev';
+const ADMIN_API_BASE = 'https://mirror-roulette-admin.mirror-roulette-admin.workers.dev';
+const ADMIN_LOGIN_URL = ADMIN_API_BASE + '/login';
+const IDENTITIES_API_URL = ADMIN_API_BASE + '/identities';
 const ADMIN_SESSION_KEY = 'mdr-admin-session';
 
-let isAdmin = false;
-try{ isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === '1'; }catch(e){ isAdmin = false; }
+// 로그인에 성공한 비밀번호를 세션 동안만 메모리(및 세션 저장소)에 보관해서,
+// 목록을 저장할 때마다 매번 다시 물어보지 않고 서버에 같이 실어 보냅니다.
+// (기존과 동일하게 "진짜 보안"은 아니며, 이 브라우저 탭이 닫히면 사라집니다.)
+let adminPasswordCache = '';
+try{ adminPasswordCache = sessionStorage.getItem(ADMIN_SESSION_KEY) || ''; }catch(e){ adminPasswordCache = ''; }
+let isAdmin = !!adminPasswordCache;
 
 function applyAdminUI(){
   document.body.classList.toggle('is-admin', isAdmin);
@@ -791,7 +798,7 @@ function applyAdminUI(){
 }
 
 async function checkAdminPassword(pw){
-  const res = await fetch(ADMIN_CHECK_URL, {
+  const res = await fetch(ADMIN_LOGIN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password: pw })
@@ -801,9 +808,61 @@ async function checkAdminPassword(pw){
   return !!data.ok;
 }
 
+// ---- 서버(모든 사용자 공용) 인격 목록 동기화 ----
+async function fetchServerIdentities(){
+  try{
+    const res = await fetch(IDENTITIES_API_URL, { method: 'GET' });
+    if(!res.ok) return;
+    const result = await res.json();
+    if(!result.ok || !result.data) return; // 서버에 아직 저장된 목록이 없으면 기존 값 유지
+    SINNERS.forEach(s=>{
+      if(Array.isArray(result.data[s.id])){
+        identities[s.id] = result.data[s.id].map(it=>({
+          text: String(it.text || ''),
+          checked: !!it.checked,
+          img: typeof it.img === 'string' ? it.img : ''
+        })).filter(it=>it.text);
+      }
+    });
+    saveIdentities(); // 받아온 최신 목록을 로컬 캐시에도 반영
+    if(modalOverlayIsOpen()) buildModal();
+  }catch(e){
+    // 오프라인이거나 서버 응답이 없으면 로컬(캐시/기본값)을 그대로 사용
+  }
+}
+
+let serverSaveTimer = null;
+function persistIdentities(){
+  saveIdentities(); // 로컬 캐시는 항상 즉시 저장
+  if(!isAdmin) return;
+  clearTimeout(serverSaveTimer);
+  serverSaveTimer = setTimeout(pushIdentitiesToServer, 600);
+}
+
+async function pushIdentitiesToServer(){
+  if(!isAdmin || !adminPasswordCache) return;
+  const payload = {};
+  SINNERS.forEach(s=>{
+    payload[s.id] = identities[s.id].map(it=>({text: it.text, checked: !!it.checked, img: it.img || ''}));
+  });
+  try{
+    const res = await fetch(IDENTITIES_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPasswordCache, data: payload })
+    });
+    if(!res.ok){
+      alert('서버 저장에 실패했습니다. 관리자 로그인이 만료됐을 수 있으니 다시 로그인해주세요.');
+    }
+  }catch(e){
+    alert('서버에 연결할 수 없어 이 변경사항이 다른 사용자에게는 반영되지 않았습니다. (이 브라우저에는 저장되어 있습니다)');
+  }
+}
+
 document.getElementById('adminToggle').addEventListener('click', async ()=>{
   if(isAdmin){
     isAdmin = false;
+    adminPasswordCache = '';
     try{ sessionStorage.removeItem(ADMIN_SESSION_KEY); }catch(e){}
     applyAdminUI();
     if(modalOverlayIsOpen()) buildModal();
@@ -822,8 +881,10 @@ document.getElementById('adminToggle').addEventListener('click', async ()=>{
     const ok = await checkAdminPassword(pw);
     if(ok){
       isAdmin = true;
-      try{ sessionStorage.setItem(ADMIN_SESSION_KEY, '1'); }catch(e){}
+      adminPasswordCache = pw;
+      try{ sessionStorage.setItem(ADMIN_SESSION_KEY, pw); }catch(e){}
       applyAdminUI();
+      fetchServerIdentities(); // 로그인 직후 최신 서버 목록으로 갱신
     } else {
       alert('비밀번호가 올바르지 않습니다.');
       btn.disabled = false;
@@ -842,6 +903,8 @@ function modalOverlayIsOpen(){
   const el = document.getElementById('modalOverlay');
   return el && el.classList.contains('open');
 }
+
+fetchServerIdentities(); // 페이지 로딩 시 모두에게 공용인 최신 목록을 받아옴
 
 const state = {}; // per-sinner: {mode:'idle'|'spinning'|'stopping', timer:null, current:null}
 SINNERS.forEach(s=>{ state[s.id] = {mode:'idle', timer:null, current:null}; });
@@ -1128,7 +1191,7 @@ function renderCheckList(id){
         const idx = parseInt(e.target.dataset.idx, 10);
         identities[sid][idx].checked = e.target.checked;
         updateCount(sid);
-        saveIdentities();
+        persistIdentities();
       });
     });
     container.querySelectorAll('.img-input').forEach(inp=>{
@@ -1136,7 +1199,7 @@ function renderCheckList(id){
         const sid = e.target.dataset.sinner;
         const idx = parseInt(e.target.dataset.idx, 10);
         identities[sid][idx].img = e.target.value.trim();
-        saveIdentities();
+        persistIdentities();
       });
     });
   }
@@ -1163,7 +1226,7 @@ function addIdentity(id){
   inp.value = '';
   if(imgInp) imgInp.value = '';
   renderCheckList(id);
-  saveIdentities();
+  persistIdentities();
   inp.focus();
 }
 

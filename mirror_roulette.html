@@ -771,10 +771,9 @@ function resetIdentitiesToDefault(){
 }
 
 // ---- 관리자 모드 ----
-// 주의: 이 비밀번호는 페이지 소스에 그대로 노출되므로 진짜 보안이 아니라,
-// 일반 사용자가 실수로/장난으로 인격 목록을 건드리지 못하게 막는 가벼운 잠금장치입니다.
-// 배포 전에 아래 문자열을 원하는 값으로 바꾸세요.
-const ADMIN_PASSWORD = 'limbus-admin';
+// 비밀번호는 이 페이지에 저장되지 않습니다. 입력한 값을 Cloudflare Worker로 보내서
+// 서버 쪽에서만 대조하고, 맞다/틀리다 결과만 돌려받습니다.
+const ADMIN_CHECK_URL = 'https://mirror-roulette-admin.mirror-roulette-admin.workers.dev';
 const ADMIN_SESSION_KEY = 'mdr-admin-session';
 
 let isAdmin = false;
@@ -784,28 +783,58 @@ function applyAdminUI(){
   document.body.classList.toggle('is-admin', isAdmin);
   const btn = document.getElementById('adminToggle');
   btn.textContent = isAdmin ? '관리자 로그아웃' : '관리자 로그인';
+  btn.disabled = false;
   btn.classList.toggle('is-on', isAdmin);
   document.querySelectorAll('.edit-link').forEach(el=>{
     el.textContent = isAdmin ? '이 칸만 편집' : '인격 목록 보기';
   });
 }
 
-document.getElementById('adminToggle').addEventListener('click', ()=>{
+async function checkAdminPassword(pw){
+  const res = await fetch(ADMIN_CHECK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pw })
+  });
+  if(!res.ok) return false;
+  const data = await res.json();
+  return !!data.ok;
+}
+
+document.getElementById('adminToggle').addEventListener('click', async ()=>{
   if(isAdmin){
     isAdmin = false;
     try{ sessionStorage.removeItem(ADMIN_SESSION_KEY); }catch(e){}
     applyAdminUI();
-  } else {
-    const pw = prompt('관리자 비밀번호를 입력하세요:');
-    if(pw === null) return;
-    if(pw === ADMIN_PASSWORD){
+    if(modalOverlayIsOpen()) buildModal();
+    return;
+  }
+
+  const pw = prompt('관리자 비밀번호를 입력하세요:');
+  if(pw === null || pw === '') return;
+
+  const btn = document.getElementById('adminToggle');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '확인 중...';
+
+  try{
+    const ok = await checkAdminPassword(pw);
+    if(ok){
       isAdmin = true;
       try{ sessionStorage.setItem(ADMIN_SESSION_KEY, '1'); }catch(e){}
       applyAdminUI();
     } else {
       alert('비밀번호가 올바르지 않습니다.');
+      btn.disabled = false;
+      btn.textContent = originalText;
     }
+  }catch(e){
+    alert('관리자 서버에 연결할 수 없습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.');
+    btn.disabled = false;
+    btn.textContent = originalText;
   }
+
   if(modalOverlayIsOpen()) buildModal();
 });
 

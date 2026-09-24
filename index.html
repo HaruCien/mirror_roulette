@@ -135,10 +135,24 @@
     font-size:11px;
     padding:7px 14px;
   }
+  .changelog-fixed{
+    position:fixed;
+    top:14px;
+    left:16px;
+    z-index:30;
+    font-size:11px;
+    padding:7px 14px;
+  }
   @media (max-width:620px){
     .admin-fixed{
       top:10px;
       right:10px;
+      padding:6px 10px;
+      font-size:10px;
+    }
+    .changelog-fixed{
+      top:10px;
+      left:10px;
       padding:6px 10px;
       font-size:10px;
     }
@@ -149,17 +163,17 @@
     margin:-4px 0 8px;
   }
 
-  /* ---------- Grid of 12 columns ---------- */
+  /* ---------- Grid: 6열 x 2행 (12명) ---------- */
   .roster{
     display:grid;
-    grid-template-columns:repeat(12,1fr);
-    gap:10px;
+    grid-template-columns:repeat(6,1fr);
+    gap:12px;
   }
-  @media (max-width:1100px){
-    .roster{grid-template-columns:repeat(6,1fr);}
-  }
-  @media (max-width:620px){
+  @media (max-width:760px){
     .roster{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:460px){
+    .roster{grid-template-columns:repeat(2,1fr);}
   }
 
   .col{
@@ -318,8 +332,8 @@
     background:var(--panel);
     border:1px solid var(--gold);
     border-radius:6px;
-    width:100%;max-width:980px;
-    max-height:86vh;
+    width:100%;max-width:1320px;
+    max-height:90vh;
     display:flex;flex-direction:column;
     box-shadow:0 30px 80px rgba(0,0,0,0.6);
   }
@@ -337,27 +351,30 @@
   }
   .modal-close:hover{color:var(--gold-bright);}
   .modal-body{
-    padding:20px 24px;
+    padding:22px 26px;
     overflow-y:auto;
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
-    gap:14px;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+  }
+  @media (max-width:760px){
+    .modal-body{grid-template-columns:1fr;}
   }
   .edit-block{
     background:var(--bg-1);
     border:1px solid var(--line-soft);
-    border-radius:4px;
-    padding:12px;
+    border-radius:5px;
+    padding:18px;
   }
-  .edit-block label.block-title{
+  label.block-title, .block-title{
     display:flex;align-items:baseline;justify-content:space-between;
-    font-family:var(--serif);font-size:13px;color:var(--ink);margin-bottom:8px;
+    font-family:var(--serif);font-size:15px;color:var(--ink);margin-bottom:10px;
   }
   .edit-block .count{
-    font-family:var(--sans);font-size:10px;color:var(--ink-faint);font-weight:400;
+    font-family:var(--sans);font-size:11px;color:var(--ink-faint);font-weight:400;
   }
   .add-row{
-    display:flex;gap:6px;margin-bottom:8px;
+    display:flex;gap:6px;margin-bottom:10px;
   }
   .add-row input{
     flex:1;
@@ -366,14 +383,14 @@
     border-radius:3px;
     color:var(--ink);
     font-family:var(--sans);
-    font-size:11px;
-    padding:6px 8px;
+    font-size:12px;
+    padding:7px 9px;
   }
   .add-row input:focus{outline:none;border-color:var(--gold);}
   .add-row .add-btn{
     font-family:var(--sans);
-    font-size:11px;
-    padding:6px 10px;
+    font-size:12px;
+    padding:7px 12px;
     border-radius:3px;
     border:1px solid var(--line);
     background:var(--panel-2);
@@ -383,44 +400,45 @@
   }
   .add-row .add-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
   .add-row .img-input{
-    flex:0 0 110px;
+    flex:0 0 130px;
   }
   .check-list{
-    max-height:260px;
+    max-height:400px;
     overflow-y:auto;
     display:flex;flex-direction:column;
-    gap:2px;
+    gap:3px;
     padding-right:4px;
   }
   .check-row{
-    display:flex;align-items:center;gap:7px;
-    padding:4px 4px;
+    display:flex;align-items:center;gap:8px;
+    padding:5px 5px;
     border-radius:3px;
   }
   .check-row:hover{background:rgba(184,147,74,0.08);}
   .check-label{
-    display:flex;align-items:flex-start;gap:7px;
+    display:flex;align-items:flex-start;gap:8px;
     flex:1;min-width:0;
-    font-size:11.5px;
+    font-size:13px;
     color:var(--ink-dim);
-    line-height:1.4;
+    line-height:1.5;
     cursor:pointer;
   }
   .check-label input{
-    margin-top:2px;
+    margin-top:3px;
     accent-color:var(--gold);
     flex-shrink:0;
+    width:15px;height:15px;
   }
   .check-row.new-item .check-label span{color:var(--gold-bright);}
   .img-input{
-    flex:0 0 108px;
+    flex:0 0 150px;
     background:var(--panel-2);
     border:1px solid var(--line);
     border-radius:3px;
     color:var(--ink);
     font-family:var(--sans);
-    font-size:10px;
-    padding:5px 7px;
+    font-size:11px;
+    padding:6px 8px;
   }
   .img-input:focus{outline:none;border-color:var(--gold);}
   .img-input::placeholder{color:var(--ink-faint);}
@@ -428,12 +446,83 @@
     padding:14px 24px 20px;
     border-top:1px solid var(--line-soft);
     display:flex;justify-content:space-between;align-items:center;gap:10px;
+    flex-wrap:wrap;
   }
+
+  /* ---------- 업데이트 내역(체인지로그) ---------- */
+  .changelog-body{
+    padding:20px 24px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .changelog-add{
+    background:var(--bg-1);
+    border:1px solid var(--line-soft);
+    border-radius:5px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .changelog-add textarea{
+    width:100%;
+    min-height:70px;
+    resize:vertical;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:12px;
+    padding:8px 10px;
+    line-height:1.6;
+  }
+  .changelog-add textarea:focus{outline:none;border-color:var(--gold);}
+  .changelog-add .add-row{margin-bottom:0;}
+  .changelog-add .add-row input[type="date"]{
+    flex:0 0 150px;
+    color-scheme: dark;
+  }
+  .changelog-entry{
+    background:var(--bg-1);
+    border:1px solid var(--line-soft);
+    border-radius:5px;
+    padding:14px 16px;
+  }
+  .changelog-entry .cl-date{
+    font-family:var(--serif);
+    font-size:12px;
+    color:var(--gold-bright);
+    margin-bottom:6px;
+  }
+  .changelog-entry .cl-text{
+    font-size:13px;
+    color:var(--ink);
+    line-height:1.7;
+    white-space:pre-wrap;
+    word-break:keep-all;
+  }
+  .changelog-empty{
+    text-align:center;
+    color:var(--ink-faint);
+    font-size:12px;
+    padding:30px 0;
+  }
+  .dismiss-row{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;
+    color:var(--ink-dim);
+    cursor:pointer;
+  }
+  .dismiss-row input{accent-color:var(--gold);}
 </style>
 </head>
 <body>
 
 <button class="btn admin-btn admin-fixed" id="adminToggle">관리자 로그인</button>
+<button class="btn changelog-fixed" id="changelogToggle">업데이트 내역</button>
 
 <div class="stage">
   <header>
@@ -452,7 +541,7 @@
     </div>
     <div class="eyebrow">MIRROR DUNGEON RECORD</div>
     <h1>거울 던전 인격 룰렛</h1>
-    <p class="sub">각 수감자 칸의 뽑기 버튼을 누르면 슬롯이 돌아가고, 정지 버튼으로 결과를 확정합니다.<br>지금까지 출시된 모든 인격이 체크박스로 등록되어 있습니다. 목록 체크/추가/이미지 등록은 관리자만 가능하며, 일반 사용자는 보기만 할 수 있습니다.</p>
+    <p class="sub">각 수감자 칸의 뽑기 버튼을 누르면 슬롯이 돌아가고, 정지 버튼으로 결과를 확정합니다.<br>인격 추가·이미지 등록은 관리자만 가능하며(모두에게 공유), 보유 여부 체크는 누구나 직접 켜고 끌 수 있습니다(이 브라우저에만 저장, 다른 사람에게 영향 없음).</p>
     <div class="divider">
       <svg viewBox="0 0 24 24" fill="currentColor"><rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/></svg>
     </div>
@@ -486,6 +575,36 @@
     <div class="modal-foot">
       <button class="btn admin-only" id="modalResetList">전체 목록 초기화</button>
       <button class="btn primary" id="modalSave">완료</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="changelogOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>업데이트 내역</h2>
+        <p id="changelogDescText">이 도구의 업데이트/공지 내역입니다.</p>
+      </div>
+      <button class="modal-close" id="changelogClose">×</button>
+    </div>
+    <div class="changelog-body" id="changelogBody">
+      <div class="changelog-add admin-only" id="changelogAddForm">
+        <label class="block-title" style="margin-bottom:0;">새 소식 작성</label>
+        <div class="add-row">
+          <input type="date" id="changelogDateInput">
+        </div>
+        <textarea id="changelogTextInput" placeholder="업데이트 내용을 입력하세요 (모든 사용자에게 공개됩니다)"></textarea>
+        <button type="button" class="btn primary" id="changelogAddBtn" style="align-self:flex-start;">등록</button>
+      </div>
+      <div id="changelogList"></div>
+    </div>
+    <div class="modal-foot">
+      <label class="dismiss-row">
+        <input type="checkbox" id="changelogDismissToday">
+        오늘 하루 다시 보지 않기
+      </label>
+      <button class="btn primary" id="changelogCloseBtn">닫기</button>
     </div>
   </div>
 </div>
@@ -768,7 +887,7 @@ function resetIdentitiesToDefault(){
     identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true, img:''}));
   });
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
-  if(isAdmin) pushIdentitiesToServer();
+  if(isAdmin) pushRosterToServer();
 }
 
 // ---- 관리자 모드 ----
@@ -793,7 +912,7 @@ function applyAdminUI(){
   btn.disabled = false;
   btn.classList.toggle('is-on', isAdmin);
   document.querySelectorAll('.edit-link').forEach(el=>{
-    el.textContent = isAdmin ? '이 칸만 편집' : '인격 목록 보기';
+    el.textContent = isAdmin ? '이 칸 관리/편집' : '보유 인격 체크';
   });
 }
 
@@ -808,23 +927,32 @@ async function checkAdminPassword(pw){
   return !!data.ok;
 }
 
-// ---- 서버(모든 사용자 공용) 인격 목록 동기화 ----
+// ---- 서버(관리자가 관리하는, 모두 공용인) 인격 로스터 동기화 ----
+// 서버에는 "이 인격이 존재하는지 + 이미지"만 저장됩니다. "보유했는지 체크" 여부는
+// 절대 서버로 보내지 않고, 이 브라우저의 localStorage에만 개인적으로 저장됩니다.
 async function fetchServerIdentities(){
   try{
     const res = await fetch(IDENTITIES_API_URL, { method: 'GET' });
     if(!res.ok) return;
     const result = await res.json();
-    if(!result.ok || !result.data) return; // 서버에 아직 저장된 목록이 없으면 기존 값 유지
+    if(!result.ok || !result.data) return; // 서버에 아직 저장된 로스터가 없으면 기존 값 유지
     SINNERS.forEach(s=>{
-      if(Array.isArray(result.data[s.id])){
-        identities[s.id] = result.data[s.id].map(it=>({
+      if(!Array.isArray(result.data[s.id])) return;
+      // 기존(이 브라우저)의 체크 상태를 텍스트 기준으로 보존
+      const prevCheckedByText = {};
+      (identities[s.id] || []).forEach(it=>{ prevCheckedByText[it.text] = it.checked; });
+      identities[s.id] = result.data[s.id]
+        .map(it=>({
           text: String(it.text || ''),
-          checked: !!it.checked,
-          img: typeof it.img === 'string' ? it.img : ''
-        })).filter(it=>it.text);
-      }
+          img: typeof it.img === 'string' ? it.img : '',
+          // 이미 알고 있던 인격이면 내가 체크해둔 상태 유지, 관리자가 새로 추가한 인격이면 기본 체크(보유)
+          checked: Object.prototype.hasOwnProperty.call(prevCheckedByText, it.text)
+            ? !!prevCheckedByText[it.text]
+            : true
+        }))
+        .filter(it=>it.text);
     });
-    saveIdentities(); // 받아온 최신 목록을 로컬 캐시에도 반영
+    saveIdentities(); // 병합된 결과(로스터+내 체크상태)를 로컬 캐시에도 반영
     if(modalOverlayIsOpen()) buildModal();
   }catch(e){
     // 오프라인이거나 서버 응답이 없으면 로컬(캐시/기본값)을 그대로 사용
@@ -832,18 +960,20 @@ async function fetchServerIdentities(){
 }
 
 let serverSaveTimer = null;
-function persistIdentities(){
-  saveIdentities(); // 로컬 캐시는 항상 즉시 저장
+// 관리자가 로스터(인격 추가/이미지)를 바꿨을 때 호출 — 로컬 저장 + 서버에도 반영(디바운스)
+function persistRoster(){
+  saveIdentities();
   if(!isAdmin) return;
   clearTimeout(serverSaveTimer);
-  serverSaveTimer = setTimeout(pushIdentitiesToServer, 600);
+  serverSaveTimer = setTimeout(pushRosterToServer, 600);
 }
 
-async function pushIdentitiesToServer(){
+async function pushRosterToServer(){
   if(!isAdmin || !adminPasswordCache) return;
+  // 체크(보유) 여부는 개인 정보라 서버로 보내지 않고, text/img(로스터)만 전송합니다.
   const payload = {};
   SINNERS.forEach(s=>{
-    payload[s.id] = identities[s.id].map(it=>({text: it.text, checked: !!it.checked, img: it.img || ''}));
+    payload[s.id] = identities[s.id].map(it=>({text: it.text, img: it.img || ''}));
   });
   try{
     const res = await fetch(IDENTITIES_API_URL, {
@@ -904,6 +1034,113 @@ function modalOverlayIsOpen(){
   return el && el.classList.contains('open');
 }
 
+// ---- 업데이트 내역(체인지로그) ----
+const CHANGELOG_API_URL = ADMIN_API_BASE + '/changelog';
+const CHANGELOG_DISMISS_KEY = 'mdr-changelog-dismissed-date';
+
+let changelogEntries = [];
+let changelogLoaded = false;
+
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function isChangelogDismissedToday(){
+  try{ return localStorage.getItem(CHANGELOG_DISMISS_KEY) === todayKey(); }catch(e){ return false; }
+}
+
+function renderChangelogList(){
+  const listEl = document.getElementById('changelogList');
+  if(!listEl) return;
+  if(!changelogEntries.length){
+    listEl.innerHTML = '<div class="changelog-empty">등록된 업데이트 내역이 없습니다.</div>';
+    return;
+  }
+  listEl.innerHTML = changelogEntries.map(entry => `
+    <div class="changelog-entry">
+      <div class="cl-date"></div>
+      <div class="cl-text"></div>
+    </div>
+  `).join('');
+  const rows = listEl.querySelectorAll('.changelog-entry');
+  changelogEntries.forEach((entry, i)=>{
+    rows[i].querySelector('.cl-date').textContent = entry.date || '';
+    rows[i].querySelector('.cl-text').textContent = entry.text || '';
+  });
+}
+
+async function fetchChangelog(autoShow){
+  try{
+    const res = await fetch(CHANGELOG_API_URL, { method: 'GET' });
+    if(!res.ok) return;
+    const result = await res.json();
+    changelogEntries = (result.ok && Array.isArray(result.data)) ? result.data : [];
+  }catch(e){
+    changelogEntries = changelogEntries || [];
+  }
+  changelogLoaded = true;
+  renderChangelogList();
+  if(autoShow && changelogEntries.length && !isChangelogDismissedToday()){
+    openChangelogModal();
+  }
+}
+
+async function pushChangelogToServer(){
+  if(!isAdmin || !adminPasswordCache) return;
+  try{
+    const res = await fetch(CHANGELOG_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPasswordCache, data: changelogEntries })
+    });
+    if(!res.ok){
+      alert('업데이트 내역 저장에 실패했습니다. 관리자 로그인이 만료됐을 수 있으니 다시 로그인해주세요.');
+    }
+  }catch(e){
+    alert('서버에 연결할 수 없어 업데이트 내역이 다른 사용자에게는 반영되지 않았습니다.');
+  }
+}
+
+function openChangelogModal(){
+  renderChangelogList();
+  const dateInput = document.getElementById('changelogDateInput');
+  if(dateInput && !dateInput.value) dateInput.value = todayKey();
+  const dismissCb = document.getElementById('changelogDismissToday');
+  if(dismissCb) dismissCb.checked = false;
+  document.getElementById('changelogOverlay').classList.add('open');
+}
+
+function closeChangelogModal(){
+  const dismissCb = document.getElementById('changelogDismissToday');
+  if(dismissCb && dismissCb.checked){
+    try{ localStorage.setItem(CHANGELOG_DISMISS_KEY, todayKey()); }catch(e){}
+  }
+  document.getElementById('changelogOverlay').classList.remove('open');
+}
+
+document.getElementById('changelogToggle').addEventListener('click', openChangelogModal);
+document.getElementById('changelogClose').addEventListener('click', closeChangelogModal);
+document.getElementById('changelogCloseBtn').addEventListener('click', closeChangelogModal);
+document.getElementById('changelogOverlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'changelogOverlay') closeChangelogModal();
+});
+
+document.getElementById('changelogAddBtn').addEventListener('click', ()=>{
+  if(!isAdmin) return;
+  const dateInput = document.getElementById('changelogDateInput');
+  const textInput = document.getElementById('changelogTextInput');
+  const text = textInput.value.trim();
+  if(!text){ alert('내용을 입력해주세요.'); return; }
+  const date = dateInput.value || todayKey();
+  changelogEntries.unshift({ date, text });
+  textInput.value = '';
+  renderChangelogList();
+  pushChangelogToServer();
+});
+
+fetchChangelog(true); // 페이지 로딩 시 최신 소식을 받아오고, 필요하면 자동으로 팝업
+
 fetchServerIdentities(); // 페이지 로딩 시 모두에게 공용인 최신 목록을 받아옴
 
 const state = {}; // per-sinner: {mode:'idle'|'spinning'|'stopping', timer:null, current:null}
@@ -926,7 +1163,7 @@ function renderRoster(){
         <div class="identity-media" id="media-${s.id}"><img id="img-${s.id}" alt="${s.name} 인격 이미지"></div>
         <div class="identity-display empty" id="display-${s.id}">인격을 뽑아보세요</div>
         <button class="roll-btn" id="btn-${s.id}">뽑기</button>
-        <div class="edit-link" data-target="${s.id}">이 칸만 편집</div>
+        <div class="edit-link" data-target="${s.id}">보유 인격 체크</div>
       </div>
     `;
     rosterEl.appendChild(col);
@@ -1119,8 +1356,8 @@ function buildModal(focusId){
   const descEl = document.getElementById('modalDescText');
   if(descEl){
     descEl.textContent = isAdmin
-      ? '체크된 인격만 룰렛에 포함됩니다. 미보유 인격은 체크 해제하세요. 오른쪽 칸에 이미지 URL을 넣으면 해당 인격이 확정됐을 때 이미지가 함께 표시됩니다(비워두면 이름만 표시). 새로 나온 인격은 각 칸의 입력창에 추가하면 자동으로 체크된 상태로 목록에 들어갑니다. 변경 사항은 이 브라우저에 자동 저장됩니다.'
-      : '현재 등록된 인격 목록을 보기 전용으로 표시합니다. 목록 추가·체크 변경·이미지 등록은 관리자만 가능합니다.';
+      ? '체크박스는 누구나(당신 포함) 개인적으로 보유 여부를 켜고 끌 수 있고, 이 브라우저에만 저장되어 다른 사용자에게 영향을 주지 않습니다. 인격 추가와 오른쪽 이미지 URL 등록은 관리자만 가능하며, 모든 사용자에게 공유됩니다. 새로 등록한 인격은 다른 사용자 화면에도 기본 체크된 상태로 나타납니다.'
+      : '체크박스로 본인이 보유한 인격만 표시되도록 직접 관리할 수 있습니다(이 브라우저에만 저장, 다른 사람에게는 영향 없음). 인격 추가와 이미지 등록은 관리자만 가능합니다.';
   }
   modalBody.innerHTML = '';
   SINNERS.forEach(s=>{
@@ -1172,34 +1409,36 @@ function renderCheckList(id){
   identities[id].forEach((item, idx)=>{
     const row = document.createElement('div');
     row.className = 'check-row' + (item.isNew ? ' new-item' : '');
-    const disabledAttr = isAdmin ? '' : 'disabled';
+    const imgDisabledAttr = isAdmin ? '' : 'disabled';
     row.innerHTML = `
       <label class="check-label">
-        <input type="checkbox" data-sinner="${id}" data-idx="${idx}" ${item.checked ? 'checked' : ''} ${disabledAttr}>
+        <input type="checkbox" data-sinner="${id}" data-idx="${idx}" ${item.checked ? 'checked' : ''}>
         <span></span>
       </label>
-      <input type="text" class="img-input" data-sinner="${id}" data-idx="${idx}" placeholder="이미지 URL(선택)" ${disabledAttr}>
+      <input type="text" class="img-input" data-sinner="${id}" data-idx="${idx}" placeholder="이미지 URL(선택)" ${imgDisabledAttr}>
     `;
     row.querySelector('.check-label span').textContent = item.text;
     row.querySelector('.img-input').value = item.img || '';
     container.appendChild(row);
   });
-  if(isAdmin){
-    container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
-      cb.addEventListener('change', (e)=>{
-        const sid = e.target.dataset.sinner;
-        const idx = parseInt(e.target.dataset.idx, 10);
-        identities[sid][idx].checked = e.target.checked;
-        updateCount(sid);
-        persistIdentities();
-      });
+  // 체크박스(보유 여부)는 관리자/일반 사용자 모두 조작 가능 — 이 브라우저에만 저장되고 서버로는 전송되지 않음
+  container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', (e)=>{
+      const sid = e.target.dataset.sinner;
+      const idx = parseInt(e.target.dataset.idx, 10);
+      identities[sid][idx].checked = e.target.checked;
+      updateCount(sid);
+      saveIdentities(); // 로컬 저장만, 서버 전송 없음
     });
+  });
+  // 이미지 URL(로스터 정보)은 관리자만 — 서버에도 동기화됨
+  if(isAdmin){
     container.querySelectorAll('.img-input').forEach(inp=>{
       inp.addEventListener('change', (e)=>{
         const sid = e.target.dataset.sinner;
         const idx = parseInt(e.target.dataset.idx, 10);
         identities[sid][idx].img = e.target.value.trim();
-        persistIdentities();
+        persistRoster();
       });
     });
   }
@@ -1226,7 +1465,7 @@ function addIdentity(id){
   inp.value = '';
   if(imgInp) imgInp.value = '';
   renderCheckList(id);
-  persistIdentities();
+  persistRoster();
   inp.focus();
 }
 

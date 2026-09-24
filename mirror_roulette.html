@@ -116,6 +116,38 @@
     color:#f0ddd0;
   }
   .btn.primary:hover{border-color:var(--gold);}
+  .btn.admin-btn{
+    border-style:dashed;
+  }
+  .btn.admin-btn.is-on{
+    border-style:solid;
+    border-color:var(--gold);
+    color:var(--gold-bright);
+    background:rgba(184,147,74,0.12);
+  }
+  .admin-only{display:none;}
+  body.is-admin .admin-only{display:flex;}
+  .admin-fixed{
+    position:fixed;
+    top:14px;
+    right:16px;
+    z-index:30;
+    font-size:11px;
+    padding:7px 14px;
+  }
+  @media (max-width:620px){
+    .admin-fixed{
+      top:10px;
+      right:10px;
+      padding:6px 10px;
+      font-size:10px;
+    }
+  }
+  .read-only-note{
+    font-size:10px;
+    color:var(--ink-faint);
+    margin:-4px 0 8px;
+  }
 
   /* ---------- Grid of 12 columns ---------- */
   .roster{
@@ -181,6 +213,21 @@
     padding:14px 6px 12px;
     align-items:center;
     gap:10px;
+  }
+
+  .identity-media{
+    display:none;
+    width:100%;
+  }
+  .identity-media.show{display:block;animation:land-pulse .5s ease;}
+  .identity-media img{
+    display:block;
+    width:100%;
+    max-height:130px;
+    object-fit:cover;
+    border-radius:4px;
+    border:1px solid var(--line);
+    background:var(--bg-1);
   }
 
   .identity-display{
@@ -332,31 +379,51 @@
     background:var(--panel-2);
     color:var(--ink-dim);
     cursor:pointer;
+    flex-shrink:0;
   }
   .add-row .add-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .add-row .img-input{
+    flex:0 0 110px;
+  }
   .check-list{
-    max-height:220px;
+    max-height:260px;
     overflow-y:auto;
     display:flex;flex-direction:column;
     gap:2px;
     padding-right:4px;
   }
   .check-row{
-    display:flex;align-items:flex-start;gap:7px;
-    font-size:11.5px;
-    color:var(--ink-dim);
+    display:flex;align-items:center;gap:7px;
     padding:4px 4px;
     border-radius:3px;
-    cursor:pointer;
-    line-height:1.4;
   }
-  .check-row:hover{background:rgba(184,147,74,0.08);color:var(--ink);}
-  .check-row input{
+  .check-row:hover{background:rgba(184,147,74,0.08);}
+  .check-label{
+    display:flex;align-items:flex-start;gap:7px;
+    flex:1;min-width:0;
+    font-size:11.5px;
+    color:var(--ink-dim);
+    line-height:1.4;
+    cursor:pointer;
+  }
+  .check-label input{
     margin-top:2px;
     accent-color:var(--gold);
     flex-shrink:0;
   }
-  .check-row.new-item span{color:var(--gold-bright);}
+  .check-row.new-item .check-label span{color:var(--gold-bright);}
+  .img-input{
+    flex:0 0 108px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:10px;
+    padding:5px 7px;
+  }
+  .img-input:focus{outline:none;border-color:var(--gold);}
+  .img-input::placeholder{color:var(--ink-faint);}
   .modal-foot{
     padding:14px 24px 20px;
     border-top:1px solid var(--line-soft);
@@ -365,6 +432,8 @@
 </style>
 </head>
 <body>
+
+<button class="btn admin-btn admin-fixed" id="adminToggle">관리자 로그인</button>
 
 <div class="stage">
   <header>
@@ -383,7 +452,7 @@
     </div>
     <div class="eyebrow">MIRROR DUNGEON RECORD</div>
     <h1>거울 던전 인격 룰렛</h1>
-    <p class="sub">각 수감자 칸의 뽑기 버튼을 누르면 슬롯이 돌아가고, 정지 버튼으로 결과를 확정합니다.<br>지금까지 출시된 모든 인격이 체크박스로 등록되어 있으며, "인격 목록 편집"에서 보유한 인격만 체크하거나 새 인격을 추가할 수 있습니다.</p>
+    <p class="sub">각 수감자 칸의 뽑기 버튼을 누르면 슬롯이 돌아가고, 정지 버튼으로 결과를 확정합니다.<br>지금까지 출시된 모든 인격이 체크박스로 등록되어 있습니다. 목록 체크/추가/이미지 등록은 관리자만 가능하며, 일반 사용자는 보기만 할 수 있습니다.</p>
     <div class="divider">
       <svg viewBox="0 0 24 24" fill="currentColor"><rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/></svg>
     </div>
@@ -409,13 +478,13 @@
     <div class="modal-head">
       <div>
         <h2>인격 목록 편집</h2>
-        <p>체크된 인격만 룰렛에 포함됩니다. 미보유 인격은 체크 해제하세요. 새로 나온 인격은 각 칸의 입력창에 추가하면 자동으로 체크된 상태로 목록에 들어갑니다. 변경 사항은 이 브라우저에 자동 저장됩니다.</p>
+        <p id="modalDescText">체크된 인격만 룰렛에 포함됩니다. 미보유 인격은 체크 해제하세요. 오른쪽 칸에 이미지 URL을 넣으면 해당 인격이 확정됐을 때 이미지가 함께 표시됩니다(비워두면 이름만 표시). 새로 나온 인격은 각 칸의 입력창에 추가하면 자동으로 체크된 상태로 목록에 들어갑니다. 변경 사항은 이 브라우저에 자동 저장됩니다.</p>
       </div>
       <button class="modal-close" id="modalClose">×</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot">
-      <button class="btn" id="modalResetList">전체 목록 초기화</button>
+      <button class="btn admin-only" id="modalResetList">전체 목록 초기화</button>
       <button class="btn primary" id="modalSave">완료</button>
     </div>
   </div>
@@ -651,11 +720,12 @@ const SEED_IDENTITIES = {
   ],
 };
 
-// 세션 동안 유지되는 실제 인격 목록. 각 항목은 {text, checked} 형태이며,
-// checked가 true인 항목만 룰렛 풀에 포함됩니다. "새 인격 추가"로 넣은 항목은 자동으로 체크된 채 추가됩니다.
+// 세션 동안 유지되는 실제 인격 목록. 각 항목은 {text, checked, img} 형태이며,
+// checked가 true인 항목만 룰렛 풀에 포함됩니다. img는 사용자가 직접 등록한 이미지 URL(선택 사항)입니다.
+// "새 인격 추가"로 넣은 항목은 자동으로 체크된 채 추가됩니다.
 const identities = {};
 SINNERS.forEach(s=>{
-  identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true}));
+  identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true, img:''}));
 });
 
 // ---- 브라우저별 자동 저장 (계정/서버 없이, 이 브라우저에만 저장되어 다른 사용자에게 영향 없음) ----
@@ -665,7 +735,7 @@ function saveIdentities(){
   try{
     const payload = {};
     SINNERS.forEach(s=>{
-      payload[s.id] = identities[s.id].map(it=>({text: it.text, checked: !!it.checked}));
+      payload[s.id] = identities[s.id].map(it=>({text: it.text, checked: !!it.checked, img: it.img || ''}));
     });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   }catch(e){
@@ -682,7 +752,8 @@ function loadIdentities(){
       if(Array.isArray(payload[s.id])){
         identities[s.id] = payload[s.id].map(it=>({
           text: String(it.text || ''),
-          checked: !!it.checked
+          checked: !!it.checked,
+          img: typeof it.img === 'string' ? it.img : ''
         })).filter(it=>it.text);
       }
     });
@@ -694,13 +765,58 @@ loadIdentities();
 
 function resetIdentitiesToDefault(){
   SINNERS.forEach(s=>{
-    identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true}));
+    identities[s.id] = (SEED_IDENTITIES[s.id] || []).map(text => ({text, checked:true, img:''}));
   });
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
 }
 
+// ---- 관리자 모드 ----
+// 주의: 이 비밀번호는 페이지 소스에 그대로 노출되므로 진짜 보안이 아니라,
+// 일반 사용자가 실수로/장난으로 인격 목록을 건드리지 못하게 막는 가벼운 잠금장치입니다.
+// 배포 전에 아래 문자열을 원하는 값으로 바꾸세요.
+const ADMIN_PASSWORD = 'limbus-admin';
+const ADMIN_SESSION_KEY = 'mdr-admin-session';
+
+let isAdmin = false;
+try{ isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === '1'; }catch(e){ isAdmin = false; }
+
+function applyAdminUI(){
+  document.body.classList.toggle('is-admin', isAdmin);
+  const btn = document.getElementById('adminToggle');
+  btn.textContent = isAdmin ? '관리자 로그아웃' : '관리자 로그인';
+  btn.classList.toggle('is-on', isAdmin);
+  document.querySelectorAll('.edit-link').forEach(el=>{
+    el.textContent = isAdmin ? '이 칸만 편집' : '인격 목록 보기';
+  });
+}
+
+document.getElementById('adminToggle').addEventListener('click', ()=>{
+  if(isAdmin){
+    isAdmin = false;
+    try{ sessionStorage.removeItem(ADMIN_SESSION_KEY); }catch(e){}
+    applyAdminUI();
+  } else {
+    const pw = prompt('관리자 비밀번호를 입력하세요:');
+    if(pw === null) return;
+    if(pw === ADMIN_PASSWORD){
+      isAdmin = true;
+      try{ sessionStorage.setItem(ADMIN_SESSION_KEY, '1'); }catch(e){}
+      applyAdminUI();
+    } else {
+      alert('비밀번호가 올바르지 않습니다.');
+    }
+  }
+  if(modalOverlayIsOpen()) buildModal();
+});
+
+function modalOverlayIsOpen(){
+  const el = document.getElementById('modalOverlay');
+  return el && el.classList.contains('open');
+}
+
 const state = {}; // per-sinner: {mode:'idle'|'spinning'|'stopping', timer:null, current:null}
 SINNERS.forEach(s=>{ state[s.id] = {mode:'idle', timer:null, current:null}; });
+
 
 
 const rosterEl = document.getElementById('roster');
@@ -715,6 +831,7 @@ function renderRoster(){
     col.innerHTML = `
       <div class="name-cell">${s.name}</div>
       <div class="identity-cell">
+        <div class="identity-media" id="media-${s.id}"><img id="img-${s.id}" alt="${s.name} 인격 이미지"></div>
         <div class="identity-display empty" id="display-${s.id}">인격을 뽑아보세요</div>
         <button class="roll-btn" id="btn-${s.id}">뽑기</button>
         <div class="edit-link" data-target="${s.id}">이 칸만 편집</div>
@@ -730,6 +847,7 @@ function renderRoster(){
   });
 }
 renderRoster();
+applyAdminUI();
 
 function randomFrom(list){
   return list[Math.floor(Math.random()*list.length)];
@@ -761,11 +879,13 @@ function startSpin(id){
   const colEl = document.getElementById('col-'+id);
   const btnEl = document.getElementById('btn-'+id);
   const dispEl = document.getElementById('display-'+id);
+  const mediaEl = document.getElementById('media-'+id);
 
   colEl.classList.remove('landed');
   colEl.classList.add('spinning');
   dispEl.classList.remove('empty','landed');
   dispEl.classList.add('spinning');
+  mediaEl.classList.remove('show');
   btnEl.textContent = '정지';
   btnEl.classList.add('is-spinning');
   btnEl.classList.remove('is-empty');
@@ -804,6 +924,18 @@ function startStop(id){
       btnEl.classList.remove('is-stopping');
       s.mode = 'idle';
       s.current = final;
+
+      const mediaEl = document.getElementById('media-'+id);
+      const imgEl = document.getElementById('img-'+id);
+      const finalItem = identities[id].find(it=>it.text === final);
+      if(finalItem && finalItem.img){
+        imgEl.onerror = ()=>{ mediaEl.classList.remove('show'); };
+        imgEl.src = finalItem.img;
+        mediaEl.classList.add('show');
+      } else {
+        mediaEl.classList.remove('show');
+        imgEl.removeAttribute('src');
+      }
       return;
     }
     dispEl.textContent = randomFrom(list);
@@ -839,11 +971,15 @@ document.getElementById('resetAll').addEventListener('click', ()=>{
     const colEl = document.getElementById('col-'+s.id);
     const btnEl = document.getElementById('btn-'+s.id);
     const dispEl = document.getElementById('display-'+s.id);
+    const mediaEl = document.getElementById('media-'+s.id);
+    const imgEl = document.getElementById('img-'+s.id);
     colEl.classList.remove('spinning','landed');
     btnEl.textContent = '뽑기';
     btnEl.classList.remove('is-spinning','is-stopping');
     dispEl.textContent = '인격을 뽑아보세요';
     dispEl.className = 'identity-display empty';
+    mediaEl.classList.remove('show');
+    imgEl.removeAttribute('src');
   });
 });
 
@@ -888,17 +1024,27 @@ const modalOverlay = document.getElementById('modalOverlay');
 const modalBody = document.getElementById('modalBody');
 
 function buildModal(focusId){
+  const descEl = document.getElementById('modalDescText');
+  if(descEl){
+    descEl.textContent = isAdmin
+      ? '체크된 인격만 룰렛에 포함됩니다. 미보유 인격은 체크 해제하세요. 오른쪽 칸에 이미지 URL을 넣으면 해당 인격이 확정됐을 때 이미지가 함께 표시됩니다(비워두면 이름만 표시). 새로 나온 인격은 각 칸의 입력창에 추가하면 자동으로 체크된 상태로 목록에 들어갑니다. 변경 사항은 이 브라우저에 자동 저장됩니다.'
+      : '현재 등록된 인격 목록을 보기 전용으로 표시합니다. 목록 추가·체크 변경·이미지 등록은 관리자만 가능합니다.';
+  }
   modalBody.innerHTML = '';
   SINNERS.forEach(s=>{
     const block = document.createElement('div');
     block.className = 'edit-block';
     block.id = 'block-'+s.id;
-    block.innerHTML = `
-      <label class="block-title">${s.name} <span class="count" id="count-${s.id}"></span></label>
+    const addRowHtml = isAdmin ? `
       <div class="add-row">
         <input type="text" id="newinput-${s.id}" placeholder="새 인격 추가 (예: [000] | 새 인격명)">
+        <input type="text" id="newimg-${s.id}" class="img-input" placeholder="이미지 URL(선택)">
         <button type="button" class="add-btn" data-add="${s.id}">추가</button>
       </div>
+    ` : '';
+    block.innerHTML = `
+      <label class="block-title">${s.name} <span class="count" id="count-${s.id}"></span></label>
+      ${addRowHtml}
       <div class="check-list" id="checklist-${s.id}"></div>
     `;
     modalBody.appendChild(block);
@@ -908,7 +1054,7 @@ function buildModal(focusId){
   modalBody.querySelectorAll('.add-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>addIdentity(btn.dataset.add));
   });
-  modalBody.querySelectorAll('.add-row input').forEach(inp=>{
+  modalBody.querySelectorAll('#modalBody .add-row input[id^="newinput-"]').forEach(inp=>{
     inp.addEventListener('keydown', (e)=>{
       if(e.key === 'Enter'){
         e.preventDefault();
@@ -932,21 +1078,39 @@ function renderCheckList(id){
   if(!container) return;
   container.innerHTML = '';
   identities[id].forEach((item, idx)=>{
-    const row = document.createElement('label');
+    const row = document.createElement('div');
     row.className = 'check-row' + (item.isNew ? ' new-item' : '');
-    row.innerHTML = `<input type="checkbox" data-sinner="${id}" data-idx="${idx}" ${item.checked ? 'checked' : ''}><span></span>`;
-    row.querySelector('span').textContent = item.text;
+    const disabledAttr = isAdmin ? '' : 'disabled';
+    row.innerHTML = `
+      <label class="check-label">
+        <input type="checkbox" data-sinner="${id}" data-idx="${idx}" ${item.checked ? 'checked' : ''} ${disabledAttr}>
+        <span></span>
+      </label>
+      <input type="text" class="img-input" data-sinner="${id}" data-idx="${idx}" placeholder="이미지 URL(선택)" ${disabledAttr}>
+    `;
+    row.querySelector('.check-label span').textContent = item.text;
+    row.querySelector('.img-input').value = item.img || '';
     container.appendChild(row);
   });
-  container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
-    cb.addEventListener('change', (e)=>{
-      const sid = e.target.dataset.sinner;
-      const idx = parseInt(e.target.dataset.idx, 10);
-      identities[sid][idx].checked = e.target.checked;
-      updateCount(sid);
-      saveIdentities();
+  if(isAdmin){
+    container.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener('change', (e)=>{
+        const sid = e.target.dataset.sinner;
+        const idx = parseInt(e.target.dataset.idx, 10);
+        identities[sid][idx].checked = e.target.checked;
+        updateCount(sid);
+        saveIdentities();
+      });
     });
-  });
+    container.querySelectorAll('.img-input').forEach(inp=>{
+      inp.addEventListener('change', (e)=>{
+        const sid = e.target.dataset.sinner;
+        const idx = parseInt(e.target.dataset.idx, 10);
+        identities[sid][idx].img = e.target.value.trim();
+        saveIdentities();
+      });
+    });
+  }
   updateCount(id);
 }
 
@@ -959,12 +1123,16 @@ function updateCount(id){
 }
 
 function addIdentity(id){
+  if(!isAdmin) return;
   const inp = document.getElementById('newinput-'+id);
+  const imgInp = document.getElementById('newimg-'+id);
   if(!inp) return;
   const val = inp.value.trim();
   if(!val) return;
-  identities[id].push({text: val, checked: true, isNew: true});
+  const imgVal = imgInp ? imgInp.value.trim() : '';
+  identities[id].push({text: val, checked: true, isNew: true, img: imgVal});
   inp.value = '';
+  if(imgInp) imgInp.value = '';
   renderCheckList(id);
   saveIdentities();
   inp.focus();
@@ -983,6 +1151,7 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', (e)=>{ if(e.target === modalOverlay) closeModal(); });
 document.getElementById('modalSave').addEventListener('click', closeModal);
 document.getElementById('modalResetList').addEventListener('click', ()=>{
+  if(!isAdmin) return;
   if(!confirm('이 브라우저에 저장된 인격 목록을 모두 기본값으로 되돌립니다. 계속할까요?')) return;
   resetIdentitiesToDefault();
   buildModal();

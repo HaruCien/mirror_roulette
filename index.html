@@ -125,8 +125,8 @@
     color:var(--gold-bright);
     background:rgba(184,147,74,0.12);
   }
-  .admin-only{display:none;}
-  body.is-admin .admin-only{display:flex;}
+  .admin-only{display:none !important;}
+  body.is-admin .admin-only{display:flex !important;}
   .admin-fixed{
     position:fixed;
     top:14px;
@@ -490,11 +490,14 @@
     border-radius:5px;
     padding:14px 16px;
   }
+  .changelog-entry .cl-row-top{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-bottom:6px;
+  }
   .changelog-entry .cl-date{
     font-family:var(--serif);
     font-size:12px;
     color:var(--gold-bright);
-    margin-bottom:6px;
   }
   .changelog-entry .cl-text{
     font-size:13px;
@@ -503,6 +506,28 @@
     white-space:pre-wrap;
     word-break:keep-all;
   }
+  .cl-actions{
+    display:flex;gap:6px;flex-shrink:0;
+  }
+  .cl-actions .btn{
+    font-size:10.5px;
+    padding:4px 9px;
+  }
+  .cl-edit-text{
+    width:100%;
+    min-height:70px;
+    resize:vertical;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:12px;
+    padding:8px 10px;
+    line-height:1.6;
+    margin-bottom:8px;
+  }
+  .cl-edit-text:focus{outline:none;border-color:var(--gold);}
   .changelog-empty{
     text-align:center;
     color:var(--ink-faint);
@@ -1049,6 +1074,8 @@ function isChangelogDismissedToday(){
   try{ return localStorage.getItem(CHANGELOG_DISMISS_KEY) === todayKey(); }catch(e){ return false; }
 }
 
+let changelogEditingIndex = -1;
+
 function renderChangelogList(){
   const listEl = document.getElementById('changelogList');
   if(!listEl) return;
@@ -1056,17 +1083,85 @@ function renderChangelogList(){
     listEl.innerHTML = '<div class="changelog-empty">등록된 업데이트 내역이 없습니다.</div>';
     return;
   }
-  listEl.innerHTML = changelogEntries.map(entry => `
-    <div class="changelog-entry">
-      <div class="cl-date"></div>
-      <div class="cl-text"></div>
-    </div>
-  `).join('');
+  listEl.innerHTML = changelogEntries.map((entry, i) => {
+    if(isAdmin && i === changelogEditingIndex){
+      return `
+        <div class="changelog-entry">
+          <div class="add-row" style="margin-bottom:8px;">
+            <input type="date" class="cl-edit-date" style="flex:0 0 150px;color-scheme:dark;" value="${entry.date || ''}">
+          </div>
+          <textarea class="cl-edit-text">${escapeHtml(entry.text || '')}</textarea>
+          <div class="cl-actions">
+            <button type="button" class="btn primary cl-save-btn" data-idx="${i}">저장</button>
+            <button type="button" class="btn cl-cancel-btn" data-idx="${i}">취소</button>
+          </div>
+        </div>
+      `;
+    }
+    return `
+      <div class="changelog-entry">
+        <div class="cl-row-top">
+          <div class="cl-date"></div>
+          <div class="cl-actions admin-only">
+            <button type="button" class="btn cl-edit-btn" data-idx="${i}">수정</button>
+            <button type="button" class="btn cl-delete-btn" data-idx="${i}">삭제</button>
+          </div>
+        </div>
+        <div class="cl-text"></div>
+      </div>
+    `;
+  }).join('');
+
   const rows = listEl.querySelectorAll('.changelog-entry');
   changelogEntries.forEach((entry, i)=>{
-    rows[i].querySelector('.cl-date').textContent = entry.date || '';
-    rows[i].querySelector('.cl-text').textContent = entry.text || '';
+    if(isAdmin && i === changelogEditingIndex) return; // 편집 폼은 텍스트 채울 필요 없음(입력값 그대로)
+    const dateEl = rows[i].querySelector('.cl-date');
+    const textEl = rows[i].querySelector('.cl-text');
+    if(dateEl) dateEl.textContent = entry.date || '';
+    if(textEl) textEl.textContent = entry.text || '';
   });
+
+  listEl.querySelectorAll('.cl-edit-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      changelogEditingIndex = parseInt(btn.dataset.idx, 10);
+      renderChangelogList();
+    });
+  });
+  listEl.querySelectorAll('.cl-cancel-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      changelogEditingIndex = -1;
+      renderChangelogList();
+    });
+  });
+  listEl.querySelectorAll('.cl-save-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = parseInt(btn.dataset.idx, 10);
+      const card = btn.closest('.changelog-entry');
+      const newDate = card.querySelector('.cl-edit-date').value || todayKey();
+      const newText = card.querySelector('.cl-edit-text').value.trim();
+      if(!newText){ alert('내용을 입력해주세요.'); return; }
+      changelogEntries[idx] = { date: newDate, text: newText };
+      changelogEditingIndex = -1;
+      renderChangelogList();
+      pushChangelogToServer();
+    });
+  });
+  listEl.querySelectorAll('.cl-delete-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = parseInt(btn.dataset.idx, 10);
+      if(!confirm('이 업데이트 내역을 삭제할까요? 모든 사용자에게서 사라집니다.')) return;
+      changelogEntries.splice(idx, 1);
+      if(changelogEditingIndex === idx) changelogEditingIndex = -1;
+      renderChangelogList();
+      pushChangelogToServer();
+    });
+  });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 async function fetchChangelog(autoShow){

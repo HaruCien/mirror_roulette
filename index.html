@@ -128,7 +128,7 @@
   .admin-only{display:none !important;}
   body.is-admin .admin-only{display:flex !important;}
   .admin-fixed{
-    position:fixed;
+    position:absolute; /* 화면이 아닌 웹페이지 상단에 고정: 스크롤하면 함께 올라감 */
     top:14px;
     right:16px;
     z-index:30;
@@ -136,7 +136,7 @@
     padding:7px 14px;
   }
   .changelog-fixed{
-    position:fixed;
+    position:absolute; /* 화면이 아닌 웹페이지 상단에 고정: 스크롤하면 함께 올라감 */
     top:14px;
     left:16px;
     z-index:30;

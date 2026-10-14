@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>거울 던전 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0b0908;
+    --bg-1:#151009;
+    --panel:#1c1611;
+    --panel-2:#221a13;
+    --line:#3c2e20;
+    --line-soft:#2a2019;
+    --gold:#b8934a;
+    --gold-bright:#dab86a;
+    --crimson:#7d2430;
+    --crimson-bright:#a53341;
+    --ink:#e9ddc6;
+    --ink-dim:#a89777;
+    --ink-faint:#6f6250;
+    --serif:'Noto Serif KR', serif;
+    --sans:'Noto Sans KR', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(125,36,48,0.18), transparent 55%),
+      radial-gradient(ellipse at 50% 110%, rgba(125,36,48,0.10), transparent 60%),
+      var(--bg-0);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding:20px 20px 80px;
+  }
+  .stage{max-width:1100px;margin:0 auto;}
+
+  /* ---------- 공통 버튼 / 상단 바 (룰렛 페이지와 동일한 모양) ---------- */
+  .btn{
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.02em;
+    padding:10px 20px;
+    border-radius:3px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink-dim);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;
+    white-space:nowrap;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .btn.primary{
+    background:linear-gradient(180deg, #8a2733, #6a1c26);
+    border-color:#5a1a22;
+    color:#f0ddd0;
+  }
+  .btn.primary:hover{border-color:var(--gold);}
+  .btn.small{font-size:11px;padding:6px 12px;}
+  .btn.danger:hover{border-color:var(--crimson-bright);color:#e58a94;}
+  .topbar{
+    max-width:1100px;
+    margin:0 auto 28px;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .topbar .btn{font-size:12px;padding:8px 16px;}
+  .btn.nav-btn.is-current{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+    background:rgba(184,147,74,0.12);
+    cursor:default;
+  }
+
+  /* ---------- 제목 ---------- */
+  header{text-align:center;margin-bottom:32px;}
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(26px,4vw,36px);
+    letter-spacing:0.06em;
+    margin:0 0 10px;
+    color:var(--gold-bright);
+  }
+  .sub{
+    margin:0 auto;
+    max-width:620px;
+    font-size:13px;
+    line-height:1.7;
+    color:var(--ink-dim);
+  }
+
+  /* ---------- 섹션 ---------- */
+  .section{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:20px 22px 22px;
+    margin-bottom:18px;
+  }
+  .section-head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .section h2{
+    font-family:var(--serif);
+    font-size:17px;
+    font-weight:600;
+    margin:0;
+    color:var(--gold-bright);
+    letter-spacing:0.04em;
+  }
+  .section-tools{display:flex;gap:8px;flex-wrap:wrap;}
+  .hint{font-size:12px;color:var(--ink-faint);line-height:1.6;margin:0 0 12px;}
+
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field > span{font-size:12px;color:var(--ink-dim);}
+  input[type=text], textarea, select{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:13px;
+    padding:8px 10px;
+  }
+  textarea{resize:vertical;min-height:70px;line-height:1.6;}
+  input:focus, textarea:focus, select:focus{outline:none;border-color:var(--gold);}
+  input::placeholder, textarea::placeholder{color:var(--ink-faint);}
+  input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* 키워드 칩 */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .chip{
+    font-family:var(--sans);
+    font-size:12px;
+    padding:5px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--ink-dim);
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--gold);}
+  .chip.on{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+    background:rgba(184,147,74,0.14);
+  }
+
+  /* 파티 편성 */
+  .party{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;}
+  .party-row{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:start;}
+  .party-row .sinner{
+    font-family:var(--serif);
+    font-size:13px;
+    color:var(--gold);
+    padding-top:9px;
+  }
+  .party-row .stack{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .party-row .note{font-size:12px;padding:6px 10px;}
+
+  /* 층별 계획 */
+  .floor{
+    border:1px solid var(--line-soft);
+    background:var(--panel-2);
+    border-radius:3px;
+    padding:12px 14px 14px;
+    margin-bottom:10px;
+  }
+  .floor.done{opacity:.6;}
+  .floor-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .floor-head .label{font-family:var(--serif);color:var(--gold);font-size:14px;white-space:nowrap;}
+  .floor-head input[type=text]{flex:1;}
+  .floor-body{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  /* 목록 (기프트 / 체크리스트) */
+  .rows{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+  .row{display:flex;align-items:center;gap:8px;}
+  .row input[type=text]{flex:1;min-width:0;}
+  .row .memo{flex:1.4;}
+  .row.done .main{text-decoration:line-through;color:var(--ink-faint);}
+  .x{
+    background:none;border:none;color:var(--ink-faint);
+    font-size:18px;line-height:1;cursor:pointer;padding:2px 6px;
+  }
+  .x:hover{color:#e58a94;}
+  .add-line{display:flex;gap:8px;}
+  .add-line input{flex:1;}
+
+  .footer-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;margin-top:6px;
+  }
+  .saved{font-size:12px;color:var(--ink-faint);}
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+    background:var(--panel-2);border:1px solid var(--gold);color:var(--gold-bright);
+    font-size:13px;padding:10px 18px;border-radius:3px;
+    opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:50;
+  }
+  .toast.show{opacity:1;}
+
+  @media (max-width:760px){
+    .party, .grid-2, .floor-body{grid-template-columns:1fr;}
+    .section{padding:16px 14px 18px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar" aria-label="상단 메뉴">
+  <a class="btn nav-btn" href="index.html">인격 룰렛</a>
+  <a class="btn nav-btn is-current" href="planner.html" aria-current="page">거울 던전 플래너</a>
+</nav>
+
+<div class="stage">
+  <header>
+    <h1>거울 던전 플래너</h1>
+    <p class="sub">파티 구성, 층별 진행 계획, E.G.O 기프트 목표를 한곳에 정리하세요. 내용은 이 브라우저에 자동 저장되며, 다른 사용자에게는 보이지 않습니다.</p>
+  </header>
+
+  <section class="section">
+    <div class="section-head"><h2>이번 도전 정보</h2></div>
+    <div class="grid-2">
+      <label class="field"><span>도전 이름</span>
+        <input type="text" id="pTitle" data-bind="title" placeholder="예: 화상 파티로 5층 클리어">
+      </label>
+      <label class="field"><span>목표</span>
+        <input type="text" id="pGoal" data-bind="goal" placeholder="예: 클리어 / 특정 기프트 확보 / 보상 수령">
+      </label>
+    </div>
+    <div class="field" style="margin-top:12px;"><span>주력 키워드 (여러 개 선택 가능)</span>
+      <div class="chips" id="keywordChips"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>파티 편성</h2>
+      <div class="section-tools">
+        <button class="btn small" id="loadRoulette" type="button">룰렛 결과 불러오기</button>
+        <button class="btn small danger" id="clearParty" type="button">편성 비우기</button>
+      </div>
+    </div>
+    <p class="hint" id="partyHint">인격 칸은 직접 입력하거나 제안되는 목록에서 고를 수 있습니다. 룰렛에서 뽑은 마지막 결과를 불러올 수도 있습니다.</p>
+    <div class="party" id="party"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>층별 계획</h2>
+      <div class="section-tools">
+        <button class="btn small" id="addFloor" type="button">층 추가</button>
+      </div>
+    </div>
+    <div id="floors"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>E.G.O 기프트 목표</h2></div>
+    <p class="hint">확보하려는 기프트와 입수 방법을 적고, 얻으면 체크하세요.</p>
+    <div class="rows" id="gifts"></div>
+    <div class="add-line">
+      <input type="text" id="giftInput" placeholder="기프트 이름을 입력하고 Enter">
+      <button class="btn small" id="giftAdd" type="button">추가</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>체크리스트</h2></div>
+    <div class="rows" id="todos"></div>
+    <div class="add-line">
+      <input type="text" id="todoInput" placeholder="할 일을 입력하고 Enter">
+      <button class="btn small" id="todoAdd" type="button">추가</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>메모</h2></div>
+    <textarea id="pMemo" data-bind="memo" rows="6" placeholder="보스 패턴, 전투 팁, 다음 도전에서 바꿀 점 등을 자유롭게 적어두세요."></textarea>
+  </section>
+
+  <div class="footer-bar">
+    <span class="saved" id="savedNote">변경 내용은 자동으로 저장됩니다.</span>
+    <div class="section-tools">
+      <button class="btn" id="copyPlan" type="button">플랜 텍스트 복사</button>
+      <button class="btn danger" id="resetPlan" type="button">플래너 초기화</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SINNERS = [
+  {id:'yisang',   name:'이상'},
+  {id:'faust',    name:'파우스트'},
+  {id:'donquixote',name:'돈키호테'},
+  {id:'ryoshu',   name:'료슈'},
+  {id:'meursault',name:'뫼르소'},
+  {id:'honglu',   name:'홍루'},
+  {id:'heathcliff',name:'히스클리프'},
+  {id:'ishmael',  name:'이스마엘'},
+  {id:'rodion',   name:'로쟈'},
+  {id:'sinclair', name:'싱클레어'},
+  {id:'outis',    name:'오티스'},
+  {id:'gregor',   name:'그레고르'},
+];
+const KEYWORDS = ['화상','출혈','진동','파열','충전','침잠','호흡','참격','관통','타격'];
+const PLAN_KEY = 'mdr-planner-v1';
+const ROSTER_KEY = 'mirror-dungeon-roulette-v1';   // 룰렛 페이지가 저장한 인격 목록/보유 체크
+const LAST_RESULT_KEY = 'mdr-last-result';         // 룰렛 페이지가 저장한 마지막 뽑기 결과
+const ADMIN_API_BASE = 'https://mirror-roulette-admin.mirror-roulette-admin.workers.dev';
+
+function emptyPlan(){
+  return {
+    title:'', goal:'', keywords:[], memo:'',
+    party:{},                       // {sinnerId:{identity, note}}
+    floors:[1,2,3,4,5].map(()=>({title:'', battle:'', shop:'', done:false})),
+    gifts:[],                       // {name, got, memo}
+    todos:[]                        // {text, done}
+  };
+}
+
+let plan = loadPlan();
+let roster = {};   // {sinnerId:[인격 텍스트...]} — 입력 제안용
+
+function loadPlan(){
+  try{
+    const raw = localStorage.getItem(PLAN_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      return Object.assign(emptyPlan(), p);
+    }
+  }catch(e){}
+  return emptyPlan();
+}
+let saveTimer = null;
+function savePlan(){
+  try{ localStorage.setItem(PLAN_KEY, JSON.stringify(plan)); }catch(e){}
+  const note = document.getElementById('savedNote');
+  note.textContent = '저장됨';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{ note.textContent = '변경 내용은 자동으로 저장됩니다.'; }, 1500);
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ---------- 인격 목록(입력 제안) ---------- */
+function readLocalRoster(){
+  // 이 브라우저에서 보유(체크)한 인격만 제안 목록에 올립니다. 룰렛 페이지를 열어본 적이 없으면 비어 있습니다.
+  const out = {};
+  try{
+    const raw = localStorage.getItem(ROSTER_KEY);
+    if(!raw) return out;
+    const data = JSON.parse(raw);
+    SINNERS.forEach(s=>{
+      if(Array.isArray(data[s.id])){
+        out[s.id] = data[s.id].filter(it=>it && it.text && it.checked !== false).map(it=>String(it.text));
+      }
+    });
+  }catch(e){}
+  return out;
+}
+async function loadRoster(){
+  roster = readLocalRoster();
+  const hasLocal = Object.keys(roster).length > 0;
+  if(hasLocal){ renderParty(); return; }
+  // 로컬 정보가 없으면 서버의 공용 인격 목록으로 대체 (실패해도 직접 입력은 가능)
+  try{
+    const res = await fetch(ADMIN_API_BASE + '/identities');
+    if(!res.ok) return;
+    const result = await res.json();
+    if(!result.ok || !result.data) return;
+    SINNERS.forEach(s=>{
+      if(Array.isArray(result.data[s.id])) roster[s.id] = result.data[s.id].map(it=>String(it.text || '')).filter(Boolean);
+    });
+    renderParty();
+  }catch(e){}
+}
+
+/* ---------- 렌더링 ---------- */
+function renderKeywords(){
+  const box = document.getElementById('keywordChips');
+  box.innerHTML = KEYWORDS.map(k=>
+    `<button type="button" class="chip${plan.keywords.includes(k) ? ' on' : ''}" data-kw="${esc(k)}" aria-pressed="${plan.keywords.includes(k)}">${esc(k)}</button>`
+  ).join('');
+}
+function renderParty(){
+  const box = document.getElementById('party');
+  // 입력 중이던 칸의 포커스를 잃지 않도록, 이미 그려져 있으면 datalist만 갱신
+  if(box.children.length){
+    SINNERS.forEach(s=>{
+      const dl = document.getElementById('dl-'+s.id);
+      if(dl) dl.innerHTML = (roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('');
+    });
+    return;
+  }
+  box.innerHTML = SINNERS.map(s=>{
+    const row = plan.party[s.id] || {identity:'', note:''};
+    return `
+      <div class="party-row">
+        <div class="sinner">${esc(s.name)}</div>
+        <div class="stack">
+          <input type="text" list="dl-${s.id}" data-party="${s.id}" data-field="identity" value="${esc(row.identity)}" placeholder="인격">
+          <datalist id="dl-${s.id}">${(roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>
+          <input type="text" class="note" data-party="${s.id}" data-field="note" value="${esc(row.note)}" placeholder="역할 / 메모 (선택)">
+        </div>
+      </div>`;
+  }).join('');
+}
+function refreshPartyInputs(){
+  document.getElementById('party').innerHTML = '';
+  renderParty();
+}
+function renderFloors(){
+  const box = document.getElementById('floors');
+  box.innerHTML = plan.floors.map((f,i)=>`
+    <div class="floor${f.done ? ' done' : ''}" data-floor="${i}">
+      <div class="floor-head">
+        <input type="checkbox" data-floor-done="${i}" ${f.done ? 'checked' : ''} aria-label="${i+1}층 완료">
+        <span class="label">${i+1}층</span>
+        <input type="text" data-floor="${i}" data-field="title" value="${esc(f.title)}" placeholder="이 층의 목표 (예: 상점에서 기프트 합성)">
+        <button type="button" class="x" data-floor-del="${i}" title="이 층 삭제" aria-label="${i+1}층 삭제">×</button>
+      </div>
+      <div class="floor-body">
+        <label class="field"><span>전투 / 노드 계획</span>
+          <textarea data-floor="${i}" data-field="battle" placeholder="우선 방문할 노드, 상대할 적, 주의할 패턴">${esc(f.battle)}</textarea>
+        </label>
+        <label class="field"><span>상점 / 기프트 계획</span>
+          <textarea data-floor="${i}" data-field="shop" placeholder="구매·합성·강화할 기프트, 비용 관리">${esc(f.shop)}</textarea>
+        </label>
+      </div>
+    </div>`).join('') || '<p class="hint">등록된 층이 없습니다. 오른쪽 위의 "층 추가"를 눌러 주세요.</p>';
+}
+function renderGifts(){
+  const box = document.getElementById('gifts');
+  box.innerHTML = plan.gifts.map((g,i)=>`
+    <div class="row${g.got ? ' done' : ''}">
+      <input type="checkbox" data-gift-got="${i}" ${g.got ? 'checked' : ''} aria-label="확보 여부">
+      <input type="text" class="main" data-gift="${i}" data-field="name" value="${esc(g.name)}" placeholder="기프트 이름">
+      <input type="text" class="memo" data-gift="${i}" data-field="memo" value="${esc(g.memo)}" placeholder="입수 방법 / 메모">
+      <button type="button" class="x" data-gift-del="${i}" aria-label="삭제">×</button>
+    </div>`).join('');
+}
+function renderTodos(){
+  const box = document.getElementById('todos');
+  box.innerHTML = plan.todos.map((t,i)=>`
+    <div class="row${t.done ? ' done' : ''}">
+      <input type="checkbox" data-todo-done="${i}" ${t.done ? 'checked' : ''} aria-label="완료">
+      <input type="text" class="main" data-todo="${i}" value="${esc(t.text)}">
+      <button type="button" class="x" data-todo-del="${i}" aria-label="삭제">×</button>
+    </div>`).join('');
+}
+function renderAll(){
+  document.getElementById('pTitle').value = plan.title;
+  document.getElementById('pGoal').value = plan.goal;
+  document.getElementById('pMemo').value = plan.memo;
+  renderKeywords(); refreshPartyInputs(); renderFloors(); renderGifts(); renderTodos();
+}
+
+/* ---------- 입력 처리 (이벤트 위임) ---------- */
+document.addEventListener('input', (e)=>{
+  const t = e.target;
+  if(t.dataset.bind){ plan[t.dataset.bind] = t.value; savePlan(); return; }
+  if(t.dataset.party){
+    const id = t.dataset.party;
+    plan.party[id] = plan.party[id] || {identity:'', note:''};
+    plan.party[id][t.dataset.field] = t.value;
+    savePlan(); return;
+  }
+  if(t.dataset.floor !== undefined && t.dataset.field){
+    plan.floors[+t.dataset.floor][t.dataset.field] = t.value; savePlan(); return;
+  }
+  if(t.dataset.gift !== undefined){
+    plan.gifts[+t.dataset.gift][t.dataset.field] = t.value; savePlan(); return;
+  }
+  if(t.dataset.todo !== undefined){
+    plan.todos[+t.dataset.todo].text = t.value; savePlan(); return;
+  }
+});
+document.addEventListener('change', (e)=>{
+  const t = e.target;
+  if(t.dataset.floorDone !== undefined){
+    plan.floors[+t.dataset.floorDone].done = t.checked; savePlan(); renderFloors();
+  } else if(t.dataset.giftGot !== undefined){
+    plan.gifts[+t.dataset.giftGot].got = t.checked; savePlan(); renderGifts();
+  } else if(t.dataset.todoDone !== undefined){
+    plan.todos[+t.dataset.todoDone].done = t.checked; savePlan(); renderTodos();
+  }
+});
+document.addEventListener('click', (e)=>{
+  const t = e.target.closest('button');
+  if(!t) return;
+  if(t.dataset.kw){
+    const k = t.dataset.kw, i = plan.keywords.indexOf(k);
+    if(i >= 0) plan.keywords.splice(i,1); else plan.keywords.push(k);
+    savePlan(); renderKeywords();
+  } else if(t.dataset.floorDel !== undefined){
+    const i = +t.dataset.floorDel;
+    if(!confirm((i+1) + '층 계획을 삭제할까요?')) return;
+    plan.floors.splice(i,1); savePlan(); renderFloors();
+  } else if(t.dataset.giftDel !== undefined){
+    plan.gifts.splice(+t.dataset.giftDel,1); savePlan(); renderGifts();
+  } else if(t.dataset.todoDel !== undefined){
+    plan.todos.splice(+t.dataset.todoDel,1); savePlan(); renderTodos();
+  }
+});
+
+document.getElementById('addFloor').addEventListener('click', ()=>{
+  plan.floors.push({title:'', battle:'', shop:'', done:false});
+  savePlan(); renderFloors();
+});
+function addGift(){
+  const inp = document.getElementById('giftInput');
+  const v = inp.value.trim();
+  if(!v) return;
+  plan.gifts.push({name:v, got:false, memo:''});
+  inp.value = ''; savePlan(); renderGifts(); inp.focus();
+}
+function addTodo(){
+  const inp = document.getElementById('todoInput');
+  const v = inp.value.trim();
+  if(!v) return;
+  plan.todos.push({text:v, done:false});
+  inp.value = ''; savePlan(); renderTodos(); inp.focus();
+}
+document.getElementById('giftAdd').addEventListener('click', addGift);
+document.getElementById('todoAdd').addEventListener('click', addTodo);
+document.getElementById('giftInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addGift(); } });
+document.getElementById('todoInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addTodo(); } });
+
+/* ---------- 파티: 룰렛 결과 불러오기 / 비우기 ---------- */
+document.getElementById('loadRoulette').addEventListener('click', ()=>{
+  let data = null;
+  try{ data = JSON.parse(localStorage.getItem(LAST_RESULT_KEY) || 'null'); }catch(e){}
+  if(!data || !data.picks || !Object.keys(data.picks).length){
+    toast('저장된 룰렛 결과가 없습니다. 룰렛에서 먼저 뽑아 주세요.');
+    return;
+  }
+  let n = 0;
+  SINNERS.forEach(s=>{
+    if(data.picks[s.id]){
+      plan.party[s.id] = plan.party[s.id] || {identity:'', note:''};
+      plan.party[s.id].identity = data.picks[s.id];
+      n++;
+    }
+  });
+  savePlan(); refreshPartyInputs();
+  toast('룰렛 결과 ' + n + '명을 불러왔습니다.');
+});
+document.getElementById('clearParty').addEventListener('click', ()=>{
+  if(!confirm('파티 편성을 모두 비울까요?')) return;
+  plan.party = {}; savePlan(); refreshPartyInputs();
+});
+
+/* ---------- 텍스트 복사 / 초기화 ---------- */
+function buildPlanText(){
+  const L = [];
+  L.push('■ ' + (plan.title || '거울 던전 플랜'));
+  if(plan.goal) L.push('목표 : ' + plan.goal);
+  if(plan.keywords.length) L.push('주력 키워드 : ' + plan.keywords.join(', '));
+  L.push('', '[파티 편성]');
+  SINNERS.forEach(s=>{
+    const r = plan.party[s.id] || {};
+    L.push(s.name + ' : ' + (r.identity || '(미정)') + (r.note ? '  - ' + r.note : ''));
+  });
+  L.push('', '[층별 계획]');
+  plan.floors.forEach((f,i)=>{
+    L.push((f.done ? '☑ ' : '☐ ') + (i+1) + '층' + (f.title ? ' : ' + f.title : ''));
+    if(f.battle) L.push('   전투/노드 : ' + f.battle.replace(/\n/g, ' / '));
+    if(f.shop) L.push('   상점/기프트 : ' + f.shop.replace(/\n/g, ' / '));
+  });
+  if(plan.gifts.length){
+    L.push('', '[E.G.O 기프트 목표]');
+    plan.gifts.forEach(g=>L.push((g.got ? '☑ ' : '☐ ') + g.name + (g.memo ? ' - ' + g.memo : '')));
+  }
+  if(plan.todos.length){
+    L.push('', '[체크리스트]');
+    plan.todos.forEach(t=>L.push((t.done ? '☑ ' : '☐ ') + t.text));
+  }
+  if(plan.memo.trim()) L.push('', '[메모]', plan.memo.trim());
+  return L.join('\n');
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+document.getElementById('copyPlan').addEventListener('click', async ()=>{
+  const text = buildPlanText();
+  try{
+    await navigator.clipboard.writeText(text);
+  }catch(e){
+    fallbackCopy(text);
+  }
+  toast('플랜을 복사했습니다.');
+});
+document.getElementById('resetPlan').addEventListener('click', ()=>{
+  if(!confirm('이 브라우저에 저장된 플래너 내용을 모두 지웁니다. 계속할까요?')) return;
+  plan = emptyPlan(); savePlan(); renderAll();
+});
+
+renderAll();
+loadRoster();
+</script>
+</body>
+</html>

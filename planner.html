@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
 <title>거울 던전 플래너</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,6 +70,21 @@
     padding:20px 20px 80px;
   }
   .stage{max-width:1100px;margin:0 auto;}
+
+  /* ---------- 하단 고지 / 약관 ---------- */
+  .legal{max-width:760px;margin:22px auto 0;padding-top:18px;border-top:1px solid var(--line-soft);text-align:left;}
+  .legal-lead{text-align:center;margin:0 0 12px;color:var(--ink-dim);font-size:12px;line-height:1.7;}
+  .legal details{border:1px solid var(--line-soft);background:var(--panel-2);border-radius:3px;margin-bottom:6px;}
+  .legal summary{cursor:pointer;padding:9px 14px;font-size:12px;color:var(--gold);list-style:none;}
+  .legal summary::-webkit-details-marker{display:none;}
+  .legal summary::before{content:"+";display:inline-block;width:14px;color:var(--ink-faint);}
+  .legal details[open] summary::before{content:"−";}
+  .legal .legal-body{padding:2px 16px 12px 28px;font-size:11.5px;line-height:1.85;color:var(--ink-dim);}
+  .legal .legal-body ul{margin:0;padding-left:16px;}
+  .legal .legal-body li{margin:2px 0;}
+  .legal-copy{text-align:center;margin-top:10px;font-size:10.5px;color:var(--ink-faint);}
+  footer{text-align:center;margin-top:50px;font-size:11px;color:var(--ink-faint);line-height:1.8;}
+
 
   /* ---------- 공통 버튼 / 상단 바 (룰렛 페이지와 동일한 모양) ---------- */
   .btn{
@@ -191,14 +207,34 @@
     background:rgba(184,147,74,0.14);
   }
 
+
+  /* ---------- 인격 카드 ---------- */
+  .id-card{position:relative;width:112px;aspect-ratio:160/210;font-size:11px;flex:none;
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+  .id-card .art{position:absolute;inset:6.5% 5%;border-radius:6px;overflow:hidden;background:#17120d;}
+  .id-card .art img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block;}
+  .id-card .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 34%,rgba(0,0,0,0) 62%);}
+  .id-card .frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+  .id-card .rar{position:absolute;left:11%;top:6%;font-family:'Bebas Neue',sans-serif;font-size:1.25em;letter-spacing:.06em;color:#f3d36b;
+    text-shadow:0 0 3px #000,0 1px 2px #000;line-height:1;}
+  .id-card .badge{position:absolute;right:5%;top:3.5%;width:23%;aspect-ratio:1;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15em;color:#f3d36b;
+    background:radial-gradient(circle at 35% 30%,#3a2d1a,#120d08 70%);box-shadow:0 0 0 2px #d9b04c inset,0 0 0 3.5px #5d3f0c inset,0 1px 4px #000;}
+  .id-card .nm{position:absolute;right:12%;bottom:8%;left:10%;text-align:right;font-family:var(--serif);font-size:1.02em;
+    line-height:1.18;color:#f6d765;text-shadow:0 0 3px #000,0 1px 2px #000,0 0 6px #000;word-break:keep-all;}
+  .id-card.r1 .nm,.id-card.r1 .rar,.id-card.r1 .badge{color:#ece9e2;}
+  .id-card.empty .art{background:repeating-linear-gradient(135deg,#1b150f 0 8px,#17120d 8px 16px);}
+  .id-card.empty .nm{color:var(--ink-faint);text-shadow:none;}
+  .id-card.empty .shade,.id-card.empty .rar{display:none;}
+
   /* 파티 편성 */
   .party{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;}
-  .party-row{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:start;}
+  .party-row{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;}
   .party-row .sinner{
     font-family:var(--serif);
     font-size:13px;
     color:var(--gold);
-    padding-top:9px;
+    padding-top:2px;
   }
   .party-row .stack{display:flex;flex-direction:column;gap:5px;min-width:0;}
   .party-row .note{font-size:12px;padding:6px 10px;}
@@ -254,6 +290,13 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gf3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#e8b93a"/><stop offset=".7" stop-color="#a8720f"/><stop offset="1" stop-color="#f3cf63"/></linearGradient>
+    <linearGradient id="gf2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a5c"/><stop offset=".4" stop-color="#c3281d"/><stop offset=".75" stop-color="#6a0f0b"/><stop offset="1" stop-color="#e0503a"/></linearGradient>
+    <linearGradient id="gf1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#bdbdbd"/><stop offset=".75" stop-color="#6f6f6f"/><stop offset="1" stop-color="#e6e6e6"/></linearGradient>
+  </defs>
+</svg>
 
 <nav class="topbar" aria-label="상단 메뉴">
   <a class="btn nav-btn" href="index.html">인격 룰렛</a>
@@ -334,6 +377,41 @@
       <button class="btn danger" id="resetPlan" type="button">플래너 초기화</button>
     </div>
   </div>
+  <footer>
+    플래너 내용은 이 브라우저의 로컬 저장소에만 저장되며, 저장소를 초기화하면 사라집니다.
+    <div class="legal">
+      <p class="legal-lead">거울 던전 도구는 <b>비공식 팬메이드 웹사이트</b>입니다.<br>모든 게임 에셋, 아트워크, 상표는 프로젝트 문(Project Moon)에 귀속됩니다.</p>
+      <details>
+        <summary>이용 약관</summary>
+        <div class="legal-body"><ul>
+          <li>이 사이트는 림버스 컴퍼니 팬이 비영리 목적으로 만든 개인 도구이며, 프로젝트 문과 제휴·후원·승인 관계가 없습니다.</li>
+          <li>사이트는 있는 그대로 제공되며, 기능·데이터의 정확성이나 지속적인 제공을 보장하지 않습니다. 사전 안내 없이 변경되거나 중단될 수 있습니다.</li>
+          <li>사이트를 이용하며 발생한 손해(데이터 손실 포함)에 대해 운영자는 책임지지 않습니다. 중요한 내용은 별도로 백업해 주세요.</li>
+          <li>사이트의 게임 이미지·명칭을 상업적으로 이용하거나 무단으로 재배포하는 행위는 허용되지 않습니다.</li>
+          <li>사이트를 비정상적으로 이용하거나 서버에 과도한 부하를 주는 행위는 금지됩니다.</li>
+          <li>공유받은 지인 외의 불특정 다수 대상 홍보·게시는 삼가 주세요.</li>
+        </ul></div>
+      </details>
+      <details>
+        <summary>개인정보 처리방침</summary>
+        <div class="legal-body"><ul>
+          <li>이름, 연락처, 이메일 등 <b>개인정보를 수집하지 않으며</b>, 회원가입·로그인(일반 이용자 기준)·쿠키 기반 추적·광고·분석 도구를 사용하지 않습니다.</li>
+          <li>인격 보유 체크, 편집한 인격 목록, 마지막 룰렛 결과, 플래너 내용은 <b>이용자의 브라우저 저장소(localStorage)</b>에만 저장되며 운영자 서버로 전송되지 않습니다. 브라우저 저장소를 지우면 함께 삭제됩니다.</li>
+          <li>공용 인격 목록과 업데이트 내역은 운영 서버(Cloudflare)에서 불러옵니다. 이 과정에서 접속 IP 등 일반적인 접속 기록이 호스팅 사업자(GitHub, Cloudflare)에 의해 처리될 수 있으며, 운영자는 이를 조회하거나 활용하지 않습니다.</li>
+          <li>관리자 비밀번호는 관리자만 사용하며 서버에서 검증됩니다.</li>
+        </ul></div>
+      </details>
+      <details>
+        <summary>저작권 및 삭제 요청</summary>
+        <div class="legal-body"><ul>
+          <li>게임 내 이미지, 명칭, 상표 등 모든 원저작물의 권리는 프로젝트 문에 있습니다. 이 사이트는 팬 활동의 범위에서 이를 참조합니다.</li>
+          <li>권리자 또는 이용자가 삭제·수정을 요청하면 지체 없이 해당 내용을 내리거나 사이트 운영을 중단하겠습니다.</li>
+          <li>요청은 <a href="https://github.com/HaruCien/mirror_roulette/issues" target="_blank" rel="noopener" style="color:var(--gold);">GitHub 저장소의 이슈</a>로 남겨 주세요.</li>
+        </ul></div>
+      </details>
+      <div class="legal-copy">Limbus Company © Project Moon. 이 사이트는 비공식 팬메이드이며 영리 활동을 하지 않습니다.</div>
+    </div>
+  </footer>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -411,6 +489,7 @@ function readLocalRoster(){
     const data = JSON.parse(raw);
     SINNERS.forEach(s=>{
       if(Array.isArray(data[s.id])){
+        data[s.id].forEach(it=>{ if(it && it.text) registerImg(String(it.text), it.img); });
         out[s.id] = data[s.id].filter(it=>it && it.text && it.checked !== false).map(it=>String(it.text));
       }
     });
@@ -420,19 +499,75 @@ function readLocalRoster(){
 async function loadRoster(){
   roster = readLocalRoster();
   const hasLocal = Object.keys(roster).length > 0;
-  if(hasLocal){ renderParty(); return; }
-  // 로컬 정보가 없으면 서버의 공용 인격 목록으로 대체 (실패해도 직접 입력은 가능)
+  if(hasLocal) renderParty();
+  // 서버의 공용 인격 목록: 카드 이미지 확보용 (로컬 목록이 없으면 목록 제안에도 사용). 실패해도 직접 입력은 가능
   try{
     const res = await fetch(ADMIN_API_BASE + '/identities');
     if(!res.ok) return;
     const result = await res.json();
     if(!result.ok || !result.data) return;
     SINNERS.forEach(s=>{
-      if(Array.isArray(result.data[s.id])) roster[s.id] = result.data[s.id].map(it=>String(it.text || '')).filter(Boolean);
+      const arr = result.data[s.id];
+      if(!Array.isArray(arr)) return;
+      arr.forEach(it=>registerImg(String(it.text || ''), it.img));
+      if(!hasLocal) roster[s.id] = arr.map(it=>String(it.text || '')).filter(Boolean);
     });
-    renderParty();
+    renderParty(); updateAllCards();
   }catch(e){}
 }
+
+/* ---------- 인격 카드 ---------- */
+const imgByText = {}, imgByName = {};
+function nameOf(t){ const m = String(t||'').match(/\|\s*(.+)$/); return (m ? m[1] : String(t||'')).trim(); }
+function rarityOf(t){ const m = String(t||'').match(/^\s*\[(0+)\]/); return m ? Math.min(3, m[1].length) : 1; }
+function registerImg(text, img){ if(!text || !img) return; imgByText[text] = img; imgByName[nameOf(text)] = img; }
+function lookupImg(t){ return imgByText[t] || imgByName[nameOf(t)] || ''; }
+function splitName(n){
+  const w = n.split(/\s+/).filter(Boolean);
+  if(w.length < 2) return [n, ''];
+  if(w.length >= 3 && w[w.length-1].length <= 3) return [w.slice(0,-1).join(' '), w[w.length-1]];
+  let best = 1, diff = 1e9;
+  for(let i=1;i<w.length;i++){
+    const d = Math.abs(w.slice(0,i).join(' ').length - w.slice(i).join(' ').length);
+    if(d < diff){ diff = d; best = i; }
+  }
+  return [w.slice(0,best).join(' '), w.slice(best).join(' ')];
+}
+function frameSVG(r){
+  const g = 'url(#gf'+r+')';
+  const rope = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#555';
+  const inner = r===2 ? '#e8b93a' : (r===3 ? '#5a3d08' : '#888');
+  // 바깥 굵은 테두리 + 꼬임(로프) 문양 + 안쪽 얇은 선 + 모서리 장식
+  const corner = (x,y)=>`<g transform="translate(${x} ${y}) rotate(45)"><rect x="-5" y="-5" width="10" height="10" fill="${g}" stroke="${rope}" stroke-width="1"/><rect x="-1.8" y="-1.8" width="3.6" height="3.6" fill="${rope}"/></g>`;
+  return `<svg class="frame" viewBox="0 0 160 210" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="3.5" y="3.5" width="153" height="203" rx="11" fill="none" stroke="${g}" stroke-width="7"/>
+    <rect x="3.5" y="3.5" width="153" height="203" rx="11" fill="none" stroke="${rope}" stroke-width="4.2" stroke-dasharray="5 4.5" opacity=".75"/>
+    <rect x="3.5" y="3.5" width="153" height="203" rx="11" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2" stroke-dasharray="4.5 5" stroke-dashoffset="4.8"/>
+    <rect x="8.2" y="8.2" width="143.6" height="193.6" rx="7" fill="none" stroke="${inner}" stroke-width="1.3"/>
+    <rect x="0.8" y="0.8" width="158.4" height="208.4" rx="12.5" fill="none" stroke="${rope}" stroke-width="1.2"/>
+    ${corner(7,7)}${corner(153,7)}${corner(7,203)}${corner(153,203)}
+  </svg>`;
+}
+function cardHTML(sinner, text){
+  const t = String(text||'').trim();
+  if(!t){
+    return `<div class="id-card empty r1">${frameSVG(1)}<div class="art"></div><div class="badge">${esc(sinner.name.charAt(0))}</div><div class="nm">미정</div></div>`;
+  }
+  const r = rarityOf(t), [a,b] = splitName(nameOf(t)), img = lookupImg(t);
+  return `<div class="id-card r${r}">
+    <div class="art">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<div class="shade"></div></div>
+    ${frameSVG(r)}
+    <div class="rar">${'0'.repeat(r)}</div>
+    <div class="badge">${esc(sinner.name.charAt(0))}</div>
+    <div class="nm">${esc(a)}${b ? '<br>'+esc(b) : ''}</div>
+  </div>`;
+}
+function updateCard(id){
+  const s = SINNERS.find(x=>x.id===id), slot = document.getElementById('card-'+id);
+  if(!s || !slot) return;
+  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity);
+}
+function updateAllCards(){ SINNERS.forEach(s=>updateCard(s.id)); }
 
 /* ---------- 렌더링 ---------- */
 function renderKeywords(){
@@ -449,14 +584,16 @@ function renderParty(){
       const dl = document.getElementById('dl-'+s.id);
       if(dl) dl.innerHTML = (roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('');
     });
+    updateAllCards();
     return;
   }
   box.innerHTML = SINNERS.map(s=>{
     const row = plan.party[s.id] || {identity:'', note:''};
     return `
       <div class="party-row">
-        <div class="sinner">${esc(s.name)}</div>
+        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity)}</div>
         <div class="stack">
+          <div class="sinner">${esc(s.name)}</div>
           <input type="text" list="dl-${s.id}" data-party="${s.id}" data-field="identity" value="${esc(row.identity)}" placeholder="인격">
           <datalist id="dl-${s.id}">${(roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>
           <input type="text" class="note" data-party="${s.id}" data-field="note" value="${esc(row.note)}" placeholder="역할 / 메모 (선택)">
@@ -522,6 +659,7 @@ document.addEventListener('input', (e)=>{
     const id = t.dataset.party;
     plan.party[id] = plan.party[id] || {identity:'', note:''};
     plan.party[id][t.dataset.field] = t.value;
+    if(t.dataset.field === 'identity') updateCard(id);
     savePlan(); return;
   }
   if(t.dataset.floor !== undefined && t.dataset.field){

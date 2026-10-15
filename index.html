@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
 <title>거울 던전 인격 룰렛</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -349,6 +350,20 @@
     line-height:1.8;
   }
 
+
+  /* ---------- 하단 고지 / 약관 ---------- */
+  .legal{max-width:760px;margin:22px auto 0;padding-top:18px;border-top:1px solid var(--line-soft);text-align:left;}
+  .legal-lead{text-align:center;margin:0 0 12px;color:var(--ink-dim);font-size:12px;line-height:1.7;}
+  .legal details{border:1px solid var(--line-soft);background:var(--panel-2);border-radius:3px;margin-bottom:6px;}
+  .legal summary{cursor:pointer;padding:9px 14px;font-size:12px;color:var(--gold);list-style:none;}
+  .legal summary::-webkit-details-marker{display:none;}
+  .legal summary::before{content:"+";display:inline-block;width:14px;color:var(--ink-faint);}
+  .legal details[open] summary::before{content:"−";}
+  .legal .legal-body{padding:2px 16px 12px 28px;font-size:11.5px;line-height:1.85;color:var(--ink-dim);}
+  .legal .legal-body ul{margin:0;padding-left:16px;}
+  .legal .legal-body li{margin:2px 0;}
+  .legal-copy{text-align:center;margin-top:10px;font-size:10.5px;color:var(--ink-faint);}
+
   /* ---------- Modal ---------- */
   .modal-overlay{
     position:fixed;inset:0;
@@ -654,6 +669,38 @@
 
   <footer>
     편집한 인격 목록은 로컬 저장소에 저장되어, 브라우저의 저장소를 초기화하면 저장 목록이 사라집니다.
+    <div class="legal">
+      <p class="legal-lead">거울 던전 도구는 <b>비공식 팬메이드 웹사이트</b>입니다.<br>모든 게임 에셋, 아트워크, 상표는 프로젝트 문(Project Moon)에 귀속됩니다.</p>
+      <details>
+        <summary>이용 약관</summary>
+        <div class="legal-body"><ul>
+          <li>이 사이트는 림버스 컴퍼니 팬이 비영리 목적으로 만든 개인 도구이며, 프로젝트 문과 제휴·후원·승인 관계가 없습니다.</li>
+          <li>사이트는 있는 그대로 제공되며, 기능·데이터의 정확성이나 지속적인 제공을 보장하지 않습니다. 사전 안내 없이 변경되거나 중단될 수 있습니다.</li>
+          <li>사이트를 이용하며 발생한 손해(데이터 손실 포함)에 대해 운영자는 책임지지 않습니다. 중요한 내용은 별도로 백업해 주세요.</li>
+          <li>사이트의 게임 이미지·명칭을 상업적으로 이용하거나 무단으로 재배포하는 행위는 허용되지 않습니다.</li>
+          <li>사이트를 비정상적으로 이용하거나 서버에 과도한 부하를 주는 행위는 금지됩니다.</li>
+          <li>공유받은 지인 외의 불특정 다수 대상 홍보·게시는 삼가 주세요.</li>
+        </ul></div>
+      </details>
+      <details>
+        <summary>개인정보 처리방침</summary>
+        <div class="legal-body"><ul>
+          <li>이름, 연락처, 이메일 등 <b>개인정보를 수집하지 않으며</b>, 회원가입·로그인(일반 이용자 기준)·쿠키 기반 추적·광고·분석 도구를 사용하지 않습니다.</li>
+          <li>인격 보유 체크, 편집한 인격 목록, 마지막 룰렛 결과, 플래너 내용은 <b>이용자의 브라우저 저장소(localStorage)</b>에만 저장되며 운영자 서버로 전송되지 않습니다. 브라우저 저장소를 지우면 함께 삭제됩니다.</li>
+          <li>공용 인격 목록과 업데이트 내역은 운영 서버(Cloudflare)에서 불러옵니다. 이 과정에서 접속 IP 등 일반적인 접속 기록이 호스팅 사업자(GitHub, Cloudflare)에 의해 처리될 수 있으며, 운영자는 이를 조회하거나 활용하지 않습니다.</li>
+          <li>관리자 비밀번호는 관리자만 사용하며 서버에서 검증됩니다.</li>
+        </ul></div>
+      </details>
+      <details>
+        <summary>저작권 및 삭제 요청</summary>
+        <div class="legal-body"><ul>
+          <li>게임 내 이미지, 명칭, 상표 등 모든 원저작물의 권리는 프로젝트 문에 있습니다. 이 사이트는 팬 활동의 범위에서 이를 참조합니다.</li>
+          <li>권리자 또는 이용자가 삭제·수정을 요청하면 지체 없이 해당 내용을 내리거나 사이트 운영을 중단하겠습니다.</li>
+          <li>요청은 <a href="https://github.com/HaruCien/mirror_roulette/issues" target="_blank" rel="noopener" style="color:var(--gold);">GitHub 저장소의 이슈</a>로 남겨 주세요.</li>
+        </ul></div>
+      </details>
+      <div class="legal-copy">Limbus Company © Project Moon. 이 사이트는 비공식 팬메이드이며 영리 활동을 하지 않습니다.</div>
+    </div>
   </footer>
 </div>
 

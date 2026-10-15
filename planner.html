@@ -8,6 +8,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  @font-face{
+    font-family:'Bebas Neue';
+    src:url('fonts/BebasNeue-Regular.ttf') format('truetype');
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+  }
   :root{
     --bg-0:#0b0908;
     --bg-1:#151009;
@@ -22,8 +29,9 @@
     --ink:#e9ddc6;
     --ink-dim:#a89777;
     --ink-faint:#6f6250;
-    --serif:'Noto Serif KR', serif;
-    --sans:'Noto Sans KR', sans-serif;
+    /* Bebas Neue에는 한글이 없어 한글은 자동으로 Noto 폰트로 표시됩니다 */
+    --serif:'Bebas Neue', 'Noto Serif KR', serif;
+    --sans:'Bebas Neue', 'Noto Sans KR', sans-serif;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}

@@ -208,6 +208,19 @@
   }
 
 
+
+  /* ---------- 임시 관리자 전용 잠금 ---------- */
+  body.locked .stage{display:none;}
+  .gate{display:none;max-width:420px;margin:12vh auto 0;padding:28px 26px 24px;text-align:center;
+    border:1px solid var(--line);background:var(--panel);border-radius:4px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+  body.locked .gate{display:block;}
+  .gate h2{font-family:var(--serif);font-size:22px;color:var(--gold-bright);margin:0 0 8px;font-weight:700;}
+  .gate p{font-size:12.5px;line-height:1.8;color:var(--ink-dim);margin:0 0 16px;}
+  .gate input{width:100%;box-sizing:border-box;margin-bottom:10px;}
+  .gate .gate-msg{min-height:18px;margin:0 0 8px;font-size:12px;color:var(--crimson-bright);}
+  .gate .btn{width:100%;justify-content:center;}
+  .gate .gate-back{display:inline-block;margin-top:14px;font-size:12px;color:var(--ink-faint);}
+
   /* ---------- 인격 카드 ---------- */
   .id-card{position:relative;width:112px;aspect-ratio:160/210;font-size:11px;flex:none;
     filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
@@ -289,7 +302,7 @@
   }
 </style>
 </head>
-<body>
+<body class="locked">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="gf3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#e8b93a"/><stop offset=".7" stop-color="#a8720f"/><stop offset="1" stop-color="#f3cf63"/></linearGradient>
@@ -302,6 +315,17 @@
   <a class="btn nav-btn" href="index.html">인격 룰렛</a>
   <a class="btn nav-btn is-current" href="planner.html" aria-current="page">거울 던전 플래너</a>
 </nav>
+
+<div class="gate" id="gate">
+  <h2>관리자 전용</h2>
+  <p>거울 던전 플래너는 아직 제작 중인 미완성 버전이라,<br>임시로 관리자 로그인 후에만 이용할 수 있습니다.</p>
+  <form id="gateForm" autocomplete="off">
+    <input type="password" id="gatePw" placeholder="관리자 비밀번호" aria-label="관리자 비밀번호">
+    <div class="gate-msg" id="gateMsg" role="alert"></div>
+    <button class="btn" type="submit" id="gateBtn">로그인</button>
+  </form>
+  <a class="gate-back" href="index.html">← 인격 룰렛으로 돌아가기</a>
+</div>
 
 <div class="stage">
   <header>
@@ -799,8 +823,46 @@ document.getElementById('resetPlan').addEventListener('click', ()=>{
   plan = emptyPlan(); savePlan(); renderAll();
 });
 
-renderAll();
-loadRoster();
+/* ---------- 임시 관리자 전용 잠금 (서버에서 비밀번호 검증) ---------- */
+const ADMIN_SESSION_KEY = 'mdr-admin-session';
+let plannerStarted = false;
+function startPlanner(){
+  if(plannerStarted) return; plannerStarted = true;
+  document.body.classList.remove('locked');
+  renderAll();
+  loadRoster();
+}
+async function checkAdminPassword(pw){
+  const res = await fetch(ADMIN_API_BASE + '/login', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password:pw})
+  });
+  if(!res.ok) return false;
+  const data = await res.json();
+  return !!data.ok;
+}
+document.getElementById('gateForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const pw = document.getElementById('gatePw').value;
+  const msg = document.getElementById('gateMsg'), btn = document.getElementById('gateBtn');
+  if(!pw){ msg.textContent = '비밀번호를 입력해주세요.'; return; }
+  btn.disabled = true; btn.textContent = '확인 중...'; msg.textContent = '';
+  try{
+    if(await checkAdminPassword(pw)){
+      try{ sessionStorage.setItem(ADMIN_SESSION_KEY, pw); }catch(err){}
+      startPlanner();
+    } else { msg.textContent = '비밀번호가 올바르지 않습니다.'; }
+  }catch(err){ msg.textContent = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.'; }
+  btn.disabled = false; btn.textContent = '로그인';
+});
+(async ()=>{
+  // 룰렛 페이지에서 이미 관리자 로그인한 세션이면 자동 통과 (서버에서 다시 검증)
+  let saved = '';
+  try{ saved = sessionStorage.getItem(ADMIN_SESSION_KEY) || ''; }catch(e){}
+  if(saved){
+    try{ if(await checkAdminPassword(saved)){ startPlanner(); return; } }catch(e){}
+  }
+  document.getElementById('gatePw').focus();
+})();
 </script>
 </body>
 </html>

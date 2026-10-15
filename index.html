@@ -402,6 +402,36 @@
   .add-row .img-input{
     flex:0 0 130px;
   }
+  /* 새 인격 입력 줄 (추가 버튼을 누르면 목록 맨 위에 생김) */
+  .draft-row{
+    display:flex;align-items:flex-start;gap:6px;
+    padding:8px;
+    margin-bottom:4px;
+    border:1px solid var(--gold);
+    border-radius:4px;
+    background:rgba(184,147,74,0.08);
+  }
+  .draft-row .draft-name{
+    flex:1;min-width:0;
+    resize:none;overflow:hidden;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:13px;
+    line-height:1.5;
+    padding:6px 9px;
+  }
+  .draft-row .draft-name:focus, .draft-row .img-input:focus{outline:none;border-color:var(--gold);}
+  .draft-row .img-input{flex:0 0 150px;}
+  .draft-row .draft-actions{display:flex;gap:4px;flex-shrink:0;}
+  .draft-row .draft-actions button{
+    font-family:var(--sans);font-size:12px;padding:6px 10px;border-radius:3px;
+    border:1px solid var(--line);background:var(--panel-2);color:var(--ink-dim);cursor:pointer;
+  }
+  .draft-row .draft-actions button:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .draft-hint{font-size:11px;color:var(--ink-faint);margin:0 0 6px;}
   .check-list{
     max-height:400px;
     overflow-y:auto;
@@ -1644,7 +1674,7 @@ function buildModal(focusId){
   const descEl = document.getElementById('modalDescText');
   if(descEl){
     descEl.textContent = isAdmin
-      ? '체크박스는 누구나(당신 포함) 개인적으로 보유 여부를 켜고 끌 수 있고, 이 브라우저에만 저장되어 다른 사용자에게 영향을 주지 않습니다. 인격 추가와 오른쪽 이미지 URL 등록은 관리자만 가능하며, 모든 사용자에게 공유됩니다. 새로 등록한 인격은 다른 사용자 화면에도 기본 체크된 상태로 나타납니다.'
+      ? '체크박스는 누구나(당신 포함) 개인적으로 보유 여부를 켜고 끌 수 있고, 이 브라우저에만 저장되어 다른 사용자에게 영향을 주지 않습니다. 인격 추가와 오른쪽 이미지 URL 등록은 관리자만 가능하며, 모든 사용자에게 공유됩니다. [+ 인격 추가]를 누르면 목록 맨 위에 "[000] | "가 미리 입력된 칸이 생기며, 인격명을 이어서 쓰고 Enter로 추가합니다(줄바꿈은 Shift+Enter, 취소는 Esc). 새로 등록한 인격은 다른 사용자 화면에도 기본 체크된 상태로 나타납니다.'
       : '체크박스로 본인이 보유한 인격만 표시되도록 직접 관리할 수 있습니다(이 브라우저에만 저장, 다른 사람에게는 영향 없음). 인격 추가는 관리자만 가능합니다.';
   }
   modalBody.innerHTML = '';
@@ -1654,9 +1684,7 @@ function buildModal(focusId){
     block.id = 'block-'+s.id;
     const addRowHtml = isAdmin ? `
       <div class="add-row">
-        <input type="text" id="newinput-${s.id}" placeholder="새 인격 추가 (예: [000] | 새 인격명)">
-        <input type="text" id="newimg-${s.id}" class="img-input" placeholder="이미지 URL(선택)">
-        <button type="button" class="add-btn" data-add="${s.id}">추가</button>
+        <button type="button" class="add-btn" data-add="${s.id}">+ 인격 추가</button>
       </div>
     ` : '';
     block.innerHTML = `
@@ -1671,21 +1699,10 @@ function buildModal(focusId){
   modalBody.querySelectorAll('.add-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>addIdentity(btn.dataset.add));
   });
-  modalBody.querySelectorAll('#modalBody .add-row input[id^="newinput-"]').forEach(inp=>{
-    inp.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        addIdentity(inp.id.replace('newinput-',''));
-      }
-    });
-  });
-
   if(focusId){
     setTimeout(()=>{
       const block = document.getElementById('block-'+focusId);
       if(block) block.scrollIntoView({block:'center'});
-      const inp = document.getElementById('newinput-'+focusId);
-      if(inp) inp.focus();
     }, 30);
   }
 }
@@ -1694,6 +1711,7 @@ function renderCheckList(id){
   const container = document.getElementById('checklist-'+id);
   if(!container) return;
   container.innerHTML = '';
+  renderDraftRow(id, container);
   identities[id].forEach((item, idx)=>{
     const row = document.createElement('div');
     row.className = 'check-row' + (item.isNew ? ' new-item' : '');
@@ -1725,7 +1743,7 @@ function renderCheckList(id){
   });
   // 이미지 URL(로스터 정보)은 관리자만 — 서버에도 동기화됨
   if(isAdmin){
-    container.querySelectorAll('.img-input').forEach(inp=>{
+    container.querySelectorAll('.img-input[data-idx]').forEach(inp=>{
       inp.addEventListener('change', (e)=>{
         const sid = e.target.dataset.sinner;
         const idx = parseInt(e.target.dataset.idx, 10);
@@ -1745,20 +1763,83 @@ function updateCount(id){
   el.textContent = `${checked} / ${total}`;
 }
 
-function addIdentity(id){
+// 새 인격 입력 줄: [+ 인격 추가]를 누르면 목록 맨 위에 "[000] | " 가 미리 채워진 입력 줄이 생깁니다.
+// Enter = 추가, Shift+Enter = 줄바꿈, Esc = 취소
+const NEW_IDENTITY_PREFIX = '[000] | ';
+const drafts = {}; // {sinnerId: {text, img}} — 확정 전까지만 메모리에 보관
+
+function addIdentity(id){ // [+ 인격 추가] 버튼
   if(!isAdmin) return;
-  const inp = document.getElementById('newinput-'+id);
-  const imgInp = document.getElementById('newimg-'+id);
-  if(!inp) return;
-  const val = inp.value.trim();
-  if(!val) return;
-  const imgVal = imgInp ? imgInp.value.trim() : '';
-  identities[id].push({text: val, checked: true, isNew: true, img: imgVal});
-  inp.value = '';
-  if(imgInp) imgInp.value = '';
+  if(!drafts[id]) drafts[id] = {text: NEW_IDENTITY_PREFIX, img: ''};
+  renderCheckList(id);
+  focusDraft(id);
+}
+function focusDraft(id){
+  const ta = document.querySelector('#checklist-'+id+' .draft-name');
+  if(!ta) return;
+  const list = document.getElementById('checklist-'+id);
+  if(list) list.scrollTop = 0;
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length); // 커서를 "| " 뒤에 둠
+}
+function autoGrow(ta){
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+function renderDraftRow(id, container){
+  const d = drafts[id];
+  if(!d || !isAdmin) return;
+  const row = document.createElement('div');
+  row.className = 'draft-row';
+  row.innerHTML = `
+    <textarea class="draft-name" rows="1" placeholder="[000] | 인격명" aria-label="새 인격명"></textarea>
+    <input type="text" class="img-input" placeholder="이미지 URL(선택)" aria-label="새 인격 이미지 URL">
+    <div class="draft-actions">
+      <button type="button" data-draft-ok>추가</button>
+      <button type="button" data-draft-cancel>취소</button>
+    </div>`;
+  const ta = row.querySelector('.draft-name');
+  const img = row.querySelector('.img-input');
+  ta.value = d.text;
+  img.value = d.img;
+  ta.addEventListener('input', ()=>{ d.text = ta.value; autoGrow(ta); });
+  img.addEventListener('input', ()=>{ d.img = img.value; });
+  const onKey = (e)=>{
+    if(e.isComposing || e.keyCode === 229) return;      // 한글 조합 중 Enter는 무시
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); confirmDraft(id); }
+    else if(e.key === 'Escape'){ e.preventDefault(); cancelDraft(id); }
+    // Shift+Enter: 기본 동작(줄바꿈) 그대로
+  };
+  ta.addEventListener('keydown', onKey);
+  img.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ onKey(e); } else if(e.key === 'Escape'){ onKey(e); } });
+  row.querySelector('[data-draft-ok]').addEventListener('click', ()=>confirmDraft(id));
+  row.querySelector('[data-draft-cancel]').addEventListener('click', ()=>cancelDraft(id));
+  container.appendChild(row);
+  setTimeout(()=>autoGrow(ta), 0);
+}
+function cancelDraft(id){
+  delete drafts[id];
+  renderCheckList(id);
+}
+function confirmDraft(id){
+  if(!isAdmin) return;
+  const d = drafts[id];
+  if(!d) return;
+  const val = d.text.trim();
+  const nameOnly = val.replace(/^\[[^\]]*\]\s*\|?\s*/, '').trim();
+  if(!nameOnly){            // "[000] |" 뒤에 이름이 없으면 추가하지 않음
+    focusDraft(id);
+    return;
+  }
+  if(identities[id].some(it=>it.text === val)){
+    alert('이미 같은 이름의 인격이 있습니다.');
+    focusDraft(id);
+    return;
+  }
+  identities[id].unshift({text: val, checked: true, isNew: true, img: (d.img || '').trim()});
+  delete drafts[id];
   renderCheckList(id);
   persistRoster();
-  inp.focus();
 }
 
 function openModal(focusId){

@@ -8,7 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* 폰트 역할: 영문·숫자 = Bebas Neue / 메인 문구(제목) = KOTRA Bold / 설명·본문 = SC Dream 5.
+  /* 글자 크기 보정(size-adjust): Bebas Neue 약 +2~3px(119%), 한글 폰트 약 +1~2px(111%) — 13px 글씨 기준.
+     숫자를 키우려면 Bebas의 %, 한글을 키우려면 KOTRA/SC Dream 5의 %만 바꾸면 됩니다.
+  폰트 역할: 영문·숫자 = Bebas Neue / 메인 문구(제목) = KOTRA Bold / 설명·본문 = SC Dream 5.
      글꼴 파일이 굵기 하나뿐이라 굵기 범위를 지정해 브라우저가 가짜 굵게 처리하지 않게 합니다. */
   @font-face{
     font-family:'Bebas Neue';
@@ -16,6 +18,7 @@
     font-weight:100 900;
     font-style:normal;
     font-display:swap;
+    size-adjust:119%;
   }
   @font-face{
     font-family:'KOTRA Bold';
@@ -23,6 +26,7 @@
     font-weight:100 900;
     font-style:normal;
     font-display:swap;
+    size-adjust:111%;
   }
   @font-face{
     font-family:'SC Dream 5';
@@ -30,6 +34,7 @@
     font-weight:100 900;
     font-style:normal;
     font-display:swap;
+    size-adjust:111%;
   }
   :root{
     --bg-0:#0b0908;

@@ -53,6 +53,8 @@
     /* 영문·숫자는 항상 Bebas Neue가 먼저 적용되고, 한글은 뒤의 폰트로 표시됩니다 */
     --serif:'Bebas Neue', 'KOTRA Bold', 'Noto Serif KR', serif;   /* 메인 문구(제목) */
     --sans:'Bebas Neue', 'SC Dream 5', 'Noto Sans KR', sans-serif;  /* 설명·본문 */
+    /* 버튼 글씨 보정: 한글 폰트 확대(+11%)로 커진 버튼 글씨를 0.5px 줄입니다(0.5px ÷ 1.11 ≈ 0.45px) */
+    --btn-trim:-0.45px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -71,7 +73,7 @@
   /* ---------- 공통 버튼 / 상단 바 (룰렛 페이지와 동일한 모양) ---------- */
   .btn{
     font-family:var(--sans);
-    font-size:13px;
+    font-size:calc(13px + var(--btn-trim));
     font-weight:500;
     letter-spacing:0.02em;
     padding:10px 20px;
@@ -92,7 +94,7 @@
     color:#f0ddd0;
   }
   .btn.primary:hover{border-color:var(--gold);}
-  .btn.small{font-size:11px;padding:6px 12px;}
+  .btn.small{font-size:calc(11px + var(--btn-trim));padding:6px 12px;}
   .btn.danger:hover{border-color:var(--crimson-bright);color:#e58a94;}
   .topbar{
     max-width:1100px;
@@ -102,7 +104,7 @@
     gap:8px;
     flex-wrap:wrap;
   }
-  .topbar .btn{font-size:12px;padding:8px 16px;}
+  .topbar .btn{font-size:calc(12px + var(--btn-trim));padding:8px 16px;}
   .btn.nav-btn.is-current{
     border-color:var(--gold);
     color:var(--gold-bright);
@@ -115,7 +117,7 @@
   h1{
     font-family:var(--serif);
     font-weight:700;
-    font-size:clamp(26px,4vw,36px);
+    font-size:calc(clamp(26px,4vw,36px) / 1.11); /* 한글 폰트 확대(+11%) 이전의 원래 크기 유지 */
     letter-spacing:0.06em;
     margin:0 0 10px;
     color:var(--gold-bright);
@@ -174,7 +176,7 @@
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
   .chip{
     font-family:var(--sans);
-    font-size:12px;
+    font-size:calc(12px + var(--btn-trim));
     padding:5px 12px;
     border-radius:999px;
     border:1px solid var(--line);

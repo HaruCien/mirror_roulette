@@ -53,6 +53,8 @@
     /* 영문·숫자는 항상 Bebas Neue가 먼저 적용되고, 한글은 뒤의 폰트로 표시됩니다 */
     --serif:'Bebas Neue', 'KOTRA Bold', 'Noto Serif KR', serif;   /* 메인 문구(제목) */
     --sans:'Bebas Neue', 'SC Dream 5', 'Noto Sans KR', sans-serif;  /* 설명·본문 */
+    /* 버튼 글씨 보정: 한글 폰트 확대(+11%)로 커진 버튼 글씨를 0.5px 줄입니다(0.5px ÷ 1.11 ≈ 0.45px) */
+    --btn-trim:-0.45px;
   }
 
   *{box-sizing:border-box;}
@@ -95,7 +97,7 @@
   h1{
     font-family:var(--serif);
     font-weight:700;
-    font-size:clamp(28px,4vw,42px);
+    font-size:calc(clamp(28px,4vw,42px) / 1.11); /* 한글 폰트 확대(+11%) 이전의 원래 크기 유지 */
     margin:0 0 12px;
     color:var(--gold-bright);
     text-shadow:0 0 24px rgba(184,147,74,0.25);
@@ -127,7 +129,7 @@
   }
   .btn{
     font-family:var(--sans);
-    font-size:13px;
+    font-size:calc(13px + var(--btn-trim));
     font-weight:500;
     letter-spacing:0.02em;
     padding:10px 20px;
@@ -169,7 +171,7 @@
   .topbar-right{justify-self:end;display:flex;gap:8px;}
   .topbar-nav{display:flex;gap:8px;}
   .topbar .btn{
-    font-size:12px;
+    font-size:calc(12px + var(--btn-trim));
     padding:8px 16px;
     text-decoration:none;
     display:inline-flex;align-items:center;justify-content:center;
@@ -184,7 +186,7 @@
   @media (max-width:760px){
     .topbar{grid-template-columns:1fr 1fr;}
     .topbar-nav{grid-column:1 / -1;grid-row:2;justify-content:center;}
-    .topbar .btn{font-size:11px;padding:7px 12px;}
+    .topbar .btn{font-size:calc(11px + var(--btn-trim));padding:7px 12px;}
   }
   .read-only-note{
     font-size:10px;
@@ -304,7 +306,7 @@
   .roll-btn{
     width:100%;
     font-family:var(--sans);
-    font-size:12px;
+    font-size:calc(12px + var(--btn-trim));
     font-weight:500;
     padding:8px 4px;
     border-radius:3px;
@@ -418,7 +420,7 @@
   .add-row input:focus{outline:none;border-color:var(--gold);}
   .add-row .add-btn{
     font-family:var(--sans);
-    font-size:12px;
+    font-size:calc(12px + var(--btn-trim));
     padding:7px 12px;
     border-radius:3px;
     border:1px solid var(--line);
@@ -456,7 +458,7 @@
   .draft-row .img-input{flex:0 0 150px;}
   .draft-row .draft-actions{display:flex;gap:4px;flex-shrink:0;}
   .draft-row .draft-actions button{
-    font-family:var(--sans);font-size:12px;padding:6px 10px;border-radius:3px;
+    font-family:var(--sans);font-size:calc(12px + var(--btn-trim));padding:6px 10px;border-radius:3px;
     border:1px solid var(--line);background:var(--panel-2);color:var(--ink-dim);cursor:pointer;
   }
   .draft-row .draft-actions button:hover{border-color:var(--gold);color:var(--gold-bright);}
@@ -569,7 +571,7 @@
     display:flex;gap:6px;flex-shrink:0;
   }
   .cl-actions .btn{
-    font-size:10.5px;
+    font-size:calc(10.5px + var(--btn-trim));
     padding:4px 9px;
   }
   .cl-edit-text{

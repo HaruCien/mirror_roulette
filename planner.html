@@ -240,6 +240,16 @@
   .id-card.empty .nm{color:var(--ink-faint);text-shadow:none;}
   .id-card.empty .shade,.id-card.empty .rar{display:none;}
 
+  .sync4-opt{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-dim);cursor:pointer;}
+  .sync4-opt input{accent-color:var(--gold);}
+  /* 4동기화: 굵은 이중 테두리 + 금빛 발광, 이름 중앙 정렬 */
+  .id-card.sync4{filter:drop-shadow(0 0 3px rgba(255,226,120,.95)) drop-shadow(0 0 9px rgba(255,200,60,.65));}
+  .id-card.sync4 .art{inset:8.5% 7%;}
+  .id-card.sync4 .rar{left:9%;top:5.5%;width:24%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a3414,#140d06 70%);
+    box-shadow:0 0 0 1.5px #f1c24f inset,0 0 0 3px #5d3f0c inset,0 1px 4px #000;font-size:.95em;letter-spacing:0;}
+  .id-card.sync4 .nm{left:8%;right:8%;text-align:center;bottom:10%;}
+
   /* 파티 편성 */
   .party{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;}
   .party-row{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;}
@@ -557,7 +567,7 @@ function splitName(n){
   }
   return [w.slice(0,best).join(' '), w.slice(best).join(' ')];
 }
-function frameSVG(r){
+function frameSVG(r, sync4){
   const g = 'url(#gf'+r+')';
   const rope = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#555';
   const inner = r===2 ? '#e8b93a' : (r===3 ? '#5a3d08' : '#888');
@@ -569,18 +579,20 @@ function frameSVG(r){
     <rect x="3.5" y="3.5" width="153" height="203" rx="11" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2" stroke-dasharray="4.5 5" stroke-dashoffset="4.8"/>
     <rect x="8.2" y="8.2" width="143.6" height="193.6" rx="7" fill="none" stroke="${inner}" stroke-width="1.3"/>
     <rect x="0.8" y="0.8" width="158.4" height="208.4" rx="12.5" fill="none" stroke="${rope}" stroke-width="1.2"/>
+    ${sync4 ? `<rect x="11.2" y="11.2" width="137.6" height="187.6" rx="5" fill="none" stroke="${g}" stroke-width="2.6"/>
+    <rect x="11.2" y="11.2" width="137.6" height="187.6" rx="5" fill="none" stroke="${rope}" stroke-width="1.6" stroke-dasharray="3.2 3.2" opacity=".8"/>` : ''}
     ${corner(7,7)}${corner(153,7)}${corner(7,203)}${corner(153,203)}
   </svg>`;
 }
-function cardHTML(sinner, text){
+function cardHTML(sinner, text, sync4){
   const t = String(text||'').trim();
   if(!t){
     return `<div class="id-card empty r1">${frameSVG(1)}<div class="art"></div><div class="badge">${esc(sinner.name.charAt(0))}</div><div class="nm">미정</div></div>`;
   }
   const r = rarityOf(t), [a,b] = splitName(nameOf(t)), img = lookupImg(t);
-  return `<div class="id-card r${r}">
+  return `<div class="id-card r${r}${sync4 ? ' sync4' : ''}">
     <div class="art">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<div class="shade"></div></div>
-    ${frameSVG(r)}
+    ${frameSVG(r, sync4)}
     <div class="rar">${'0'.repeat(r)}</div>
     <div class="badge">${esc(sinner.name.charAt(0))}</div>
     <div class="nm">${esc(a)}${b ? '<br>'+esc(b) : ''}</div>
@@ -589,7 +601,7 @@ function cardHTML(sinner, text){
 function updateCard(id){
   const s = SINNERS.find(x=>x.id===id), slot = document.getElementById('card-'+id);
   if(!s || !slot) return;
-  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity);
+  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity, !!(plan.party[id]||{}).sync4);
 }
 function updateAllCards(){ SINNERS.forEach(s=>updateCard(s.id)); }
 
@@ -615,11 +627,12 @@ function renderParty(){
     const row = plan.party[s.id] || {identity:'', note:''};
     return `
       <div class="party-row">
-        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity)}</div>
+        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity, !!row.sync4)}</div>
         <div class="stack">
           <div class="sinner">${esc(s.name)}</div>
           <input type="text" list="dl-${s.id}" data-party="${s.id}" data-field="identity" value="${esc(row.identity)}" placeholder="인격">
           <datalist id="dl-${s.id}">${(roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>
+          <label class="sync4-opt"><input type="checkbox" data-party-sync4="${s.id}" ${row.sync4 ? 'checked' : ''}> 4동기화 테두리</label>
           <input type="text" class="note" data-party="${s.id}" data-field="note" value="${esc(row.note)}" placeholder="역할 / 메모 (선택)">
         </div>
       </div>`;
@@ -698,6 +711,11 @@ document.addEventListener('input', (e)=>{
 });
 document.addEventListener('change', (e)=>{
   const t = e.target;
+  if(t.dataset.partySync4){
+    const id = t.dataset.partySync4;
+    plan.party[id] = plan.party[id] || {identity:'', note:''};
+    plan.party[id].sync4 = t.checked; savePlan(); updateCard(id); return;
+  }
   if(t.dataset.floorDone !== undefined){
     plan.floors[+t.dataset.floorDone].done = t.checked; savePlan(); renderFloors();
   } else if(t.dataset.giftGot !== undefined){

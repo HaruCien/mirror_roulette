@@ -235,7 +235,10 @@
     background:radial-gradient(circle at 35% 30%,#3a2d1a,#120d08 70%);box-shadow:0 0 0 2px #d9b04c inset,0 0 0 3.5px #5d3f0c inset,0 1px 4px #000;}
   .id-card .nm{position:absolute;right:12%;bottom:8%;left:10%;text-align:right;font-family:var(--serif);font-size:1.02em;
     line-height:1.18;color:#f6d765;text-shadow:0 0 3px #000,0 1px 2px #000,0 0 6px #000;word-break:keep-all;}
-  .id-card.r1 .nm,.id-card.r1 .rar,.id-card.r1 .badge{color:#ece9e2;}
+  .id-card.r1 .nm,.id-card.r1 .rar,.id-card.r1 .badge{color:#f0b24c;}
+  .id-card .badge{overflow:hidden;position:absolute;}
+  .id-card .badge .logo{position:absolute;inset:12%;width:76%;height:76%;object-fit:contain;}
+  .id-card .badge.has-logo .ini{visibility:hidden;}
   .id-card.empty .art{background:repeating-linear-gradient(135deg,#1b150f 0 8px,#17120d 8px 16px);}
   .id-card.empty .nm{color:var(--ink-faint);text-shadow:none;}
   .id-card.empty .shade,.id-card.empty .rar{display:none;}
@@ -245,7 +248,7 @@
   /* 4동기화: 굵은 이중 테두리 + 금빛 발광, 이름 중앙 정렬 */
   .id-card.sync4{filter:drop-shadow(0 0 3px rgba(255,226,120,.95)) drop-shadow(0 0 9px rgba(255,200,60,.65));}
   .id-card.sync4.r2{filter:drop-shadow(0 0 3px rgba(255,120,70,.95)) drop-shadow(0 0 9px rgba(235,60,40,.7));}
-  .id-card.sync4.r1{filter:drop-shadow(0 0 3px rgba(255,255,255,.9)) drop-shadow(0 0 8px rgba(200,200,220,.55));}
+  .id-card.sync4.r1{filter:drop-shadow(0 0 3px rgba(255,190,110,.85)) drop-shadow(0 0 8px rgba(190,120,50,.55));}
   .id-card.sync4 .art{inset:8.4% 11.4%;}
   .id-card.sync4 .rar{left:8%;top:4.5%;width:21%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
     border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a3414,#140d06 70%);
@@ -319,7 +322,7 @@
   <defs>
     <linearGradient id="gf3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#e8b93a"/><stop offset=".7" stop-color="#a8720f"/><stop offset="1" stop-color="#f3cf63"/></linearGradient>
     <linearGradient id="gf2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a5c"/><stop offset=".4" stop-color="#c3281d"/><stop offset=".75" stop-color="#6a0f0b"/><stop offset="1" stop-color="#e0503a"/></linearGradient>
-    <linearGradient id="gf1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#bdbdbd"/><stop offset=".75" stop-color="#6f6f6f"/><stop offset="1" stop-color="#e6e6e6"/></linearGradient>
+    <linearGradient id="gf1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0c48a"/><stop offset=".4" stop-color="#b9783a"/><stop offset=".75" stop-color="#65401c"/><stop offset="1" stop-color="#d89a5a"/></linearGradient>
   </defs>
 </svg>
 
@@ -572,8 +575,8 @@ function splitName(n){
 function frameSVG(r, sync4){
   if(sync4) return sync4Frame(r);
   const g = 'url(#gf'+r+')';
-  const rope = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#555';
-  const inner = r===2 ? '#e8b93a' : (r===3 ? '#5a3d08' : '#888');
+  const rope = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#3d2410';
+  const inner = r===2 ? '#e8b93a' : (r===3 ? '#5a3d08' : '#a8743a');
   // 바깥 굵은 테두리 + 꼬임(로프) 문양 + 안쪽 얇은 선 + 모서리 장식
   const corner = (x,y)=>`<g transform="translate(${x} ${y}) rotate(45)"><rect x="-5" y="-5" width="10" height="10" fill="${g}" stroke="${rope}" stroke-width="1"/><rect x="-1.8" y="-1.8" width="3.6" height="3.6" fill="${rope}"/></g>`;
   return `<svg class="frame" viewBox="0 0 160 210" preserveAspectRatio="none" aria-hidden="true">
@@ -599,10 +602,10 @@ function wave(horizontal, fixed, from, to, amp, period, phase){
 }
 function sync4Frame(r){
   const g = 'url(#gf'+r+')';
-  const dark = r===2 ? '#1c0504' : '#1a1206';
-  const edge = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#555';
-  const strand = r===1 ? '#d6d6d6' : '#e9b94c';
-  const line = r===2 ? '#f0b43a' : (r===3 ? '#fbe08a' : '#cfcfcf');
+  const dark = r===2 ? '#1c0504' : (r===1 ? '#1d1208' : '#1a1206');
+  const edge = r===3 ? '#6b4a0c' : r===2 ? '#3a0907' : '#3d2410';
+  const strand = r===1 ? '#d9a35a' : '#e9b94c';
+  const line = r===2 ? '#f0b43a' : (r===3 ? '#fbe08a' : '#c99550');
   const strands = (horizontal, fixed, from, to)=>
     [0, Math.PI].map(ph=>{
       const d = wave(horizontal, fixed, from, to, 2.5, 13, ph);
@@ -628,17 +631,20 @@ function sync4Frame(r){
     ${bottom}
   </svg>`;
 }
+function badgeHTML(s){
+  return `<div class="badge"><span class="ini">${esc(s.name.charAt(0))}</span><img class="logo" src="badges/${s.id}.png" alt="" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()"></div>`;
+}
 function cardHTML(sinner, text, sync4){
   const t = String(text||'').trim();
   if(!t){
-    return `<div class="id-card empty r1">${frameSVG(1)}<div class="art"></div><div class="badge">${esc(sinner.name.charAt(0))}</div><div class="nm">미정</div></div>`;
+    return `<div class="id-card empty r1">${frameSVG(1)}<div class="art"></div>${badgeHTML(sinner)}<div class="nm">미정</div></div>`;
   }
   const r = rarityOf(t), [a,b] = splitName(nameOf(t)), img = lookupImg(t);
   return `<div class="id-card r${r}${sync4 ? ' sync4' : ''}">
     <div class="art">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<div class="shade"></div></div>
     ${frameSVG(r, sync4)}
     <div class="rar">${'0'.repeat(r)}</div>
-    <div class="badge">${esc(sinner.name.charAt(0))}</div>
+    ${badgeHTML(sinner)}
     <div class="nm">${esc(a)}${b ? '<br>'+esc(b) : ''}</div>
   </div>`;
 }

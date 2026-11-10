@@ -715,6 +715,7 @@
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot">
+      <button class="btn admin-only" id="modalApplyLatest">최신 인격 반영 (~11/10)</button>
       <button class="btn admin-only" id="modalApplyImages">저장소 이미지 경로 자동 적용</button>
       <button class="btn admin-only" id="modalResetList">전체 목록 초기화</button>
       <button class="btn primary" id="modalSave">완료</button>
@@ -808,6 +809,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 파우스트"
   ],
   donquixote: [
+    "[000] | 오트쿠튀르::르누아르 브랜드 매니저 돈키호테",
     "[000] | 검지 대행자 - 개화 E.G.O::대행 돈키호테",
     "[000] | 흑수 - 미 돈키호테",
     "[000] | 로보토미 E.G.O::사랑과 증오의 이름으로 돈키호테",
@@ -858,6 +860,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 뫼르소"
   ],
   honglu: [
+    "[000] | 오트쿠튀르::르누아르 3F 방송실 홍루",
     "[000] | 동부 섕크 협회 3과 홍루",
     "[000] | S사 추노꾼 홍루",
     "[000] | 거미집 약지 아비 홍루",
@@ -894,6 +897,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 히스클리프"
   ],
   ishmael: [
+    "[000] | 오트쿠튀르::르루주 부티크 이스마엘",
     "[000] | LCD 현장추리팀 이스마엘",
     "[000] | 거미집 중지 제자 이스마엘",
     "[000] | 정사무소 대표 이스마엘",
@@ -911,6 +915,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 이스마엘"
   ],
   rodion: [
+    "[000] | 오트쿠튀르::수선실 로쟈",
     "[000] | 거미집 엄지 아비 로쟈",
     "[000] | 약지 야수파 도슨트 로쟈",
     "[000] | R사 제 4무리 순록팀 로쟈",
@@ -929,6 +934,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 로쟈"
   ],
   sinclair: [
+    "[000] | 오트쿠튀르::르루주 붉은 신 싱클레어",
     "[000] | 거미집 소지 제자 싱클레어",
     "[000] | 흑수 - 유 싱클레어",
     "[000] | 동부 엄지 솔다토 II 싱클레어",
@@ -1159,6 +1165,7 @@ const IMAGE_MAP = {
     "검계 살수 싱클레어": "image_sinclair/geomgye_sinclair.png"
   },
   "rodion": {
+    "오트쿠튀르::수선실 로쟈": "image_rodion/couture_rodion.png",
     "남부 리우 협회 4과 부장 로쟈": "image_rodion/liu4_rodion.png",
     "LCCB 대리 로쟈": "image_rodion/lccb_rodion.png",
     "LCB 수감자 로쟈": "image_rodion/lcb_rodion.png",
@@ -1230,6 +1237,7 @@ const IMAGE_MAP = {
     "로보토미 E.G.O::호넷【변조】뫼르소": "image_meursault/hornet_meursault.png"
   },
   "donquixote": {
+    "오트쿠튀르::르누아르 브랜드 매니저 돈키호테": "image_donquixote/brand_donquixote.png",
     "남부 섕크 협회 5과 부장 돈키호테": "image_donquixote/shank5_donquixote.png",
     "W사 3등급 정리 요원 돈키호테": "image_donquixote/wcorp_donquixote.png",
     "중지 작은 아우 돈키호테": "image_donquixote/jungji_donquixote.png",
@@ -1272,6 +1280,46 @@ function applyRepoImages(){
   let msg = '이미지 경로 ' + applied + '개를 새로 적용했습니다.\n'
           + '(이미 입력되어 있어 건너뛴 것 ' + kept + '개 / 연결표 전체 ' + total + '개)';
   if(unmatched.length) msg += '\n\n현재 목록에서 찾지 못한 인격 ' + unmatched.length + '개:\n' + unmatched.join('\n');
+  alert(msg);
+}
+
+
+// ---- 최신 인격 반영: 공식 신규 인격 안내 기준, 기본 목록 이후 출시분 (2026-11-10 기준) ----
+const LATEST_IDENTITIES = {
+  "ishmael": [
+    "[000] | 오트쿠튀르::르루주 부티크 이스마엘"
+  ],
+  "rodion": [
+    "[000] | 오트쿠튀르::수선실 로쟈"
+  ],
+  "donquixote": [
+    "[000] | 오트쿠튀르::르누아르 브랜드 매니저 돈키호테"
+  ],
+  "sinclair": [
+    "[000] | 오트쿠튀르::르루주 붉은 신 싱클레어"
+  ],
+  "honglu": [
+    "[000] | 오트쿠튀르::르누아르 3F 방송실 홍루"
+  ]
+};
+function normName(t){ return identityNameOf(t).replace(/[\s:]/g, ''); }  // 띄어쓰기·'::' 차이는 같은 인격으로 취급
+function applyLatestIdentities(){
+  if(!isAdmin) return;
+  const added = [], skipped = [];
+  Object.keys(LATEST_IDENTITIES).forEach(sid=>{
+    identities[sid] = identities[sid] || [];
+    LATEST_IDENTITIES[sid].forEach(text=>{
+      const name = identityNameOf(text);
+      if(identities[sid].some(it=>normName(it.text) === normName(text))){ skipped.push(name); return; }
+      const img = (IMAGE_MAP[sid] && IMAGE_MAP[sid][name]) || '';
+      identities[sid].unshift({text, checked:true, img});
+      added.push(name);
+    });
+  });
+  persistRoster();
+  if(modalOverlayIsOpen()) buildModal();
+  let msg = added.length ? '새 인격 ' + added.length + '개를 목록 맨 위에 추가했습니다:\n' + added.join('\n') : '추가할 새 인격이 없습니다.';
+  if(skipped.length) msg += '\n\n이미 목록에 있어 건너뛴 인격 ' + skipped.length + '개:\n' + skipped.join('\n');
   alert(msg);
 }
 
@@ -1939,6 +1987,7 @@ document.getElementById('navRoulette').addEventListener('click', (e)=>{
   window.scrollTo({top:0, behavior:'smooth'});
 });
 document.getElementById('modalApplyImages').addEventListener('click', applyRepoImages);
+document.getElementById('modalApplyLatest').addEventListener('click', applyLatestIdentities);
 document.getElementById('modalResetList').addEventListener('click', ()=>{
   if(!isAdmin) return;
   if(!confirm('이 브라우저에 저장된 인격 목록을 모두 기본값으로 되돌립니다. 계속할까요?')) return;

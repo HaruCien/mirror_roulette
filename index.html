@@ -715,7 +715,7 @@
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot">
-      <button class="btn admin-only" id="modalApplyLatest">최신 인격 반영 (~11/10)</button>
+      <button class="btn admin-only" id="modalApplyLatest">최신 인격 반영 (~11/12)</button>
       <button class="btn admin-only" id="modalApplyImages">저장소 이미지 경로 자동 적용</button>
       <button class="btn admin-only" id="modalResetList">전체 목록 초기화</button>
       <button class="btn primary" id="modalSave">완료</button>
@@ -809,6 +809,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 파우스트"
   ],
   donquixote: [
+    "[000] | 쐐기 사무소 해결사 돈키호테",
     "[000] | 오트쿠튀르::르누아르 브랜드 매니저 돈키호테",
     "[000] | 검지 대행자 - 개화 E.G.O::대행 돈키호테",
     "[000] | 흑수 - 미 돈키호테",
@@ -934,6 +935,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 로쟈"
   ],
   sinclair: [
+    "[000] | 쐐기 사무소 해결사 싱클레어",
     "[000] | 오트쿠튀르::르루주 붉은 신 싱클레어",
     "[000] | 거미집 소지 제자 싱클레어",
     "[000] | 흑수 - 유 싱클레어",
@@ -952,6 +954,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 싱클레어"
   ],
   outis: [
+    "[000] | 쐐기 사무소 대표 오티스",
     "[000] | 거미집 중지 아비 오티스",
     "[000] | LCA 우제트 선봉 3팀 팀장 오티스",
     "[000] | T사 3등급 강력징수직 직원 오티스",
@@ -1284,7 +1287,7 @@ function applyRepoImages(){
 }
 
 
-// ---- 최신 인격 반영: 공식 신규 인격 안내 기준, 기본 목록 이후 출시분 (2026-11-10 기준) ----
+// ---- 최신 인격 반영: 공식 신규 인격 안내 기준, 기본 목록 이후 출시분 (2026-11-12 기준, 제10회 발푸르기스의 밤 포함) ----
 const LATEST_IDENTITIES = {
   "ishmael": [
     "[000] | 오트쿠튀르::르루주 부티크 이스마엘"
@@ -1293,13 +1296,18 @@ const LATEST_IDENTITIES = {
     "[000] | 오트쿠튀르::수선실 로쟈"
   ],
   "donquixote": [
+    "[000] | 쐐기 사무소 해결사 돈키호테",
     "[000] | 오트쿠튀르::르누아르 브랜드 매니저 돈키호테"
   ],
   "sinclair": [
+    "[000] | 쐐기 사무소 해결사 싱클레어",
     "[000] | 오트쿠튀르::르루주 붉은 신 싱클레어"
   ],
   "honglu": [
     "[000] | 오트쿠튀르::르누아르 3F 방송실 홍루"
+  ],
+  "outis": [
+    "[000] | 쐐기 사무소 대표 오티스"
   ]
 };
 function normName(t){ return identityNameOf(t).replace(/[\s:]/g, ''); }  // 띄어쓰기·'::' 차이는 같은 인격으로 취급

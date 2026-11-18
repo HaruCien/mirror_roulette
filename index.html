@@ -715,6 +715,7 @@
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot">
+      <button class="btn admin-only" id="modalDedupe">중복 인격 정리</button>
       <button class="btn admin-only" id="modalApplyLatest">최신 인격 반영 (~11/12)</button>
       <button class="btn admin-only" id="modalApplyImages">저장소 이미지 경로 자동 적용</button>
       <button class="btn admin-only" id="modalResetList">전체 목록 초기화</button>
@@ -1323,7 +1324,7 @@ const LATEST_IDENTITIES = {
     "[000] | 오트쿠튀르::바느질의 왕 히스클리프"
   ]
 };
-function normName(t){ return identityNameOf(t).replace(/[\s:]/g, ''); }  // 띄어쓰기·'::' 차이는 같은 인격으로 취급
+function normName(t){ return identityNameOf(t).replace(/오트쿠튀르/g, '').replace(/[\s:]/g, ''); }  // 띄어쓰기·'::'·'오트쿠튀르' 접두 차이는 같은 인격으로 취급
 function applyLatestIdentities(){
   if(!isAdmin) return;
   const added = [], skipped = [];
@@ -1342,6 +1343,43 @@ function applyLatestIdentities(){
   let msg = added.length ? '새 인격 ' + added.length + '개를 목록 맨 위에 추가했습니다:\n' + added.join('\n') : '추가할 새 인격이 없습니다.';
   if(skipped.length) msg += '\n\n이미 목록에 있어 건너뛴 인격 ' + skipped.length + '개:\n' + skipped.join('\n');
   alert(msg);
+}
+
+// ---- 중복 인격 정리 (관리자): 같은 인격이 표기만 달라 두 번 들어간 경우 하나로 합침 ----
+function dedupeIdentities(){
+  if(!isAdmin) return;
+  const canon = new Set();
+  Object.values(SEED_IDENTITIES).forEach(l=>l.forEach(t=>canon.add(t)));
+  const groups = [];   // 같은 인격으로 판단되는 묶음
+  const similar = [];  // 이름이 서로 포함 관계라 사람이 확인해야 하는 것
+  SINNERS.forEach(s=>{
+    const list = identities[s.id] || [], byKey = {};
+    list.forEach(it=>{ (byKey[normName(it.text)] = byKey[normName(it.text)] || []).push(it); });
+    Object.keys(byKey).forEach(k=>{ if(byKey[k].length > 1) groups.push({sid:s.id, items:byKey[k]}); });
+    const keys = Object.keys(byKey);
+    for(let i=0;i<keys.length;i++) for(let j=i+1;j<keys.length;j++){
+      if(keys[i].length >= 4 && keys[j].length >= 4 && (keys[i].includes(keys[j]) || keys[j].includes(keys[i]))){
+        similar.push(identityNameOf(byKey[keys[i]][0].text) + '  ↔  ' + identityNameOf(byKey[keys[j]][0].text));
+      }
+    }
+  });
+  if(!groups.length){
+    alert('합칠 중복 인격이 없습니다.' + (similar.length ? '\n\n이름이 비슷해 직접 확인이 필요한 항목:\n' + similar.join('\n') : ''));
+    return;
+  }
+  const preview = groups.map(g=>g.items.map(it=>it.text).join('  /  ')).join('\n');
+  if(!confirm('같은 인격으로 보이는 중복 ' + groups.length + '건을 하나로 합칩니다.\n(표준 표기·이미지가 있는 쪽을 남기고, 보유 체크는 하나라도 체크되어 있으면 유지)\n\n' + preview + '\n\n계속할까요?')) return;
+  let removed = 0;
+  groups.forEach(g=>{
+    const keep = g.items.find(it=>canon.has(it.text)) || g.items.find(it=>it.img) || g.items[0];
+    keep.checked = g.items.some(it=>it.checked);
+    if(!keep.img){ const withImg = g.items.find(it=>it.img); if(withImg) keep.img = withImg.img; }
+    identities[g.sid] = identities[g.sid].filter(it=>it === keep || !g.items.includes(it));
+    removed += g.items.length - 1;
+  });
+  persistRoster();
+  if(modalOverlayIsOpen()) buildModal();
+  alert('중복 ' + removed + '개를 정리했습니다.' + (similar.length ? '\n\n이름이 비슷해 직접 확인이 필요한 항목:\n' + similar.join('\n') : ''));
 }
 
 let serverSaveTimer = null;
@@ -2009,6 +2047,7 @@ document.getElementById('navRoulette').addEventListener('click', (e)=>{
 });
 document.getElementById('modalApplyImages').addEventListener('click', applyRepoImages);
 document.getElementById('modalApplyLatest').addEventListener('click', applyLatestIdentities);
+document.getElementById('modalDedupe').addEventListener('click', dedupeIdentities);
 document.getElementById('modalResetList').addEventListener('click', ()=>{
   if(!isAdmin) return;
   if(!confirm('이 브라우저에 저장된 인격 목록을 모두 기본값으로 되돌립니다. 계속할까요?')) return;

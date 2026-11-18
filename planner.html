@@ -258,6 +258,19 @@
   .sync4-opt{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-dim);cursor:pointer;}
   .sync4-opt input{accent-color:var(--gold);}
 
+  /* 편성 순서 선택 표시: 번호 + SELECTED 띠 */
+  .id-card{cursor:pointer;}
+  .id-card .sel{display:none;position:absolute;inset:0;z-index:5;pointer-events:none;}
+  .id-card.selected .sel{display:block;}
+  .id-card .sel-banner{position:absolute;left:0;top:40%;width:100%;height:auto;}
+  .id-card .sel-num{position:absolute;left:0;right:0;top:15%;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:3.6em;line-height:1;
+    background:linear-gradient(#fff4b0 10%,#ffb82e 55%,#ff7a18 95%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 5px rgba(255,140,30,.95)) drop-shadow(0 1px 2px #000);}
+  .id-card.selected .fx{opacity:1;}
+  .id-card.selected .art img{filter:sepia(.55) brightness(1.06);}
+  .id-card.selected .nm,.id-card.selected .rank{opacity:.55;}
+  .id-card.selected{filter:drop-shadow(0 0 7px rgba(255,150,40,.85)) drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+
   /* 파티 편성 */
   .party{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;}
   .party-row{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;}
@@ -367,7 +380,7 @@
         <button class="btn small danger" id="clearParty" type="button">편성 비우기</button>
       </div>
     </div>
-    <p class="hint" id="partyHint">인격 칸은 직접 입력하거나 제안되는 목록에서 고를 수 있습니다. 룰렛에서 뽑은 마지막 결과를 불러올 수도 있습니다.</p>
+    <p class="hint" id="partyHint">인격 칸은 직접 입력하거나 제안되는 목록에서 고를 수 있습니다. 카드를 클릭하면 편성 순서가 지정됩니다(다시 클릭하면 해제). 룰렛에서 뽑은 마지막 결과를 불러올 수도 있습니다.</p>
     <div class="party" id="party"></div>
   </section>
 
@@ -476,6 +489,7 @@ function emptyPlan(){
   return {
     title:'', goal:'', keywords:[], memo:'',
     party:{},                       // {sinnerId:{identity, note}}
+    order:[],                       // 편성 순서: 카드를 클릭한 순서대로 [sinnerId, ...]
     floors:[1,2,3,4,5].map(()=>({title:'', battle:'', shop:'', done:false})),
     gifts:[],                       // {name, got, memo}
     todos:[]                        // {text, done}
@@ -571,24 +585,26 @@ function splitName(n){
 function badgeHTML(s, r){
   return `<div class="badge"><img class="ring" src="frames/badge_${r}.png" alt=""><span class="ini">${esc(s.name.charAt(0))}</span><img class="logo" src="badges/${s.id}.png" alt="" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()"></div>`;
 }
-function cardHTML(sinner, text){
+function cardHTML(sinner, text, ord){
   const t = String(text||'').trim(), empty = !t;
   const r = empty ? 1 : rarityOf(t);
   const [a,b] = empty ? ['미정',''] : splitName(nameOf(t));
   const img = empty ? '' : lookupImg(t);
-  return `<div class="id-card r${r}${empty ? ' empty' : ''}">
+  return `<div class="id-card r${r}${empty ? ' empty' : ''}${ord ? ' selected' : ''}" role="button" aria-pressed="${ord ? 'true' : 'false'}" title="클릭하면 편성 순서가 지정됩니다">
     <div class="art">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>
     <img class="frame-img" src="frames/sync4_${r}.png" alt="">
     ${empty ? '' : `<img class="rank" src="frames/rank_${r}.png" alt="">`}
     ${badgeHTML(sinner, r)}
     <div class="nm">${esc(a)}${b ? '<br>'+esc(b) : ''}</div>
     <img class="fx" src="frames/base.png" alt="">
+    <div class="sel"><span class="sel-num">${ord || ''}</span><img class="sel-banner" src="frames/selected.png" alt="선택됨"></div>
   </div>`;
 }
+function orderOf(id){ return (plan.order || []).indexOf(id) + 1; }   // 0이면 선택 안 됨
 function updateCard(id){
   const s = SINNERS.find(x=>x.id===id), slot = document.getElementById('card-'+id);
   if(!s || !slot) return;
-  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity);
+  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity, orderOf(id));
 }
 function updateAllCards(){ SINNERS.forEach(s=>updateCard(s.id)); }
 
@@ -614,7 +630,7 @@ function renderParty(){
     const row = plan.party[s.id] || {identity:'', note:''};
     return `
       <div class="party-row">
-        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity)}</div>
+        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity, orderOf(s.id))}</div>
         <div class="stack">
           <div class="sinner">${esc(s.name)}</div>
           <input type="text" list="dl-${s.id}" data-party="${s.id}" data-field="identity" value="${esc(row.identity)}" placeholder="인격">
@@ -765,9 +781,20 @@ document.getElementById('loadRoulette').addEventListener('click', ()=>{
   savePlan(); refreshPartyInputs();
   toast('룰렛 결과 ' + n + '명을 불러왔습니다.');
 });
+// 카드를 클릭하면 편성 순서가 지정됩니다(다시 클릭하면 해제, 뒤 순서는 앞당겨짐)
+document.addEventListener('click', (e)=>{
+  const card = e.target.closest('.id-card');
+  const slot = card && card.closest('.card-slot');
+  if(!slot) return;
+  const id = slot.id.replace(/^card-/, '');
+  plan.order = plan.order || [];
+  const i = plan.order.indexOf(id);
+  if(i >= 0) plan.order.splice(i, 1); else plan.order.push(id);
+  savePlan(); updateAllCards();
+});
 document.getElementById('clearParty').addEventListener('click', ()=>{
   if(!confirm('파티 편성을 모두 비울까요?')) return;
-  plan.party = {}; savePlan(); refreshPartyInputs();
+  plan.party = {}; plan.order = []; savePlan(); refreshPartyInputs();
 });
 
 /* ---------- 텍스트 복사 / 초기화 ---------- */
@@ -781,6 +808,9 @@ function buildPlanText(){
     const r = plan.party[s.id] || {};
     L.push(s.name + ' : ' + (r.identity || '(미정)') + (r.note ? '  - ' + r.note : ''));
   });
+  if((plan.order || []).length){
+    L.push('편성 순서 : ' + plan.order.map((id,i)=>(i+1) + ' ' + (SINNERS.find(s=>s.id===id) || {name:id}).name).join(' → '));
+  }
   L.push('', '[층별 계획]');
   plan.floors.forEach((f,i)=>{
     L.push((f.done ? '☑ ' : '☐ ') + (i+1) + '층' + (f.title ? ' : ' + f.title : ''));

@@ -518,6 +518,12 @@
   }
   .img-input:focus{outline:none;border-color:var(--gold);}
   .img-input::placeholder{color:var(--ink-faint);}
+  .del-btn{
+    flex:0 0 auto;width:26px;height:26px;line-height:1;
+    background:transparent;border:1px solid var(--line);border-radius:3px;
+    color:var(--ink-faint);font-size:15px;cursor:pointer;padding:0;
+  }
+  .del-btn:hover{border-color:var(--crimson-bright);color:#e07a86;background:rgba(125,36,48,0.18);}
   .modal-foot{
     padding:14px 24px 20px;
     border-top:1px solid var(--line-soft);
@@ -1910,6 +1916,7 @@ function renderCheckList(id){
         <span></span>
       </label>
       ${imgInputHtml}
+      ${isAdmin ? `<button type="button" class="del-btn" data-sinner="${id}" data-idx="${idx}" title="이 인격 삭제" aria-label="이 인격 삭제">×</button>` : ''}
     `;
     row.querySelector('.check-label span').textContent = item.text;
     const imgEl = row.querySelector('.img-input');
@@ -1934,6 +1941,21 @@ function renderCheckList(id){
         const idx = parseInt(e.target.dataset.idx, 10);
         identities[sid][idx].img = e.target.value.trim();
         persistRoster();
+      });
+    });
+  }
+  // 인격 삭제(관리자만) — 서버의 공용 목록에서도 삭제됨
+  if(isAdmin){
+    container.querySelectorAll('.del-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const sid = e.currentTarget.dataset.sinner;
+        const idx = parseInt(e.currentTarget.dataset.idx, 10);
+        const item = identities[sid][idx];
+        if(!item) return;
+        if(!confirm('이 인격을 목록에서 삭제할까요?\n\n' + item.text + '\n\n(모든 사용자의 공용 목록에서 사라집니다. 같은 인격은 [최신 인격 반영]을 누르면 다시 추가될 수 있습니다.)')) return;
+        identities[sid].splice(idx, 1);
+        persistRoster();
+        renderCheckList(sid);
       });
     });
   }

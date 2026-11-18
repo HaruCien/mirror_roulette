@@ -881,7 +881,7 @@ const SEED_IDENTITIES = {
     "[0] | LCB 수감자 홍루"
   ],
   heathcliff: [
-    "[000] | 오트쿠튀르::바느질의 왕 히스클리프",
+    "[000] | 오트쿠튀르::르루주 바느질의 왕 히스클리프",
     "[000] | 거미집 엄지 제자 히스클리프",
     "[000] | 중지 작은 형님 히스클리프",
     "[000] | 흑수 - 유 필두 히스클리프",
@@ -1192,7 +1192,7 @@ const IMAGE_MAP = {
     "로보토미 E.G.O::눈물로 벼려낸 검 로쟈": "image_rodion/tear_rodion.png"
   },
   "heathcliff": {
-    "오트쿠튀르::바느질의 왕 히스클리프": "image_heathcliff/needle_heathcliff.png",
+    "오트쿠튀르::르루주 바느질의 왕 히스클리프": "image_heathcliff/needle_heathcliff.png",
     "흑수 - 유 필두 히스클리프": "image_heathcliff/heisu_heathcliff.png",
     "마침표 사무소 해결사 히스클리프": "image_heathcliff/period_heathcliff.png",
     "남부 시 협회 5과 히스클리프": "image_heathcliff/si_heathcliff.png",
@@ -1321,10 +1321,10 @@ const LATEST_IDENTITIES = {
     "[000] | 쐐기 사무소 대표 오티스"
   ],
   "heathcliff": [
-    "[000] | 오트쿠튀르::바느질의 왕 히스클리프"
+    "[000] | 오트쿠튀르::르루주 바느질의 왕 히스클리프"
   ]
 };
-function normName(t){ return identityNameOf(t).replace(/오트쿠튀르/g, '').replace(/[\s:]/g, ''); }  // 띄어쓰기·'::'·'오트쿠튀르' 접두 차이는 같은 인격으로 취급
+function normName(t){ return identityNameOf(t).replace(/오트쿠튀르/g, '').replace(/[^\p{L}\p{N}]/gu, ''); }  // 띄어쓰기·'::'·보이지 않는 문자·'오트쿠튀르' 접두 차이는 같은 인격으로 취급
 function applyLatestIdentities(){
   if(!isAdmin) return;
   const added = [], skipped = [];

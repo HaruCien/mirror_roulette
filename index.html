@@ -1282,7 +1282,7 @@ function identityNameOf(text){
 function applyRepoImages(){
   if(!isAdmin) return;
   let applied = 0, kept = 0, matched = 0, total = 0;
-  const unmatched = [];
+  const unmatched = [], mismatched = [];   // mismatched: 이미 입력된 경로가 연결표와 다른 항목
   Object.keys(IMAGE_MAP).forEach(sid=>{
     const list = identities[sid] || [];
     Object.keys(IMAGE_MAP[sid]).forEach(name=>{
@@ -1290,15 +1290,28 @@ function applyRepoImages(){
       const item = list.find(it=>identityNameOf(it.text) === name);
       if(!item){ unmatched.push(name); return; }
       matched++;
-      if(item.img){ kept++; return; } // 이미 입력된 경로는 덮어쓰지 않음
-      item.img = IMAGE_MAP[sid][name];
+      const want = IMAGE_MAP[sid][name];
+      if(item.img){
+        kept++;
+        if(item.img !== want) mismatched.push({item, name, want});
+        return; // 이미 입력된 경로는 기본적으로 덮어쓰지 않음
+      }
+      item.img = want;
       applied++;
     });
   });
+  let fixed = 0;
+  if(mismatched.length){
+    const lines = mismatched.map(m=>m.name + '\n   현재: ' + m.item.img + '\n   연결표: ' + m.want).join('\n');
+    if(confirm('이미 입력된 이미지 경로가 연결표와 다른 인격 ' + mismatched.length + '개를 찾았습니다.\n잘못 연결된 것이라면 연결표 기준으로 고칩니다.\n\n' + lines + '\n\n연결표 기준으로 덮어쓸까요?')){
+      mismatched.forEach(m=>{ m.item.img = m.want; fixed++; });
+    }
+  }
   persistRoster();
   if(modalOverlayIsOpen()) buildModal();
   let msg = '이미지 경로 ' + applied + '개를 새로 적용했습니다.\n'
-          + '(이미 입력되어 있어 건너뛴 것 ' + kept + '개 / 연결표 전체 ' + total + '개)';
+          + (fixed ? '잘못 연결된 경로 ' + fixed + '개를 연결표 기준으로 고쳤습니다.\n' : '')
+          + '(이미 입력되어 있어 건너뛴 것 ' + (kept - fixed) + '개 / 연결표 전체 ' + total + '개)';
   if(unmatched.length) msg += '\n\n현재 목록에서 찾지 못한 인격 ' + unmatched.length + '개:\n' + unmatched.join('\n');
   alert(msg);
 }

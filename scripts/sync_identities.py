@@ -185,16 +185,35 @@ def parse_gallery_page(html):
     return images
 
 
+CHANNEL_ID_PATTERNS = (r'"channelId":"(UC[0-9A-Za-z_-]{22})"', r'"externalId":"(UC[0-9A-Za-z_-]{22})"',
+                       r'"externalChannelId":"(UC[0-9A-Za-z_-]{22})"', r'youtube\.com/channel/(UC[0-9A-Za-z_-]{22})')
+
+
 def youtube_channel_id(pv):
+    """채널 id를 알아냅니다. 영상 페이지는 GitHub 서버에서 429로 막히는 일이 있어
+    oEmbed(채널 주소) → 채널 페이지 → 영상 페이지 순으로 시도하고, 찾으면 저장해 둡니다."""
     if pv.get("channel_id"):
         return pv["channel_id"]
-    html = get("https://www.youtube.com/watch?v=" + YOUTUBE_SEED_VIDEO).text
-    for pat in (r'"channelId":"(UC[0-9A-Za-z_-]{22})"', r'"externalChannelId":"(UC[0-9A-Za-z_-]{22})"',
-                r'youtube\.com/channel/(UC[0-9A-Za-z_-]{22})'):
-        m = re.search(pat, html)
-        if m:
-            pv["channel_id"] = m.group(1)
-            return pv["channel_id"]
+    watch = "https://www.youtube.com/watch?v=" + YOUTUBE_SEED_VIDEO
+    pages = []
+    try:
+        meta = get("https://www.youtube.com/oembed?format=json&url=" + urllib.parse.quote(watch, safe="")).json()
+        if meta.get("author_url"):
+            pages.append(meta["author_url"])
+    except Exception as e:
+        print("oEmbed 실패: " + str(e))
+    pages.append(watch)
+    for url in pages:
+        try:
+            html = get(url).text
+        except Exception as e:
+            print(f"{url} 접속 실패: {e}")
+            continue
+        for pat in CHANNEL_ID_PATTERNS:
+            m = re.search(pat, html)
+            if m:
+                pv["channel_id"] = m.group(1)
+                return pv["channel_id"]
     raise RuntimeError("공식 유튜브 채널 id를 찾지 못했습니다")
 
 
@@ -248,6 +267,18 @@ def match_pv(pv, sid, wiki_name):
                 sc += 2
         return (sc, n["published"])
     return max(cands, key=score)
+
+
+def identity_page_image(name):
+    """갤러리에 그림이 없을 때(오트쿠튀르 등) 인격 개별 문서에서 같은 이름의 그림을 찾습니다."""
+    time.sleep(1)
+    try:
+        html = get(WIKI + "/wiki/" + urllib.parse.quote(name.replace(" ", "_"))).text
+    except Exception as e:
+        print(f"인격 문서 접속 실패({name}): {e}")
+        return None
+    found = parse_gallery_page(html)
+    return found.get(norm(name))
 
 
 def guess_ko(name, sinner_en, sinner_ko):
@@ -311,7 +342,8 @@ def main():
     print(f"위키 인격 {len(rows)}개, 갤러리 이미지 {len(gallery)}개를 읽었습니다.")
     if args.dry_run:
         for r in sorted(rows, key=lambda r: r["date"])[-6:]:
-            print(f"  최근 인격: {r['date']} [{r['rarity']}] {r['name']} / 이미지 {'있음' if norm(r['name']) in gallery else '없음'}")
+            src = gallery.get(norm(r["name"])) or identity_page_image(r["name"])
+            print(f"  최근 인격: {r['date']} [{r['rarity']}] {r['name']} / 이미지 {src or '없음'}")
     if len(rows) < 100:
         print(describe_page(data_html))
         sys.exit(f"인격이 {len(rows)}개뿐입니다. 위키 페이지 구조가 바뀐 것 같아 중단합니다.")
@@ -362,7 +394,7 @@ def main():
         if len(d) == 8 and d > time.strftime("%Y%m%d", time.gmtime(time.time() + 9 * 3600)):
             waiting.append(r["name"])  # 출시 전(한국 시간 기준) → 출시 후 추가
             continue
-        url = gallery.get(norm(r["name"]))
+        url = gallery.get(norm(r["name"])) or identity_page_image(r["name"])
         if not url:
             waiting.append(r["name"])  # 아직 임시 이미지 → 다음 실행에서 재시도
             continue

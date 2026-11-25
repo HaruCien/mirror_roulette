@@ -1,1 +1,3375 @@
-{}
+{
+  "yisang": {
+    "LCB 수감자 이상": {
+      "en": "LCB Sinner Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 세븐 협회 6과 이상": {
+      "en": "Seven Assoc. South Section 6 Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "어금니 사무소 해결사 이상": {
+      "en": "Molar Office Fixer Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "피쿼드호 일등 항해사 이상": {
+      "en": "The Pequod First Mate Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "남부 디에치 협회 4과 이상": {
+      "en": "Dieci Assoc. South Section 4 Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "LCE E.G.O::초롱 이상": {
+      "en": "LCE E.G.O::Lantern Yi Sang",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "검계 살수 이상": {
+      "en": "Blade Lineage Salsu Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "개화 E.G.O::동백 이상": {
+      "en": "Effloresced E.G.O::Spicebush Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "W사 3등급 정리 요원 이상": {
+      "en": "W Corp. L3 Cleanup Agent Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "약지 점묘파 스튜던트 이상": {
+      "en": "The Ring Pointillist Student Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "로보토미 E.G.O::엄숙한 애도 이상": {
+      "en": "Lobotomy E.G.O::Solemn Lament Yi Sang",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 리우 협회 3과 이상": {
+      "en": "Liu Assoc. South Section 3 Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "N사 E.G.O::흉탄 이상": {
+      "en": "N Corp. E.G.O::Fell Bullet Yi Sang",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "흑수 - 오 필두 이상": {
+      "en": "Heishou Pack - Wu Branch Adept Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "거미집 검지 아비 이상": {
+      "en": "The House of Spiders: The Index Nursefather Yi Sang",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "LCE E.G.O::차원찢개 이상": {
+      "en": "LCE E.G.O::Dimension Shredder Yi Sang",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "오트쿠튀르::르누아르 B3F 건조장 이상": {
+      "en": "Haute Couture::Le Noir B3F Drying Room Yi Sang",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    }
+  },
+  "faust": {
+    "LCB 수감자 파우스트": {
+      "en": "LCB Sinner Faust",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "W사 2등급 정리 요원 파우스트": {
+      "en": "W Corp. L2 Cleanup Agent Faust",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "살아남은 로보토미 직원 파우스트": {
+      "en": "Lobotomy Corp. Remnant Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "남부 츠바이 협회 4과 파우스트": {
+      "en": "Zwei Assoc. South Section 4 Faust",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "워더링하이츠 버틀러 파우스트": {
+      "en": "Wuthering Heights Butler Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "쥐는 자 파우스트": {
+      "en": "The One Who Grips Faust",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        }
+      ]
+    },
+    "남부 세븐 협회 4과 파우스트": {
+      "en": "Seven Assoc. South Section 4 Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "로보토미 E.G.O::후회 파우스트": {
+      "en": "Lobotomy E.G.O::Regret Faust",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "검계 살수 파우스트": {
+      "en": "Blade Lineage Salsu Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "멀티크랙 사무소 대표 파우스트": {
+      "en": "MultiCrack Office Rep Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "LCE E.G.O::홍염살 파우스트": {
+      "en": "LCE E.G.O::Ardor Blossom Star Faust",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "흑수 - 묘 필두 파우스트": {
+      "en": "Heishou Pack - Mao Branch Adept Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "동부 시 협회 3과 파우스트": {
+      "en": "Shi Assoc. East Section 3 Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "검지 수행자: 【쪽지】 파우스트": {
+      "en": "The Index Proselyte:【Paper Slip】Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "거미집 약지 제자 파우스트": {
+      "en": "The House of Spiders: The Ring Apprentice Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "새벽 사무소 해결사 파우스트": {
+      "en": "Dawn Office Fixer Faust",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    }
+  },
+  "donquixote": {
+    "LCB 수감자 돈키호테": {
+      "en": "LCB Sinner Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "남부 시 협회 5과 부장 돈키호테": {
+      "en": "Shi Assoc. South Section 5 Director Don Quixote",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "N사 중간 망치 돈키호테": {
+      "en": "N Corp. Mittelhammer Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "로보토미 E.G.O::초롱 돈키호테": {
+      "en": "Lobotomy E.G.O::Lantern Don Quixote",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "검계 살수 돈키호테": {
+      "en": "Blade Lineage Salsu Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "W사 3등급 정리 요원 돈키호테": {
+      "en": "W Corp. L3 Cleanup Agent Don Quixote",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "남부 섕크 협회 5과 부장 돈키호테": {
+      "en": "Cinq Assoc. South Section 5 Director Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "중지 작은 아우 돈키호테": {
+      "en": "The Middle Little Sister Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        }
+      ]
+    },
+    "T사 3등급 징수직 직원 돈키호테": {
+      "en": "T Corp. Class 3 Collection Staff Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "라만차랜드 실장 돈키호테": {
+      "en": "The Manager of La Manchaland Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "동부 섕크 협회 3과 돈키호테": {
+      "en": "Cinq Assoc. East Section 3 Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "로보토미 E.G.O::사랑과 증오의 이름으로 돈키호테": {
+      "en": "Lobotomy E.G.O::In the Name of Love and Hate Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "흑수 - 미 돈키호테": {
+      "en": "Heishou Pack - Wei Branch Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "검지 대행자 - 개화 E.G.O::대행 돈키호테": {
+      "en": "The Index Proxy - Effloresced E.G.O::Procuration Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "오트쿠튀르::르누아르 브랜드 매니저 돈키호테": {
+      "en": "Haute Couture::Le Noir Brand Manager Don Quixote",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "쐐기 사무소 해결사 돈키호테": {
+      "en": "Wedge Office Fixer Don Quixote",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    }
+  },
+  "ryoshu": {
+    "LCB 수감자 료슈": {
+      "en": "LCB Sinner Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "남부 세븐 협회 6과 료슈": {
+      "en": "Seven Assoc. South Section 6 Ryoshu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "LCCB 대리 료슈": {
+      "en": "LCCB Assistant Manager Ryoshu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "남부 리우 협회 4과 료슈": {
+      "en": "Liu Assoc. South Section 4 Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "20구 유로지비 료슈": {
+      "en": "District 20 Yurodivy Ryoshu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "흑운회 와카슈 료슈": {
+      "en": "Kurokumo Clan Wakashu Ryoshu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "료. 고. 파. 주방장 료슈": {
+      "en": "R.B. Chef de Cuisine Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "W사 3등급 정리 요원 료슈": {
+      "en": "W Corp. L3 Cleanup Agent Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "에드가 가문 치프 버틀러 료슈": {
+      "en": "Edgar Family Chief Butler Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "로보토미 E.G.O::적안・참회 료슈": {
+      "en": "Lobotomy E.G.O::Red Eyes & Penitence Ryoshu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "흑수 - 묘 료슈": {
+      "en": "Heishou Pack - Mao Branch Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "N사 E.G.O::경멸, 경외 료슈": {
+      "en": "N Corp. E.G.O::Contempt, Awe Ryoshu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "홍원 방랑무사 료슈": {
+      "en": "Drifting Blade of Hongyuan Ryoshu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "로보토미 E.G.O::잔향・외로움 료슈": {
+      "en": "Lobotomy E.G.O::Faint Aroma & Solitude Ryoshu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "거미집의 검 료슈": {
+      "en": "Blade of the House of Spiders Ryoshu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "오트쿠튀르::르누아르 신발관 료슈": {
+      "en": "Haute Couture::Le Noir Footwear Hall Ryoshu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    }
+  },
+  "meursault": {
+    "LCB 수감자 뫼르소": {
+      "en": "LCB Sinner Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "남부 리우 협회 6과 뫼르소": {
+      "en": "Liu Assoc. South Section 6 Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "장미스패너 공방 해결사 뫼르소": {
+      "en": "Rosespanner Workshop Fixer Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "중지 작은 아우 뫼르소": {
+      "en": "The Middle Little Brother Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "데드레빗츠 보스 뫼르소": {
+      "en": "Dead Rabbits Boss Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "W사 2등급 정리 요원 뫼르소": {
+      "en": "W Corp. L2 Cleanup Agent Meursault",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "N사 큰 망치 뫼르소": {
+      "en": "N Corp. Großhammer Meursault",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "R사 제 4무리 코뿔소팀 뫼르소": {
+      "en": "R Corp. 4th Pack Rhino Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "검계 우두머리 뫼르소": {
+      "en": "Blade Lineage Mentor Meursault",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "남부 디에치 협회 4과 부장 뫼르소": {
+      "en": "Dieci Assoc. South Section 4 Director Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "서부 섕크 협회 3과 뫼르소": {
+      "en": "Cinq Assoc. West Section 3 Meursault",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "동부 엄지 카포IIII 뫼르소": {
+      "en": "The Thumb East Capo IIII Meursault",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "라만차랜드 왕자 뫼르소": {
+      "en": "The Prince of La Manchaland Meursault",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "로보토미 E.G.O::호넷【변조】 뫼르소": {
+      "en": "Lobotomy E.G.O::Hornet【Alteration】Meursault",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "약지 야수파 스튜던트 뫼르소": {
+      "en": "The Ring Fauvist Student Meursault",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    }
+  },
+  "honglu": {
+    "LCB 수감자 홍루": {
+      "en": "LCB Sinner Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "흑운회 와카슈 홍루": {
+      "en": "Kurokumo Clan Wakashu Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 리우 협회 5과 홍루": {
+      "en": "Liu Assoc. South Section 5 Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "W사 2등급 정리 요원 홍루": {
+      "en": "W Corp. L2 Cleanup Agent Hong Lu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "갈고리 사무소 해결사 홍루": {
+      "en": "Hook Office Fixer Hong Lu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "송곳니 사냥 사무소 해결사 홍루": {
+      "en": "Fanghunt Office Fixer Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "콩콩이파 두목 홍루": {
+      "en": "Tingtang Gang Gangleader Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "K사 3등급 적출직 직원 홍루": {
+      "en": "K Corp. Class 3 Excision Staff Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 디에치 협회 4과 홍루": {
+      "en": "Dieci Assoc. South Section 4 Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "20구 유로지비 홍루": {
+      "en": "District 20 Yurodivy Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "마침표 사무소 대표 홍루": {
+      "en": "Full-Stop Office Rep Hong Lu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "R사 제 4무리 순록팀 홍루": {
+      "en": "R Corp. 4th Pack Reindeer Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "홍원 군주 홍루": {
+      "en": "The Lord of Hongyuan Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "거미집 약지 아비 홍루": {
+      "en": "The House of Spiders: The Ring Nursefather Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "S사 추노꾼 홍루": {
+      "en": "S Corp. Ch'unokkun Hong Lu",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "동부 섕크 협회 3과 홍루": {
+      "en": "Cinq Assoc. East Section 3 Hong Lu",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "오트쿠튀르::르누아르 3F 방송실 홍루": {
+      "en": "Haute Couture::Le Noir 3F Public Address Room Hong Lu",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    }
+  },
+  "heathcliff": {
+    "LCB 수감자 히스클리프": {
+      "en": "LCB Sinner Heathcliff",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "남부 시 협회 5과 히스클리프": {
+      "en": "Shi Assoc. South Section 5 Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "N사 작은 망치 히스클리프": {
+      "en": "N Corp. Kleinhammer Heathcliff",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "남부 세븐 협회 4과 히스클리프": {
+      "en": "Seven Assoc. South Section 4 Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "멀티크랙 사무소 해결사 히스클리프": {
+      "en": "MultiCrack Office Fixer Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "R사 제 4무리 토끼팀 히스클리프": {
+      "en": "R Corp. 4th Pack Rabbit Heathcliff",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        }
+      ]
+    },
+    "로보토미 E.G.O::여우비 히스클리프": {
+      "en": "Lobotomy E.G.O::Sunshower Heathcliff",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "피쿼드호 작살잡이 히스클리프": {
+      "en": "The Pequod Harpooneer Heathcliff",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        }
+      ]
+    },
+    "남부 외우피 협회 3과 히스클리프": {
+      "en": "Öufi Assoc. South Section 3 Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "와일드헌트 히스클리프": {
+      "en": "Wild Hunt Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "마침표 사무소 해결사 히스클리프": {
+      "en": "Full-Stop Office Fixer Heathcliff",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "흑운회 와카슈 히스클리프": {
+      "en": "Kurokumo Clan Wakashu Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "W사 4등급 정리 요원 - CCA 히스클리프": {
+      "en": "W Corp. L4 Cleanup Agent - CCA Heathcliff",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "흑수 - 유 필두 히스클리프": {
+      "en": "Heishou Pack - You Branch Adept Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "중지 작은 형님 히스클리프": {
+      "en": "The Middle Big Brother Heathcliff",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "거미집 엄지 제자 히스클리프": {
+      "en": "The House of Spiders: The Thumb Apprentice Heathcliff",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "오트쿠튀르::르루주 바느질의 왕 히스클리프": {
+      "en": "Haute Couture::Le Rouge King of Needleworks Heathcliff",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        }
+      ]
+    }
+  },
+  "ishmael": {
+    "LCB 수감자 이스마엘": {
+      "en": "LCB Sinner Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "남부 시 협회 5과 이스마엘": {
+      "en": "Shi Assoc. South Section 5 Ishmael",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "LCCB 대리 이스마엘": {
+      "en": "LCCB Assistant Manager Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        }
+      ]
+    },
+    "로보토미 E.G.O::출렁임 이스마엘": {
+      "en": "Lobotomy E.G.O::Sloshing Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "에드가 가문 버틀러 이스마엘": {
+      "en": "Edgar Family Butler Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "R사 제 4무리 순록팀 이스마엘": {
+      "en": "R Corp. 4th Pack Reindeer Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "남부 리우 협회 4과 이스마엘": {
+      "en": "Liu Assoc. South Section 4 Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "어금니 보트 센터 해결사 이스마엘": {
+      "en": "Molar Boatworks Fixer Ishmael",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "피쿼드호 선장 이스마엘": {
+      "en": "The Pequod Captain Ishmael",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "서부 츠바이 협회 3과 이스마엘": {
+      "en": "Zwei Assoc. West Section 3 Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "흑운회 부조장 이스마엘": {
+      "en": "Kurokumo Clan Captain Ishmael",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "가주 후보 이스마엘": {
+      "en": "Family Hierarch Candidate Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "정사무소 대표 이스마엘": {
+      "en": "Jeong's Office Rep Ishmael",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "거미집 중지 제자 이스마엘": {
+      "en": "The House of Spiders: The Middle Apprentice Ishmael",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "LCD 현장추리팀 이스마엘": {
+      "en": "LCD OSIR Team Ishmael",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "오트쿠튀르::르루주 부티크 이스마엘": {
+      "en": "Haute Couture::Boutique du Rouge Ishmael",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    }
+  },
+  "rodion": {
+    "LCB 수감자 로쟈": {
+      "en": "LCB Sinner Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "LCCB 대리 로쟈": {
+      "en": "LCCB Assistant Manager Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "N사 중간 망치 로쟈": {
+      "en": "N Corp. Mittelhammer Rodion",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "남부 츠바이 협회 5과 로쟈": {
+      "en": "Zwei Assoc. South Section 5 Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "T사 2등급 징수직 직원 로쟈": {
+      "en": "T Corp. Class 2 Collection Staff Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "흑운회 와카슈 로쟈": {
+      "en": "Kurokumo Clan Wakashu Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "장미스패너 공방 대표 로쟈": {
+      "en": "Rosespanner Workshop Rep Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "남부 디에치 협회 4과 로쟈": {
+      "en": "Dieci Assoc. South Section 4 Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 리우 협회 4과 부장 로쟈": {
+      "en": "Liu Assoc. South Section 4 Director Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "북부 제뱌찌 협회 3과 로쟈": {
+      "en": "Devyat' Assoc. North Section 3 Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "라만차랜드 공주 로쟈": {
+      "en": "The Princess of La Manchaland Rodion",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "흑수 - 사 로쟈": {
+      "en": "Heishou Pack - Si Branch Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "로보토미 E.G.O::눈물로 벼려낸 검 로쟈": {
+      "en": "Lobotomy E.G.O::The Sword Sharpened with Tears Rodion",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "R사 제 4무리 순록팀 로쟈": {
+      "en": "R Corp. 4th Pack Reindeer Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "약지 야수파 도슨트 로쟈": {
+      "en": "The Ring Fauvist Docent Rodion",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "거미집 엄지 아비 로쟈": {
+      "en": "The House of Spiders: The Thumb Nursefather Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "오트쿠튀르::수선실 로쟈": {
+      "en": "Haute Couture::Alteration Shop Rodion",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        }
+      ]
+    }
+  },
+  "sinclair": {
+    "LCB 수감자 싱클레어": {
+      "en": "LCB Sinner Sinclair",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "남부 츠바이 협회 6과 싱클레어": {
+      "en": "Zwei Assoc. South Section 6 Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "마리아치 보스 싱클레어": {
+      "en": "Los Mariachis Jefe Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "로보토미 E.G.O::홍적 싱클레어": {
+      "en": "Lobotomy E.G.O::Red Sheet Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "어금니 보트 센터 해결사 싱클레어": {
+      "en": "Molar Boatworks Fixer Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "서부 츠바이 협회 3과 싱클레어": {
+      "en": "Zwei Assoc. West Section 3 Sinclair",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "검계 살수 싱클레어": {
+      "en": "Blade Lineage Salsu Sinclair",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "쥐어들 자 싱클레어": {
+      "en": "The One Who Shall Grip Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "남부 섕크 협회 4과 부장 싱클레어": {
+      "en": "Cinq Assoc. South Section 4 Director Sinclair",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "새벽 사무소 해결사 싱클레어": {
+      "en": "Dawn Office Fixer Sinclair",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "북부 제뱌찌 협회 3과 싱클레어": {
+      "en": "Devyat' Assoc. North Section 3 Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "중지 작은 아우 싱클레어": {
+      "en": "The Middle Little Brother Sinclair",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "동부 엄지 솔다토II 싱클레어": {
+      "en": "The Thumb East Soldato II Sinclair",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "흑수 - 유 싱클레어": {
+      "en": "Heishou Pack - You Branch Sinclair",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "거미집 소지 제자 싱클레어": {
+      "en": "The House of Spiders: The Pinky Apprentice Sinclair",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "오트쿠튀르::르루주 붉은 신 싱클레어": {
+      "en": "Haute Couture::The Crimson God of Le Rouge Sinclair",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "쐐기 사무소 해결사 싱클레어": {
+      "en": "Wedge Office Fixer Sinclair",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    }
+  },
+  "outis": {
+    "LCB 수감자 오티스": {
+      "en": "LCB Sinner Outis",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "검계 살수 오티스": {
+      "en": "Blade Lineage Salsu Outis",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        }
+      ]
+    },
+    "G사 부장 오티스": {
+      "en": "G Corp. Head Manager Outis",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "남부 섕크 협회 4과 오티스": {
+      "en": "Cinq Assoc. South Section 4 Outis",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "약지 점묘파 스튜던트 오티스": {
+      "en": "The Ring Pointillist Student Outis",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        }
+      ]
+    },
+    "남부 세븐 협회 6과 부장 오티스": {
+      "en": "Seven Assoc. South Section 6 Director Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "어금니 사무소 해결사 오티스": {
+      "en": "Molar Office Fixer Outis",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "로보토미 E.G.O::마탄 오티스": {
+      "en": "Lobotomy E.G.O::Magic Bullet Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "워더링하이츠 치프 버틀러 오티스": {
+      "en": "Wuthering Heights Chief Butler Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "gloom"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "W사 3등급 정리 요원 팀장 오티스": {
+      "en": "W Corp. L3 Cleanup Captain Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "라만차랜드 이발사 오티스": {
+      "en": "The Barber of La Manchaland Outis",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "흑수 - 묘 오티스": {
+      "en": "Heishou Pack - Mao Branch Outis",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "T사 3등급 강력징수직 직원 오티스": {
+      "en": "T Corp. Class 3 VDCU Staff Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "LCA 우제트 선봉 3팀 팀장 오티스": {
+      "en": "LCA Udjat Vanguard Team 3 Leader Outis",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "거미집 중지 아비 오티스": {
+      "en": "The House of Spiders: The Middle Nursefather Outis",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        },
+        {
+          "type": "blunt",
+          "sin": "envy"
+        }
+      ]
+    },
+    "쐐기 사무소 대표 오티스": {
+      "en": "Wedge Office Rep Outis",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    }
+  },
+  "gregor": {
+    "LCB 수감자 그레고르": {
+      "en": "LCB Sinner Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "남부 리우 협회 6과 그레고르": {
+      "en": "Liu Assoc. South Section 6 Gregor",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "sloth"
+        }
+      ]
+    },
+    "료. 고. 파. 조수 그레고르": {
+      "en": "R.B. Sous-chef Gregor",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "장미스패너 공방 해결사 그레고르": {
+      "en": "Rosespanner Workshop Fixer Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "흑운회 부조장 그레고르": {
+      "en": "Kurokumo Clan Captain Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "G사 일등대리 그레고르": {
+      "en": "G Corp. Manager Corporal Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    },
+    "남부 츠바이 협회 4과 그레고르": {
+      "en": "Zwei Assoc. South Section 4 Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "쌍갈고리 해적단 부선장 그레고르": {
+      "en": "Twinhook Pirates First Mate Gregor",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        }
+      ]
+    },
+    "에드가 가문 승계자 그레고르": {
+      "en": "Edgar Family Heir Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "envy"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "lust"
+        }
+      ]
+    },
+    "라만차랜드 신부 그레고르": {
+      "en": "The Priest of La Manchaland Gregor",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "gluttony"
+        },
+        {
+          "type": "blunt",
+          "sin": "pride"
+        },
+        {
+          "type": "blunt",
+          "sin": "lust"
+        }
+      ]
+    },
+    "불주먹 사무소 생존자 그레고르": {
+      "en": "Firefist Office Survivor Gregor",
+      "skills": [
+        {
+          "type": "blunt",
+          "sin": "lust"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        },
+        {
+          "type": "blunt",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "흑수 - 사 그레고르": {
+      "en": "Heishou Pack - Si Branch Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "envy"
+        }
+      ]
+    },
+    "밤의 송곳 카피타노 그레고르": {
+      "en": "Night Awls Capitano Gregor",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "sloth"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "로보토미 E.G.O::램프 그레고르": {
+      "en": "Lobotomy E.G.O::Lamp Gregor",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "wrath"
+        },
+        {
+          "type": "pierce",
+          "sin": "gloom"
+        },
+        {
+          "type": "pierce",
+          "sin": "pride"
+        }
+      ]
+    },
+    "LCE E.G.O::AEDD 그레고르": {
+      "en": "LCE E.G.O::AEDD Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "gluttony"
+        },
+        {
+          "type": "slash",
+          "sin": "gloom"
+        },
+        {
+          "type": "slash",
+          "sin": "envy"
+        }
+      ]
+    },
+    "새벽 사무소 대표 그레고르": {
+      "en": "Dawn Office Rep Gregor",
+      "skills": [
+        {
+          "type": "slash",
+          "sin": "sloth"
+        },
+        {
+          "type": "slash",
+          "sin": "pride"
+        },
+        {
+          "type": "slash",
+          "sin": "wrath"
+        }
+      ]
+    },
+    "오트쿠튀르::르루주 B2F 타래둥지 그레고르": {
+      "en": "Haute Couture::Le Rouge B2F Skein Nest Gregor",
+      "skills": [
+        {
+          "type": "pierce",
+          "sin": "gluttony"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        },
+        {
+          "type": "pierce",
+          "sin": "lust"
+        }
+      ]
+    }
+  }
+}

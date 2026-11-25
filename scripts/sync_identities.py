@@ -367,6 +367,7 @@ def main():
         fetch_pv_names(pv)
         print(f"유튜브 PV 인격명 {len(pv.get('names', []))}개를 알고 있습니다.")
         if args.dry_run:
+            print("  유튜브 채널 id: " + str(pv.get("channel_id")))
             for n in pv.get("names", [])[-6:]:
                 print(f"  PV 인격명: {n['published']} [{n['stars']}] {n['name']}")
     except Exception as e:  # 유튜브 실패는 치명적이지 않음: 추정 이름으로 진행

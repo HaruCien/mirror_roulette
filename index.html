@@ -1119,6 +1119,33 @@ async function fetchServerIdentities(){
   }
 }
 
+// ===== 자동 수집된 신규 인격 합치기 =====
+// GitHub Action(scripts/sync_identities.py)이 위키에서 찾아 data/auto_identities.json에 넣은 인격을
+// 공용 목록에 없으면 맨 위에 추가하고, 이미 있는데 이미지가 비어 있으면 이미지만 채웁니다.
+async function mergeAutoIdentities(){
+  try{
+    const res = await fetch('data/auto_identities.json', { cache: 'no-cache' });
+    if(!res.ok) return;
+    const list = await res.json();
+    if(!Array.isArray(list) || !list.length) return;
+    let changed = false;
+    list.forEach(e=>{
+      if(!e || !e.sinner || !e.text || !identities[e.sinner]) return;
+      const arr = identities[e.sinner];
+      const found = arr.find(it=>normName(it.text) === normName(e.text));
+      if(found){
+        if(!found.img && e.img){ found.img = e.img; changed = true; }
+        return;
+      }
+      arr.unshift({ text: String(e.text), checked: true, img: e.img || '' });
+      changed = true;
+    });
+    if(!changed) return;
+    saveIdentities();
+    if(modalOverlayIsOpen()) buildModal();
+  }catch(e){}
+}
+
 // ===== 저장소 이미지 경로 일괄 적용 (관리자 전용) =====
 // 저장소의 image_캐릭터명 폴더에 올려둔 인격 이미지를 인격명과 연결한 표입니다.
 // 키는 "[등급] | " 뒤의 인격명이라, 등급 표기가 바뀌어도 그대로 연결됩니다.
@@ -1456,7 +1483,7 @@ document.getElementById('adminToggle').addEventListener('click', async ()=>{
       adminPasswordCache = pw;
       try{ sessionStorage.setItem(ADMIN_SESSION_KEY, pw); }catch(e){}
       applyAdminUI();
-      fetchServerIdentities(); // 로그인 직후 최신 서버 목록으로 갱신
+      fetchServerIdentities().then(mergeAutoIdentities); // 로그인 직후 최신 서버 목록으로 갱신
     } else {
       alert('비밀번호가 올바르지 않습니다.');
       btn.disabled = false;
@@ -1653,7 +1680,7 @@ document.getElementById('changelogAddBtn').addEventListener('click', ()=>{
 
 fetchChangelog(true); // 페이지 로딩 시 최신 소식을 받아오고, 필요하면 자동으로 팝업
 
-fetchServerIdentities(); // 페이지 로딩 시 모두에게 공용인 최신 목록을 받아옴
+fetchServerIdentities().then(mergeAutoIdentities); // 페이지 로딩 시 공용 최신 목록을 받고, 자동 수집된 신규 인격을 합침
 
 const state = {}; // per-sinner: {mode:'idle'|'spinning'|'stopping', timer:null, current:null}
 SINNERS.forEach(s=>{ state[s.id] = {mode:'idle', timer:null, current:null}; });

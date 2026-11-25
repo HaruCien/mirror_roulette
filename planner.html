@@ -549,6 +549,11 @@ async function loadRoster(){
   roster = readLocalRoster();
   const hasLocal = Object.keys(roster).length > 0;
   if(hasLocal) renderParty();
+  // 자동 수집된 신규 인격 이미지(data/auto_identities.json)도 카드 이미지로 등록
+  try{
+    const r = await fetch('data/auto_identities.json', { cache: 'no-cache' });
+    if(r.ok){ const auto = await r.json(); if(Array.isArray(auto)) auto.forEach(e=>e && registerImg(String(e.text || ''), e.img)); if(hasLocal) updateAllCards(); }
+  }catch(e){}
   // 서버의 공용 인격 목록: 카드 이미지 확보용 (로컬 목록이 없으면 목록 제안에도 사용). 실패해도 직접 입력은 가능
   try{
     const res = await fetch(ADMIN_API_BASE + '/identities');

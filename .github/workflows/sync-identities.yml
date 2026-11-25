@@ -1,0 +1,43 @@
+name: 신규 인격 자동 수집
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # 매일 오전 7시(KST) — 오전 6시 게임 일일 갱신 이후
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-identities
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements-sync.txt
+
+      - name: 위키에서 신규 인격 확인
+        id: sync
+        run: python scripts/sync_identities.py --report "$RUNNER_TEMP/report.md"
+
+      - name: 변경분으로 PR 열기
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/sync-identities
+          delete-branch: true
+          commit-message: "신규 인격 자동 수집"
+          title: "신규 인격 자동 수집 (한국어 이름 확인 후 머지)"
+          body-path: ${{ runner.temp }}/report.md
+          add-paths: |
+            data/
+            image_*/
+            images_*/

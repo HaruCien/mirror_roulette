@@ -1,1 +1,728 @@
-{}
+{
+  "yisang": [
+    {
+      "name": "지난 날",
+      "en": "Bygone Days Yi Sang",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "오감도",
+      "en": "Crow's Eye View Yi Sang",
+      "tier": "zayin",
+      "sin": "sloth"
+    },
+    {
+      "name": "4번째 성냥불",
+      "en": "4th Match Flame Yi Sang",
+      "tier": "teth",
+      "sin": "wrath"
+    },
+    {
+      "name": "소망석",
+      "en": "Wishing Cairn Yi Sang",
+      "tier": "teth",
+      "sin": "sloth"
+    },
+    {
+      "name": "차원찢개",
+      "en": "Dimension Shredder Yi Sang",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "흉탄",
+      "en": "Fell Bullet Yi Sang",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "엄숙한 애도",
+      "en": "Solemn Lament Yi Sang",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "삼천대세계 [三千大世界]",
+      "en": "Great Trichiliocosm 三千大世界 Yi Sang",
+      "tier": "waw",
+      "sin": "wrath"
+    },
+    {
+      "name": "여우비",
+      "en": "Sunshower Yi Sang",
+      "tier": "waw",
+      "sin": "sloth"
+    }
+  ],
+  "faust": [
+    {
+      "name": "표상 방출기",
+      "en": "Representation Emitter Faust",
+      "tier": "zayin",
+      "sin": "pride"
+    },
+    {
+      "name": "9장 2절",
+      "en": "9:2 Faust",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "저주못",
+      "en": "Hex Nail Faust",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "올가미",
+      "en": "Lasso Faust",
+      "tier": "teth",
+      "sin": "gluttony"
+    },
+    {
+      "name": "홍염살",
+      "en": "Ardor Blossom Star Faust",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "명령 : 용해",
+      "en": "Command : Meltdown Faust",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "물주머니",
+      "en": "Fluid Sac Faust",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "전봇대",
+      "en": "Telepole Faust",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "흉통",
+      "en": "Thoracalgia Faust",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "영속",
+      "en": "Everlasting Faust",
+      "tier": "waw",
+      "sin": "sloth"
+    },
+    {
+      "name": "구멍",
+      "en": "Hollow Faust",
+      "tier": "waw",
+      "sin": "pride"
+    }
+  ],
+  "donquixote": [
+    {
+      "name": "난 가위를 낼게, 너는?",
+      "en": "I'll Go fer Scissors. How 'Bout You? Don Quixote",
+      "tier": "zayin",
+      "sin": "envy"
+    },
+    {
+      "name": "라 샹그레 데 산쵸",
+      "en": "La Sangre de Sancho Don Quixote",
+      "tier": "zayin",
+      "sin": "lust"
+    },
+    {
+      "name": "전기울음",
+      "en": "Electric Screaming Don Quixote",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "평생 스튜",
+      "en": "Lifetime Stew Don Quixote",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "소망석",
+      "en": "Wishing Cairn Don Quixote",
+      "tier": "teth",
+      "sin": "sloth"
+    },
+    {
+      "name": "물주머니",
+      "en": "Fluid Sac Don Quixote",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "홍적",
+      "en": "Red Sheet Don Quixote",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "전봇대",
+      "en": "Telepole Don Quixote",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "사랑과 증오의 이름으로",
+      "en": "In the Name of Love and Hate Don Quixote",
+      "tier": "waw",
+      "sin": "envy"
+    },
+    {
+      "name": "갈망-미르칼라",
+      "en": "Yearning-Mircalla Don Quixote",
+      "tier": "waw",
+      "sin": "lust"
+    }
+  ],
+  "ryoshu": [
+    {
+      "name": "삼라염상",
+      "en": "Forest for the Flames Ryoshu",
+      "tier": "zayin",
+      "sin": "lust"
+    },
+    {
+      "name": "소다",
+      "en": "Soda Ryoshu",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "맹목",
+      "en": "Blind Obsession Ryoshu",
+      "tier": "teth",
+      "sin": "pride"
+    },
+    {
+      "name": "적안",
+      "en": "Red Eyes Ryoshu",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "4번째 성냥불",
+      "en": "4th Match Flame Ryoshu",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "적안(開)",
+      "en": "Red Eyes (Open) Ryoshu",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "흉통",
+      "en": "Thoracalgia Ryoshu",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "경멸, 경외",
+      "en": "Contempt, Awe Ryoshu",
+      "tier": "waw",
+      "sin": "lust"
+    },
+    {
+      "name": "삼천대세계 [三千大世界]",
+      "en": "Great Trichiliocosm 三千大世界 Ryoshu",
+      "tier": "waw",
+      "sin": "wrath"
+    }
+  ],
+  "meursault": [
+    {
+      "name": "타인의 사슬",
+      "en": "Chains of Others Meursault",
+      "tier": "zayin",
+      "sin": "pride"
+    },
+    {
+      "name": "전기울음",
+      "en": "Electric Screaming Meursault",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "후회",
+      "en": "Regret Meursault",
+      "tier": "teth",
+      "sin": "wrath"
+    },
+    {
+      "name": "나사빠진 일격",
+      "en": "Screwloose Wallop Meursault",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "카포테",
+      "en": "Capote Meursault",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "집행",
+      "en": "Pursuance Meursault",
+      "tier": "he",
+      "sin": "sloth"
+    },
+    {
+      "name": "착영휘도[着影揮刀]",
+      "en": "Shadow-vested Bladesinger 着影揮刀 Meursault",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "분쇄될 과거",
+      "en": "Crushbound Past Meursault",
+      "tier": "waw",
+      "sin": "sloth"
+    },
+    {
+      "name": "구멍",
+      "en": "Hollow Meursault",
+      "tier": "waw",
+      "sin": "pride"
+    },
+    {
+      "name": "갈망-미르칼라",
+      "en": "Yearning-Mircalla Meursault",
+      "tier": "waw",
+      "sin": "lust"
+    }
+  ],
+  "honglu": [
+    {
+      "name": "허환경",
+      "en": "Land of Illusion Hong Lu",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "거절선포",
+      "en": "Repudiation Hong Lu",
+      "tier": "zayin",
+      "sin": "envy"
+    },
+    {
+      "name": "낮은울음",
+      "en": "Cavernous Wailing Hong Lu",
+      "tier": "teth",
+      "sin": "sloth"
+    },
+    {
+      "name": "올가미",
+      "en": "Lasso Hong Lu",
+      "tier": "teth",
+      "sin": "gluttony"
+    },
+    {
+      "name": "분홍욕망",
+      "en": "Roseate Desire Hong Lu",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "소다",
+      "en": "Soda Hong Lu",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "차원찢개",
+      "en": "Dimension Shredder Hong Lu",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "들끓는 부식",
+      "en": "Effervescent Corrosion Hong Lu",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "눈물로 벼려낸 검",
+      "en": "The Sword Sharpened with Tears Hong Lu",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "영작오 [宁作吾]",
+      "en": "To Remain Oneself 宁作吾 Hong Lu",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "오혈읍루 [汚血泣淚]",
+      "en": "Tears of the Tarnished Blood 汚血泣淚 Hong Lu",
+      "tier": "waw",
+      "sin": "gluttony"
+    }
+  ],
+  "heathcliff": [
+    {
+      "name": "시체자루",
+      "en": "Bodysack Heathcliff",
+      "tier": "zayin",
+      "sin": "envy"
+    },
+    {
+      "name": "홀리데이",
+      "en": "Holiday Heathcliff",
+      "tier": "zayin",
+      "sin": "gluttony"
+    },
+    {
+      "name": "AEDD",
+      "en": "AEDD Heathcliff",
+      "tier": "teth",
+      "sin": "gloom"
+    },
+    {
+      "name": "흉탄",
+      "en": "Fell Bullet Heathcliff",
+      "tier": "teth",
+      "sin": "pride"
+    },
+    {
+      "name": "입주 신고",
+      "en": "Move-in Reg. Heathcliff",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "쏠린 관성",
+      "en": "Asymmetrical Inertia Heathcliff",
+      "tier": "he",
+      "sin": "sloth"
+    },
+    {
+      "name": "전봇대",
+      "en": "Telepole Heathcliff",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "공즉시색",
+      "en": "Ya Śunyatā Tad Rupam Heathcliff",
+      "tier": "he",
+      "sin": "lust"
+    },
+    {
+      "name": "구속",
+      "en": "Binds Heathcliff",
+      "tier": "waw",
+      "sin": "gloom"
+    }
+  ],
+  "ishmael": [
+    {
+      "name": "즉저살 [蝍蛆殺]",
+      "en": "Hundred-Footed Death Maggot 蝍蛆殺 Ishmael",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "작살박이",
+      "en": "Snagharpoon Ishmael",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "지난 날",
+      "en": "Bygone Days Ishmael",
+      "tier": "teth",
+      "sin": "gloom"
+    },
+    {
+      "name": "카포테",
+      "en": "Capote Ishmael",
+      "tier": "teth",
+      "sin": "wrath"
+    },
+    {
+      "name": "분홍욕망",
+      "en": "Roseate Desire Ishmael",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "홍염살",
+      "en": "Ardor Blossom Star Ishmael",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "크리스마스 악몽",
+      "en": "Christmas Nightmare Ishmael",
+      "tier": "he",
+      "sin": "sloth"
+    },
+    {
+      "name": "파도의 만가",
+      "en": "Tidal Elegy Ishmael",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "날갯짓",
+      "en": "Wingbeat Ishmael",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "맹목",
+      "en": "Blind Obsession Ishmael",
+      "tier": "waw",
+      "sin": "pride"
+    }
+  ],
+  "rodion": [
+    {
+      "name": "노을 속으로",
+      "en": "Into the Sunset Rodion",
+      "tier": "zayin",
+      "sin": "lust"
+    },
+    {
+      "name": "던져지는 것",
+      "en": "What is Cast Rodion",
+      "tier": "zayin",
+      "sin": "pride"
+    },
+    {
+      "name": "들끓는 부식",
+      "en": "Effervescent Corrosion Rodion",
+      "tier": "teth",
+      "sin": "gluttony"
+    },
+    {
+      "name": "거울촉각",
+      "en": "Mirror-touch Rodion",
+      "tier": "teth",
+      "sin": "sloth"
+    },
+    {
+      "name": "얼음다리",
+      "en": "Rime Shank Rodion",
+      "tier": "teth",
+      "sin": "gloom"
+    },
+    {
+      "name": "4번째 성냥불",
+      "en": "4th Match Flame Rodion",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "저주못",
+      "en": "Hex Nail Rodion",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "집행",
+      "en": "Pursuance Rodion",
+      "tier": "he",
+      "sin": "sloth"
+    },
+    {
+      "name": "지정 재판",
+      "en": "Indicant's Trial Rodion",
+      "tier": "waw",
+      "sin": "wrath"
+    },
+    {
+      "name": "핏빛욕망",
+      "en": "Sanguine Desire Rodion",
+      "tier": "waw",
+      "sin": "lust"
+    }
+  ],
+  "sinclair": [
+    {
+      "name": "지식나무의 가지",
+      "en": "Branch of Knowledge Sinclair",
+      "tier": "zayin",
+      "sin": "gluttony"
+    },
+    {
+      "name": "낮은울음",
+      "en": "Cavernous Wailing Sinclair",
+      "tier": "zayin",
+      "sin": "gloom"
+    },
+    {
+      "name": "저주못",
+      "en": "Hex Nail Sinclair",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "다가올날",
+      "en": "Impending Day Sinclair",
+      "tier": "teth",
+      "sin": "wrath"
+    },
+    {
+      "name": "평생 스튜",
+      "en": "Lifetime Stew Sinclair",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "9장 2절",
+      "en": "9:2 Sinclair",
+      "tier": "he",
+      "sin": "lust"
+    },
+    {
+      "name": "하모니",
+      "en": "Harmony Sinclair",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "초롱",
+      "en": "Lantern Sinclair",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "오혈읍루 [汚血泣淚]",
+      "en": "Tears of the Tarnished Blood 汚血泣淚 Sinclair",
+      "tier": "waw",
+      "sin": "gluttony"
+    }
+  ],
+  "outis": [
+    {
+      "name": "난 가위를 낼게, 너는?",
+      "en": "I'll Go fer Scissors. How 'Bout You? Outis",
+      "tier": "zayin",
+      "sin": "envy"
+    },
+    {
+      "name": "토 파토스 마토스",
+      "en": "To Páthos Máthos Outis",
+      "tier": "zayin",
+      "sin": "pride"
+    },
+    {
+      "name": "여우비",
+      "en": "Sunshower Outis",
+      "tier": "teth",
+      "sin": "gluttony"
+    },
+    {
+      "name": "공즉시색",
+      "en": "Ya Śunyatā Tad Rupam Outis",
+      "tier": "teth",
+      "sin": "lust"
+    },
+    {
+      "name": "차원찢개",
+      "en": "Dimension Shredder Outis",
+      "tier": "he",
+      "sin": "envy"
+    },
+    {
+      "name": "검은줄기",
+      "en": "Ebony Stem Outis",
+      "tier": "he",
+      "sin": "gluttony"
+    },
+    {
+      "name": "홀리데이",
+      "en": "Holiday Outis",
+      "tier": "he",
+      "sin": "wrath"
+    },
+    {
+      "name": "마탄",
+      "en": "Magic Bullet Outis",
+      "tier": "he",
+      "sin": "pride"
+    },
+    {
+      "name": "구속",
+      "en": "Binds Outis",
+      "tier": "waw",
+      "sin": "pride"
+    }
+  ],
+  "gregor": [
+    {
+      "name": "눈속임",
+      "en": "Legerdemain Gregor",
+      "tier": "zayin",
+      "sin": "gluttony"
+    },
+    {
+      "name": "어느날 갑자기",
+      "en": "Suddenly, One Day Gregor",
+      "tier": "zayin",
+      "sin": "sloth"
+    },
+    {
+      "name": "지난 날",
+      "en": "Bygone Days Gregor",
+      "tier": "teth",
+      "sin": "gloom"
+    },
+    {
+      "name": "초롱",
+      "en": "Lantern Gregor",
+      "tier": "teth",
+      "sin": "gluttony"
+    },
+    {
+      "name": "입주 신고",
+      "en": "Move-in Reg. Gregor",
+      "tier": "teth",
+      "sin": "envy"
+    },
+    {
+      "name": "AEDD",
+      "en": "AEDD Gregor",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "크리스마스 악몽",
+      "en": "Christmas Nightmare Gregor",
+      "tier": "he",
+      "sin": "sloth"
+    },
+    {
+      "name": "엄숙한 애도",
+      "en": "Solemn Lament Gregor",
+      "tier": "he",
+      "sin": "gloom"
+    },
+    {
+      "name": "가시 화원",
+      "en": "Garden of Thorns Gregor",
+      "tier": "waw",
+      "sin": "lust"
+    },
+    {
+      "name": "눈부시지 않은 영광",
+      "en": "Unbrilliant Glory Gregor",
+      "tier": "waw",
+      "sin": "sloth"
+    }
+  ]
+}

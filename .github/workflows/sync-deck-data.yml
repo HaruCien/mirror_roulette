@@ -1,0 +1,49 @@
+name: 덱 데이터 자동 수집 (스킬 속성 · E.G.O)
+
+on:
+  schedule:
+    - cron: "30 22 * * 4"   # 매주 금요일 오전 7시 30분(KST) — 목요일 인게임 패치 이후, 신규 인격 수집(7시) 다음
+  push:
+    branches: [main]
+    paths:   # 수집기나 이름표를 고쳐서 머지하면 바로 한 번 실행
+      - scripts/sync_deck_data.py
+      - data/name_overrides.json
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "확인만 하기 (파일 변경·PR 없이 로그만 남김)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-deck-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements-sync.txt
+
+      - name: 스킬 속성과 E.G.O 목록 수집
+        run: python scripts/sync_deck_data.py --report "$RUNNER_TEMP/report.md" ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: 변경분으로 PR 열기
+        if: ${{ !inputs.dry_run }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/sync-deck-data
+          delete-branch: true
+          commit-message: "덱 데이터 자동 수집"
+          title: "덱 데이터 자동 수집 (스킬 속성 · E.G.O)"
+          body-path: ${{ runner.temp }}/report.md

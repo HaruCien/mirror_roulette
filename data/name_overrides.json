@@ -1,0 +1,26 @@
+{
+  "_설명": "게임 텍스트에 아직 한국어 이름이 없는 인격·E.G.O의 이름표입니다. 위키 영문 이름(수감자 이름 포함)을 왼쪽에, 사이트에서 쓰는 한국어 이름을 오른쪽에 적으면 덱 데이터 수집 때 가장 먼저 쓰입니다.",
+  "identities": {
+    "Haute Couture::Le Noir B3F Drying Room Yi Sang": "오트쿠튀르::르누아르 B3F 건조장 이상",
+    "Haute Couture::Le Noir Brand Manager Don Quixote": "오트쿠튀르::르누아르 브랜드 매니저 돈키호테",
+    "Wedge Office Fixer Don Quixote": "쐐기 사무소 해결사 돈키호테",
+    "Cinq Assoc. East Section 3 Hong Lu": "동부 섕크 협회 3과 홍루",
+    "Haute Couture::Le Noir 3F Public Address Room Hong Lu": "오트쿠튀르::르누아르 3F 방송실 홍루",
+    "Haute Couture::Le Rouge King of Needleworks Heathcliff": "오트쿠튀르::르루주 바느질의 왕 히스클리프",
+    "Haute Couture::Boutique du Rouge Ishmael": "오트쿠튀르::르루주 부티크 이스마엘",
+    "Haute Couture::Alteration Shop Rodion": "오트쿠튀르::수선실 로쟈",
+    "Haute Couture::The Crimson God of Le Rouge Sinclair": "오트쿠튀르::르루주 붉은 신 싱클레어",
+    "Wedge Office Fixer Sinclair": "쐐기 사무소 해결사 싱클레어",
+    "Wedge Office Rep Outis": "쐐기 사무소 대표 오티스",
+    "Haute Couture::Le Rouge B2F Skein Nest Gregor": "오트쿠튀르::르루주 B2F 타래둥지 그레고르",
+    "Haute Couture::Le Noir Footwear Hall Ryōshū": "오트쿠튀르::르누아르 신발관 료슈"
+  },
+  "ego": {
+    "Hollow Faust": "구멍",
+    "Hollow Meursault": "구멍",
+    "Repudiation Hong Lu": "거절선포",
+    "The Sword Sharpened with Tears Hong Lu": "눈물로 벼려낸 검",
+    "Mirror-touch Rodion": "거울촉각",
+    "Move-in Reg. Gregor": "입주 신고"
+  }
+}

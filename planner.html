@@ -302,7 +302,7 @@
   /* 스킬 칸: 기본 스킬 1·2·3의 공격 유형(참격/관통/타격)과 죄악 속성, 개수 */
   .skills{display:flex;gap:4px;justify-content:center;}
   .sk{position:relative;width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;
-    background:var(--sin,#3a3128);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);color:#1a120b;}
+    background:var(--sin,#3a3128);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);color:#1a120b;font-family:'Bebas Neue',sans-serif;font-size:12px;}
   .sk svg{width:17px;height:17px;}
   .sk.unknown{background:#2a221a;color:var(--ink-faint);font-family:'Bebas Neue',sans-serif;font-size:12px;}
   .sk .cnt{position:absolute;right:-4px;bottom:-5px;font-family:'Bebas Neue',sans-serif;font-size:11px;line-height:1;color:var(--ink);
@@ -587,6 +587,7 @@
         <summary>저작권 및 삭제 요청</summary>
         <div class="legal-body"><ul>
           <li>게임 내 이미지, 명칭, 상표 등 모든 원저작물의 권리는 프로젝트 문에 있습니다. 이 사이트는 팬 활동의 범위에서 이를 참조합니다.</li>
+          <li>덱 빌더의 스킬 속성과 E.G.O 정보는 <a href="https://limbuscompany.wiki.gg/" target="_blank" rel="noopener" style="color:var(--gold);">Limbus Company Wiki</a>(CC BY-SA)에서, 한국어 명칭은 <a href="https://github.com/LocalizeLimbusCompany/LocalizeLimbusCompany" target="_blank" rel="noopener" style="color:var(--gold);">LocalizeLimbusCompany</a>(CC BY-NC-SA 4.0)의 게임 텍스트에서 가져옵니다.</li>
           <li>권리자 또는 이용자가 삭제·수정을 요청하면 지체 없이 해당 내용을 내리거나 사이트 운영을 중단하겠습니다.</li>
           <li>요청은 <a href="https://github.com/HaruCien/mirror_roulette/issues" target="_blank" rel="noopener" style="color:var(--gold);">GitHub 저장소의 이슈</a>로 남겨 주세요.</li>
         </ul></div>
@@ -694,7 +695,7 @@ function readLocalRoster(){
 async function loadDeckData(){
   const get = async (url)=>{ try{ const r = await fetch(url, { cache:'no-cache' }); return r.ok ? await r.json() : null; }catch(e){ return null; } };
   const [sk, eg] = await Promise.all([get('data/identity_skills.json'), get('data/ego.json')]);
-  if(sk && typeof sk === 'object') skillData = sk;
+  if(sk && typeof sk === 'object'){ skillData = sk; indexSkills(); }
   if(eg && typeof eg === 'object') egoData = eg;
   updateAllCards();
 }
@@ -806,15 +807,23 @@ function renderView(){
 }
 
 /* ---------- 스킬 / E.G.O 표시 ---------- */
-// data/identity_skills.json : {sinnerId:{"인격 이름":{skills:[{type:'slash|pierce|blunt', sin:'wrath|…'}, 2스킬, 3스킬]}}}
-// data/ego.json             : {sinnerId:[{name:'E.G.O 이름', tier:'zayin|teth|he|waw|aleph', sin:'wrath|…'}]}
-// 두 파일이 비어 있으면 스킬은 회색 칸, E.G.O는 직접 입력으로만 동작합니다.
-let skillData = {}, egoData = {};
+// data/identity_skills.json : {sinnerId:{"인격 이름":{en, skills:[{type:'slash|pierce|blunt', sin:'wrath|…'}, 2스킬, 3스킬]}}}
+// data/ego.json             : {sinnerId:[{name:'E.G.O 이름', en, tier:'zayin|teth|he|waw|aleph', sin:'wrath|…'}]}
+// 매일 GitHub Action(scripts/sync_deck_data.py)이 채웁니다. 비어 있으면 스킬은 회색 칸, E.G.O는 직접 입력으로만 동작합니다.
+let skillData = {}, egoData = {}, skillIndex = {};
+// 이름 비교 키: 띄어쓰기·문장부호 차이 무시 (예: "LCE E.G.O:: 차원찢개" = "LCE E.G.O::차원찢개")
+function nameKey(s){ return String(s||'').toLowerCase().replace(/[^0-9a-z가-힣]/g, ''); }
+function indexSkills(){
+  skillIndex = {};
+  Object.keys(skillData).forEach(sid=>{
+    const m = skillIndex[sid] = {};
+    Object.entries(skillData[sid] || {}).forEach(([ko, e])=>{ if(e && Array.isArray(e.skills)) m[nameKey(ko)] = e.skills; });
+  });
+}
 function skillsOf(sid, text){
   const t = String(text||'').trim();
   if(!t) return null;
-  const e = (skillData[sid] || {})[nameOf(t)];
-  return e && Array.isArray(e.skills) ? e.skills : null;
+  return (skillIndex[sid] || {})[nameKey(nameOf(t))] || null;
 }
 const ATK_SVG = {
   slash:'<svg viewBox="0 0 20 20"><path d="M3 16 C7 15 14 9 17 3 C16 9 11 15 4 18 Z" fill="currentColor"/></svg>',
@@ -826,14 +835,20 @@ function skillsHTML(sid, text){
   const sk = skillsOf(sid, text);
   return SKILL_COUNTS.map((n,i)=>{
     const d = sk && sk[i];
-    if(!d || !ATK_SVG[d.type]) return `<span class="sk unknown" title="${i+1}스킬 ×${n} (스킬 정보 없음)">S${i+1}<span class="cnt">×${n}</span></span>`;
-    const sin = SINS[d.sin];
+    const sin = d && SINS[d.sin];
+    if(!d || !ATK_SVG[d.type]){
+      // 공격 유형을 모르면 S1~S3 글자만, 속성을 알면 그 색으로
+      return sin
+        ? `<span class="sk" style="--sin:${sin.color}" title="${i+1}스킬 ×${n} · ${sin.name}">S${i+1}<span class="cnt">×${n}</span></span>`
+        : `<span class="sk unknown" title="${i+1}스킬 ×${n} (스킬 정보 없음)">S${i+1}<span class="cnt">×${n}</span></span>`;
+    }
     return `<span class="sk" style="--sin:${sin ? sin.color : '#3a3128'}" title="${i+1}스킬 ×${n} · ${ATK_KO[d.type]}${sin ? ' · '+sin.name : ''}">${ATK_SVG[d.type]}<span class="cnt">×${n}</span></span>`;
   }).join('');
 }
 function egoInfo(sid, name){
   const n = String(name||'').trim();
-  return n ? (egoData[sid] || []).find(e=>e && e.name === n) || null : null;
+  const k = nameKey(n);
+  return n ? (egoData[sid] || []).find(e=>e && (e.name === n || nameKey(e.name) === k || nameKey(e.en) === k)) || null : null;
 }
 function egoTileInner(s, row){
   const ego = (row && row.ego) || {};

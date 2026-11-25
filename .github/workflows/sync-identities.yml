@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "0 22 * * *"   # 매일 오전 7시(KST) — 오전 6시 게임 일일 갱신 이후
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "확인만 하기 (파일 변경·PR 없이 로그만 남김)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,9 +32,10 @@ jobs:
 
       - name: 위키에서 신규 인격 확인
         id: sync
-        run: python scripts/sync_identities.py --report "$RUNNER_TEMP/report.md"
+        run: python scripts/sync_identities.py --report "$RUNNER_TEMP/report.md" ${{ inputs.dry_run && '--dry-run' || '' }}
 
       - name: 변경분으로 PR 열기
+        if: ${{ !inputs.dry_run }}
         uses: peter-evans/create-pull-request@v6
         with:
           branch: auto/sync-identities

@@ -34,8 +34,8 @@ AUTO_PATH = os.path.join(ROOT, "data", "auto_identities.json")
 PV_PATH = os.path.join(ROOT, "data", "pv_names.json")
 
 # 공식 유튜브 PV: 제목 예) "LimbusCompany [000] 오트쿠튀르:: 르루주 B2F 타래둥지 그레고르 / [000] 오트쿠튀르:: 르누아르 B3F 건조장 이상"
-# 채널 id는 이 영상 페이지에서 한 번 알아낸 뒤 data/pv_names.json에 저장해 둡니다.
-YOUTUBE_SEED_VIDEO = "mB3WZv079mA"
+# 유튜브가 공개로 제공하는 채널 RSS 피드만 읽습니다(웹페이지는 읽지 않음).
+YOUTUBE_CHANNEL_ID = "UCpqyr6h4RCXCEswHlkSjykA"
 
 # 위키 영문 수감자명 -> (사이트 id, 이미지 폴더, 파일명 접미사, 한국어 이름)
 SINNERS = [
@@ -117,40 +117,59 @@ def file_name(src):
     return urllib.parse.unquote(original_from_thumb(src).rsplit("/", 1)[-1])
 
 
+DATE_RE = re.compile(r"(20\d\d)[.\-/](\d{1,2})[.\-/](\d{1,2})")
+
+
 def parse_data_page(html):
-    """Data 표에서 {name, rarity, date, season} 목록을 뽑습니다."""
+    """Data 표에서 {name, rarity, date} 목록을 뽑습니다.
+
+    표 머리글 구성에 기대지 않고, 출시일(YYYY.MM.DD)이 들어 있는 행마다
+    첫 번째 문서 링크를 인격명으로, IDNumberN 아이콘을 등급으로 읽습니다.
+    """
     soup = BeautifulSoup(html, "html.parser")
-    out = []
-    for table in soup.select("table.wikitable"):
-        rows = table.find_all("tr")
-        if not rows:
+    out, seen = [], set()
+    for tr in soup.find_all("tr"):
+        text = tr.get_text(" ")
+        m = DATE_RE.search(text)
+        if not m:
             continue
-        headers = [norm(c.get_text(" ")) for c in rows[0].find_all(["th", "td"])]
-        if "Name" not in headers or "Release Date" not in headers:
+        name = ""
+        for a in tr.find_all("a"):
+            t = norm(a.get_text(" ") or a.get("title") or "")
+            href = a.get("href") or ""
+            if t and "File:" not in href and "Special:" not in href and not DATE_RE.search(t):
+                name = t
+                break
+        if not name or name in seen:
             continue
-        ix = {h: i for i, h in enumerate(headers)}
-        for tr in rows[1:]:
-            cells = tr.find_all(["td", "th"])
-            if len(cells) < len(headers):
-                continue
-            name_cell = cells[ix["Name"]]
-            a = name_cell.find("a")
-            name = norm((a.get_text(" ") if a else name_cell.get_text(" ")))
-            if not name:
-                continue
-            rarity = 0
-            if "Rarity" in ix:
-                for im in cells[ix["Rarity"]].find_all("img"):
-                    m = re.search(r"IDNumber(\d)", img_src(im) + " " + (im.get("alt") or ""))
-                    if m:
-                        rarity = int(m.group(1))
-                if not rarity:
-                    m = re.search(r"\d", cells[ix["Rarity"]].get_text())
-                    rarity = int(m.group(0)) if m else 0
-            date = norm(cells[ix["Release Date"]].get_text(" "))
-            season = norm(cells[ix["Season"]].get_text(" ")) if "Season" in ix else ""
-            out.append({"name": name, "rarity": rarity, "date": date, "season": season})
+        rarity = 0
+        for im in tr.find_all("img"):
+            mm = re.search(r"IDNumber(\d)", img_src(im) + " " + (im.get("alt") or ""))
+            if mm:
+                rarity = int(mm.group(1))
+                break
+        seen.add(name)
+        out.append({"name": name, "rarity": rarity,
+                    "date": f"{m.group(1)}.{int(m.group(2)):02d}.{int(m.group(3)):02d}", "season": ""})
     return out
+
+
+def describe_page(html):
+    """인격을 못 찾았을 때 로그로 남길 페이지 구조 요약."""
+    soup = BeautifulSoup(html, "html.parser")
+    tables = soup.find_all("table")
+    lines = [f"HTML {len(html)}자, title={soup.title.string if soup.title else ''!r}, 표 {len(tables)}개, tr {len(soup.find_all('tr'))}개"]
+    for t in tables[:5]:
+        first = t.find("tr")
+        lines.append(f"  표 class={t.get('class')} 첫 행: {norm(first.get_text(' '))[:200] if first else ''}")
+    body = soup.find(id="mw-content-text")
+    lines.append("  본문 앞부분: " + norm((body or soup).get_text(" "))[:500])
+    return "\n".join(lines)
+
+
+def img_key(name):
+    """파일명과 인격명 비교용 키: '::'·밑줄·문장부호·대소문자 차이를 무시."""
+    return re.sub(r"[^a-z0-9]", "", norm(name).lower())
 
 
 def parse_gallery_page(html):
@@ -167,21 +186,8 @@ def parse_gallery_page(html):
         stem = fname.rsplit(".", 1)[0]
         if stem.endswith("_Uptied") or stem.endswith("_Icon") or "Placeholder" in stem:
             continue
-        images[norm(stem.replace("_", " "))] = original_from_thumb(src)
+        images.setdefault(img_key(stem), original_from_thumb(src))
     return images
-
-
-def youtube_channel_id(pv):
-    if pv.get("channel_id"):
-        return pv["channel_id"]
-    html = get("https://www.youtube.com/watch?v=" + YOUTUBE_SEED_VIDEO).text
-    for pat in (r'"channelId":"(UC[0-9A-Za-z_-]{22})"', r'"externalChannelId":"(UC[0-9A-Za-z_-]{22})"',
-                r'youtube\.com/channel/(UC[0-9A-Za-z_-]{22})'):
-        m = re.search(pat, html)
-        if m:
-            pv["channel_id"] = m.group(1)
-            return pv["channel_id"]
-    raise RuntimeError("공식 유튜브 채널 id를 찾지 못했습니다")
 
 
 def parse_pv_title(title):
@@ -197,7 +203,7 @@ def parse_pv_title(title):
 
 def fetch_pv_names(pv):
     """채널 RSS(최근 영상 15개)에서 PV 인격명을 모아 pv["names"]에 누적합니다."""
-    cid = youtube_channel_id(pv)
+    cid = YOUTUBE_CHANNEL_ID
     xml = get("https://www.youtube.com/feeds/videos.xml?channel_id=" + cid).content
     ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
     known = {(n["sinner"], n["name"]) for n in pv.setdefault("names", [])}
@@ -234,6 +240,23 @@ def match_pv(pv, sid, wiki_name):
                 sc += 2
         return (sc, n["published"])
     return max(cands, key=score)
+
+
+def identity_page_image(name):
+    """갤러리에 그림이 없을 때(오트쿠튀르 등) 인격 개별 문서에서 같은 이름의 그림을 찾습니다."""
+    time.sleep(1)
+    try:
+        html = get(WIKI + "/wiki/" + urllib.parse.quote(name.replace(" ", "_"))).text
+    except Exception as e:
+        print(f"인격 문서 접속 실패({name}): {e}")
+        return None
+    found = parse_gallery_page(html)
+    hit = found.get(img_key(name))
+    if not hit and DEBUG:
+        sinner = sinner_of(name)
+        cands = [u.rsplit("/", 1)[-1] for k, u in found.items() if sinner and img_key(sinner[0]) in k]
+        print(f"    ({name} 문서의 그림 후보: {', '.join(cands[:8]) or '없음'})")
+    return hit
 
 
 def guess_ko(name, sinner_en, sinner_ko):
@@ -281,6 +304,7 @@ def write_json(path, obj):
         f.write("\n")
 
 
+DEBUG = False
 PIPE = "\\|"
 
 
@@ -289,12 +313,20 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="파일을 쓰지 않고 찾은 내용만 출력")
     ap.add_argument("--report", help="PR 본문으로 쓸 마크다운 보고서 경로")
     args = ap.parse_args()
+    global DEBUG
+    DEBUG = args.dry_run
 
-    rows = parse_data_page(get(DATA_PAGE).text)
+    data_html = get(DATA_PAGE).text
+    rows = parse_data_page(data_html)
     time.sleep(2)
     gallery = parse_gallery_page(get(GALLERY_PAGE).text)
     print(f"위키 인격 {len(rows)}개, 갤러리 이미지 {len(gallery)}개를 읽었습니다.")
+    if args.dry_run:
+        for r in sorted(rows, key=lambda r: r["date"])[-6:]:
+            src = gallery.get(img_key(r["name"])) or identity_page_image(r["name"])
+            print(f"  최근 인격: {r['date']} [{r['rarity']}] {r['name']} / 이미지 {src or '없음'}")
     if len(rows) < 100:
+        print(describe_page(data_html))
         sys.exit(f"인격이 {len(rows)}개뿐입니다. 위키 페이지 구조가 바뀐 것 같아 중단합니다.")
 
     pv = load_json(PV_PATH, {})
@@ -302,6 +334,9 @@ def main():
         time.sleep(1)
         fetch_pv_names(pv)
         print(f"유튜브 PV 인격명 {len(pv.get('names', []))}개를 알고 있습니다.")
+        if args.dry_run:
+            for n in pv.get("names", [])[-6:]:
+                print(f"  PV 인격명: {n['published']} [{n['stars']}] {n['name']}")
     except Exception as e:  # 유튜브 실패는 치명적이지 않음: 추정 이름으로 진행
         print("유튜브 PV 확인 실패(추정 이름으로 진행): " + str(e))
     if not args.dry_run:
@@ -340,7 +375,7 @@ def main():
         if len(d) == 8 and d > time.strftime("%Y%m%d", time.gmtime(time.time() + 9 * 3600)):
             waiting.append(r["name"])  # 출시 전(한국 시간 기준) → 출시 후 추가
             continue
-        url = gallery.get(norm(r["name"]))
+        url = gallery.get(img_key(r["name"])) or identity_page_image(r["name"])
         if not url:
             waiting.append(r["name"])  # 아직 임시 이미지 → 다음 실행에서 재시도
             continue

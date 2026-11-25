@@ -12,7 +12,15 @@
     "Haute Couture::The Crimson God of Le Rouge Sinclair": "오트쿠튀르::르루주 붉은 신 싱클레어",
     "Wedge Office Fixer Sinclair": "쐐기 사무소 해결사 싱클레어",
     "Wedge Office Rep Outis": "쐐기 사무소 대표 오티스",
-    "Haute Couture::Le Rouge B2F Skein Nest Gregor": "오트쿠튀르::르루주 B2F 타래둥지 그레고르"
+    "Haute Couture::Le Rouge B2F Skein Nest Gregor": "오트쿠튀르::르루주 B2F 타래둥지 그레고르",
+    "Haute Couture::Le Noir Footwear Hall Ryōshū": "오트쿠튀르::르누아르 신발관 료슈"
   },
-  "ego": {}
+  "ego": {
+    "Hollow Faust": "구멍",
+    "Hollow Meursault": "구멍",
+    "Repudiation Hong Lu": "거절선포",
+    "The Sword Sharpened with Tears Hong Lu": "눈물로 벼려낸 검",
+    "Mirror-touch Rodion": "거울촉각",
+    "Move-in Reg. Gregor": "입주 신고"
+  }
 }

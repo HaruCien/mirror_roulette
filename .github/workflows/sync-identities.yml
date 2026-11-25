@@ -43,7 +43,3 @@ jobs:
           commit-message: "신규 인격 자동 수집"
           title: "신규 인격 자동 수집 (한국어 이름 확인 후 머지)"
           body-path: ${{ runner.temp }}/report.md
-          add-paths: |
-            data/
-            image_*/
-            images_*/

@@ -2,7 +2,7 @@ name: 신규 인격 자동 수집
 
 on:
   schedule:
-    - cron: "0 22 * * *"   # 매일 오전 7시(KST) — 오전 6시 게임 일일 갱신 이후
+    - cron: "0 22 * * 4"   # 매주 금요일 오전 7시(KST) — 목요일 인게임 패치 이후
   workflow_dispatch:
     inputs:
       dry_run:

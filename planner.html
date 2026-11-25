@@ -228,11 +228,11 @@
   .id-card .frame-img{z-index:2;}
   /* 마우스를 올리거나 해당 수감자의 입력칸을 편집 중일 때 나타나는 선택 효과(base.png) */
   .id-card .fx{z-index:4;opacity:0;mix-blend-mode:var(--fx-blend,multiply);transition:opacity .15s;}
-  .id-card:hover .fx,.party-row:focus-within .id-card .fx{opacity:var(--fx-opacity,1);}
+  .id-card:hover .fx{opacity:var(--fx-opacity,1);}
   .id-card .art img{transition:filter .15s;}
-  .id-card:hover .art img,.party-row:focus-within .id-card .art img{filter:sepia(.55) brightness(1.06);}
+  .id-card:hover .art img{filter:sepia(.55) brightness(1.06);}
   .id-card{transition:filter .15s;}
-  .id-card:hover,.party-row:focus-within .id-card{filter:drop-shadow(0 0 7px rgba(255,150,40,.85)) drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+  .id-card:hover{filter:drop-shadow(0 0 7px rgba(255,150,40,.85)) drop-shadow(0 4px 8px rgba(0,0,0,.55));}
   .id-card .art{position:absolute;z-index:1;inset:4% 5.5%;border-radius:5px;overflow:hidden;background:#17120d;}
   .id-card .art img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block;}
   .id-card .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 34%,rgba(0,0,0,0) 62%);}
@@ -271,17 +271,88 @@
   .id-card.selected .nm,.id-card.selected .rank{opacity:.55;}
   .id-card.selected{filter:drop-shadow(0 0 7px rgba(255,150,40,.85)) drop-shadow(0 4px 8px rgba(0,0,0,.55));}
 
-  /* 파티 편성 */
-  .party{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;}
-  .party-row{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;}
-  .party-row .sinner{
-    font-family:var(--serif);
-    font-size:13px;
-    color:var(--gold);
-    padding-top:2px;
+  /* 출전(1~7) / 예비(8~12) 구분: 예비는 파란 BACKUP 띠와 청록 숫자 */
+  .id-card.backup .sel-num{background:linear-gradient(#eaffff 10%,#7fe9ff 55%,#25b8e0 95%);-webkit-background-clip:text;background-clip:text;
+    filter:drop-shadow(0 0 5px rgba(40,200,255,.95)) drop-shadow(0 1px 2px #000);}
+  .id-card.backup.selected{filter:drop-shadow(0 0 7px rgba(40,190,255,.8)) drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+  /* 덱 편집 모드에서는 순서를 작은 번호표로만 표시 */
+  .mode-deck .id-card .sel{display:none !important;}
+  .mode-deck .id-card.selected .fx{opacity:0;}
+  .mode-deck .id-card.selected .art img{filter:none;}
+  .mode-deck .id-card.selected .nm,.mode-deck .id-card.selected .rank{opacity:1;}
+  .mode-deck .id-card.selected{filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+  .id-card .ord-tag{display:none;position:absolute;z-index:6;left:6%;bottom:4%;min-width:1.9em;padding:.15em .35em;border-radius:3px;
+    font-family:'Bebas Neue',sans-serif;font-size:1.15em;line-height:1;text-align:center;color:#fff;background:#a3161c;box-shadow:0 1px 3px #000;}
+  .id-card.backup .ord-tag{background:#13758f;}
+  .mode-deck .id-card.selected .ord-tag{display:block;}
+
+  /* ---------- 덱 빌더 ---------- */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .seg-btn{font-family:var(--sans);font-size:calc(11px + var(--btn-trim));padding:6px 12px;border:none;background:var(--panel);color:var(--ink-dim);cursor:pointer;}
+  .seg-btn + .seg-btn{border-left:1px solid var(--line);}
+  .seg-btn:hover{color:var(--gold-bright);}
+  .seg-btn.on{background:rgba(184,147,74,0.16);color:var(--gold-bright);}
+  .deck-wrap{display:flex;flex-direction:column;gap:14px;--card-w:124px;}
+  .deck-panel{border:1px solid var(--line-soft);background:#120d09;border-radius:4px;padding:12px 12px 14px;min-width:0;}
+  .panel-title{font-family:var(--serif);font-size:13px;color:var(--gold);margin:0 0 10px 2px;letter-spacing:.04em;}
+  .deck-grid{display:grid;grid-template-columns:repeat(6,var(--card-w));justify-content:center;gap:12px 10px;}
+  .deck-cell{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;}
+  .deck-cell .card-slot{width:100%;}
+  .deck-cell .id-card{width:100%;font-size:calc(var(--card-w) * 0.098);}
+  /* 스킬 칸: 기본 스킬 1·2·3의 공격 유형(참격/관통/타격)과 죄악 속성, 개수 */
+  .skills{display:flex;gap:4px;justify-content:center;}
+  .sk{position:relative;width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+    background:var(--sin,#3a3128);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);color:#1a120b;}
+  .sk svg{width:17px;height:17px;}
+  .sk.unknown{background:#2a221a;color:var(--ink-faint);font-family:'Bebas Neue',sans-serif;font-size:12px;}
+  .sk .cnt{position:absolute;right:-4px;bottom:-5px;font-family:'Bebas Neue',sans-serif;font-size:11px;line-height:1;color:var(--ink);
+    background:#0d0a07;border:1px solid var(--line);border-radius:3px;padding:1px 2px;}
+  /* E.G.O 칸: 수감자별 ZAYIN·TETH·HE·WAW·ALEPH */
+  .ego-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+  .ego-tile{border:1px solid var(--line);border-radius:3px;background:var(--panel-2);padding:6px 6px 7px;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .mode-deck .ego-tile{cursor:pointer;}
+  .mode-deck .ego-tile:hover{border-color:var(--gold);}
+  .ego-head{font-family:var(--serif);font-size:12px;color:var(--gold);padding:0 2px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ego-slot{display:flex;align-items:center;gap:5px;min-width:0;height:20px;padding:0 5px 0 0;border-radius:2px;background:#16110c;
+    border-left:3px solid var(--sin,#3a3128);font-size:11px;}
+  .ego-slot .tier{flex:none;width:18px;text-align:center;font-size:12px;color:var(--ink-dim);font-family:'Noto Serif KR',serif;}
+  .ego-slot .en{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);}
+  .ego-slot.empty .en{color:var(--ink-faint);}
+  .deck-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;}
+  .sin-sum{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink-faint);}
+  .sin-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 8px 3px 4px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);
+    font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--ink);}
+  .sin-pill i{width:14px;height:14px;border-radius:50%;background:var(--sin);display:block;}
+  /* 나란히 배치: 넓은 화면에서 인격 편성 | E.G.O 편성 */
+  @media (min-width:1100px){
+    body.layout-side .stage{max-width:1480px;}
+    body.layout-side .topbar{max-width:1480px;}
+    .layout-side .deck-wrap{flex-direction:row;align-items:flex-start;--card-w:100px;}
+    .layout-side .deck-panel:first-child{flex:none;}
+    .layout-side .deck-panel:last-child{flex:1;}
+    .layout-side .ego-grid{grid-template-columns:1fr;gap:5px;}
+    .layout-side .ego-tile{flex-direction:row;align-items:center;gap:5px;padding:4px 6px;}
+    .layout-side .ego-head{flex:none;width:62px;padding:0;}
+    .layout-side .ego-slot{flex:1;}
   }
-  .party-row .stack{display:flex;flex-direction:column;gap:5px;min-width:0;}
-  .party-row .note{font-size:12px;padding:6px 10px;}
+  /* 편집 창 */
+  .dlg{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:4px;padding:0;width:min(560px,calc(100vw - 32px));
+    box-shadow:0 18px 60px rgba(0,0,0,.7);}
+  .dlg::backdrop{background:rgba(0,0,0,.6);}
+  .dlg-body{display:flex;flex-direction:column;gap:12px;padding:16px 18px 18px;}
+  .dlg-head{display:flex;justify-content:space-between;align-items:center;}
+  .dlg h3{margin:0;font-family:var(--serif);font-size:16px;color:var(--gold-bright);font-weight:600;}
+  .dlg-foot{display:flex;justify-content:space-between;gap:8px;}
+  .dlg-foot:only-child,.dlg-foot > :only-child{margin-left:auto;}
+  .id-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;max-height:230px;overflow:auto;padding:2px;}
+  .id-pick button{position:relative;aspect-ratio:3/4;border:1px solid var(--line);border-radius:3px;background:#17120d center 20%/cover no-repeat;
+    cursor:pointer;padding:0;overflow:hidden;}
+  .id-pick button span{position:absolute;left:0;right:0;bottom:0;padding:10px 3px 3px;font-size:9.5px;line-height:1.2;color:#f6d765;
+    background:linear-gradient(transparent,rgba(0,0,0,.9) 45%);text-align:center;word-break:keep-all;}
+  .id-pick button:hover,.id-pick button.on{border-color:var(--gold-bright);box-shadow:0 0 0 1px var(--gold-bright);}
+  .ego-edit{display:grid;grid-template-columns:auto 1fr;gap:5px 8px;align-items:center;}
+  .ego-edit label{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--ink-dim);letter-spacing:.04em;}
+  #codeText{font-family:ui-monospace,Consolas,monospace;font-size:12px;word-break:break-all;}
 
   /* 층별 계획 */
   .floor{
@@ -325,8 +396,12 @@
   .toast.show{opacity:1;}
 
   @media (max-width:760px){
-    .party, .grid-2, .floor-body{grid-template-columns:1fr;}
+    .grid-2, .floor-body{grid-template-columns:1fr;}
     .section{padding:16px 14px 18px;}
+    .deck-wrap{--card-w:96px;}
+    .deck-grid{grid-template-columns:repeat(3,var(--card-w));}
+    .ego-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .deck-panel{padding:10px 8px 12px;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none !important;}
@@ -372,17 +447,76 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="deckSection">
     <div class="section-head">
-      <h2>파티 편성</h2>
+      <h2>덱 빌더</h2>
+      <div class="section-tools">
+        <div class="seg" role="group" aria-label="모드">
+          <button type="button" class="seg-btn" data-mode="deck">덱 편집</button>
+          <button type="button" class="seg-btn" data-mode="order">순서 편성</button>
+        </div>
+        <div class="seg" role="group" aria-label="배치">
+          <button type="button" class="seg-btn" data-layout="stack" title="인격 편성 아래에 E.G.O 편성">위아래</button>
+          <button type="button" class="seg-btn" data-layout="side" title="인격 편성 옆에 E.G.O 편성">나란히</button>
+        </div>
+      </div>
+    </div>
+    <p class="hint" id="modeHint"></p>
+    <div class="deck-wrap" id="deckWrap">
+      <div class="deck-panel">
+        <div class="panel-title">인격 편성</div>
+        <div class="deck-grid" id="deckGrid"></div>
+      </div>
+      <div class="deck-panel">
+        <div class="panel-title">E.G.O 편성</div>
+        <div class="ego-grid" id="egoGrid"></div>
+      </div>
+    </div>
+    <div class="deck-foot">
+      <div class="sin-sum" id="sinSum"></div>
       <div class="section-tools">
         <button class="btn small" id="loadRoulette" type="button">룰렛 결과 불러오기</button>
+        <button class="btn small" id="importDeck" type="button">가져오기</button>
+        <button class="btn small" id="exportDeck" type="button">내보내기</button>
+        <button class="btn small" id="resetOrder" type="button">순서 초기화</button>
         <button class="btn small danger" id="clearParty" type="button">편성 비우기</button>
       </div>
     </div>
-    <p class="hint" id="partyHint">인격 칸은 직접 입력하거나 제안되는 목록에서 고를 수 있습니다. 카드를 클릭하면 편성 순서가 지정됩니다(다시 클릭하면 해제). 룰렛에서 뽑은 마지막 결과를 불러올 수도 있습니다.</p>
-    <div class="party" id="party"></div>
   </section>
+
+  <!-- 덱 편집: 수감자 한 명의 인격·E.G.O·메모 편집 창 -->
+  <dialog class="dlg" id="editDlg">
+    <form method="dialog" class="dlg-body">
+      <div class="dlg-head"><h3 id="editTitle">편성</h3><button class="x" value="close" aria-label="닫기">×</button></div>
+      <label class="field"><span>인격</span>
+        <input type="text" id="editIdentity" list="editIdList" placeholder="인격 이름을 입력하거나 아래에서 고르세요" autocomplete="off">
+        <datalist id="editIdList"></datalist>
+      </label>
+      <div class="id-pick" id="editPick"></div>
+      <div class="field"><span>E.G.O</span>
+        <div class="ego-edit" id="editEgo"></div>
+      </div>
+      <label class="field"><span>역할 / 메모</span>
+        <input type="text" id="editNote" placeholder="선택 사항">
+      </label>
+      <div class="dlg-foot">
+        <button type="button" class="btn small danger" id="editClear">이 수감자 비우기</button>
+        <button class="btn small primary" value="close">완료</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 덱 코드 가져오기 / 내보내기 -->
+  <dialog class="dlg" id="codeDlg">
+    <form method="dialog" class="dlg-body">
+      <div class="dlg-head"><h3 id="codeTitle">덱 코드</h3><button class="x" value="close" aria-label="닫기">×</button></div>
+      <p class="hint" id="codeHint"></p>
+      <textarea id="codeText" rows="5" spellcheck="false"></textarea>
+      <div class="dlg-foot">
+        <button type="button" class="btn small primary" id="codeAction">적용</button>
+      </div>
+    </form>
+  </dialog>
 
   <section class="section">
     <div class="section-head">
@@ -480,6 +614,16 @@ const SINNERS = [
   {id:'gregor',   name:'그레고르'},
 ];
 const KEYWORDS = ['화상','출혈','진동','파열','충전','침잠','호흡','참격','관통','타격'];
+const ACTIVE_SLOTS = 7;            // 1~7번 출전, 8~12번 예비
+const SKILL_COUNTS = [3, 2, 1];    // 기본 스킬 1·2·3의 개수 (3-1, 3-2 같은 추가 스킬은 제외)
+const SINS = {
+  wrath:{name:'분노', color:'#d22e2e'}, lust:{name:'색욕', color:'#ef7a24'}, sloth:{name:'나태', color:'#e7bd2a'},
+  gluttony:{name:'탐식', color:'#8fc63c'}, gloom:{name:'우울', color:'#2fb6c8'}, pride:{name:'오만', color:'#2a5bd0'}, envy:{name:'질투', color:'#8d3fcc'}
+};
+const EGO_TIERS = [
+  {id:'zayin', label:'ZAYIN', mark:'ז'}, {id:'teth', label:'TETH', mark:'ט'}, {id:'he', label:'HE', mark:'ה'},
+  {id:'waw', label:'WAW', mark:'ו'}, {id:'aleph', label:'ALEPH', mark:'א'}
+];
 const PLAN_KEY = 'mdr-planner-v1';
 const ROSTER_KEY = 'mirror-dungeon-roulette-v1';   // 룰렛 페이지가 저장한 인격 목록/보유 체크
 const LAST_RESULT_KEY = 'mdr-last-result';         // 룰렛 페이지가 저장한 마지막 뽑기 결과
@@ -488,7 +632,8 @@ const ADMIN_API_BASE = 'https://mirror-roulette-admin.mirror-roulette-admin.work
 function emptyPlan(){
   return {
     title:'', goal:'', keywords:[], memo:'',
-    party:{},                       // {sinnerId:{identity, note}}
+    party:{},                       // {sinnerId:{identity, note, ego:{zayin,teth,he,waw,aleph}}}
+    view:{mode:'deck', layout:'stack'},   // 덱 편집 / 순서 편성, 위아래 / 나란히
     order:[],                       // 편성 순서: 카드를 클릭한 순서대로 [sinnerId, ...]
     floors:[1,2,3,4,5].map(()=>({title:'', battle:'', shop:'', done:false})),
     gifts:[],                       // {name, got, memo}
@@ -503,8 +648,9 @@ function loadPlan(){
   try{
     const raw = localStorage.getItem(PLAN_KEY);
     if(raw){
-      const p = JSON.parse(raw);
-      return Object.assign(emptyPlan(), p);
+      const p = Object.assign(emptyPlan(), JSON.parse(raw));
+      p.view = Object.assign({mode:'deck', layout:'stack'}, p.view);
+      return p;
     }
   }catch(e){}
   return emptyPlan();
@@ -544,6 +690,13 @@ function readLocalRoster(){
     });
   }catch(e){}
   return out;
+}
+async function loadDeckData(){
+  const get = async (url)=>{ try{ const r = await fetch(url, { cache:'no-cache' }); return r.ok ? await r.json() : null; }catch(e){ return null; } };
+  const [sk, eg] = await Promise.all([get('data/identity_skills.json'), get('data/ego.json')]);
+  if(sk && typeof sk === 'object') skillData = sk;
+  if(eg && typeof eg === 'object') egoData = eg;
+  updateAllCards();
 }
 async function loadRoster(){
   roster = readLocalRoster();
@@ -595,23 +748,31 @@ function cardHTML(sinner, text, ord){
   const r = empty ? 1 : rarityOf(t);
   const [a,b] = empty ? ['미정',''] : splitName(nameOf(t));
   const img = empty ? '' : lookupImg(t);
-  return `<div class="id-card r${r}${empty ? ' empty' : ''}${ord ? ' selected' : ''}" role="button" aria-pressed="${ord ? 'true' : 'false'}" title="클릭하면 편성 순서가 지정됩니다">
+  const backup = ord > ACTIVE_SLOTS;
+  const tip = plan.view.mode === 'order' ? '클릭하면 편성 순서가 지정됩니다' : '클릭하면 인격과 E.G.O를 고를 수 있습니다';
+  return `<div class="id-card r${r}${empty ? ' empty' : ''}${ord ? ' selected' : ''}${backup ? ' backup' : ''}" role="button" tabindex="0" aria-pressed="${ord ? 'true' : 'false'}" title="${tip}">
     <div class="art">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>
     <img class="frame-img" src="frames/sync4_${r}.png" alt="">
     ${empty ? '' : `<img class="rank" src="frames/rank_${r}.png" alt="">`}
     ${badgeHTML(sinner, r)}
     <div class="nm">${esc(a)}${b ? '<br>'+esc(b) : ''}</div>
     <img class="fx" src="frames/base.png" alt="">
-    <div class="sel"><span class="sel-num">${ord || ''}</span><img class="sel-banner" src="frames/selected.png" alt="선택됨"></div>
+    <div class="sel"><span class="sel-num">${ord || ''}</span><img class="sel-banner" src="frames/${backup ? 'backup' : 'selected'}.png" alt="${backup ? '예비' : '출전'}"></div>
+    <span class="ord-tag">${ord || ''}</span>
   </div>`;
 }
 function orderOf(id){ return (plan.order || []).indexOf(id) + 1; }   // 0이면 선택 안 됨
 function updateCard(id){
   const s = SINNERS.find(x=>x.id===id), slot = document.getElementById('card-'+id);
   if(!s || !slot) return;
-  slot.innerHTML = cardHTML(s, (plan.party[id]||{}).identity, orderOf(id));
+  const row = plan.party[id] || {};
+  slot.innerHTML = cardHTML(s, row.identity, orderOf(id));
+  const sk = document.getElementById('skills-'+id);
+  if(sk) sk.innerHTML = skillsHTML(s.id, row.identity);
+  const eg = document.getElementById('ego-'+id);
+  if(eg) eg.innerHTML = egoTileInner(s, row);
 }
-function updateAllCards(){ SINNERS.forEach(s=>updateCard(s.id)); }
+function updateAllCards(){ SINNERS.forEach(s=>updateCard(s.id)); renderSinSum(); }
 
 /* ---------- 렌더링 ---------- */
 function renderKeywords(){
@@ -621,34 +782,149 @@ function renderKeywords(){
   ).join('');
 }
 function renderParty(){
-  const box = document.getElementById('party');
-  // 입력 중이던 칸의 포커스를 잃지 않도록, 이미 그려져 있으면 datalist만 갱신
-  if(box.children.length){
-    SINNERS.forEach(s=>{
-      const dl = document.getElementById('dl-'+s.id);
-      if(dl) dl.innerHTML = (roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('');
-    });
-    updateAllCards();
-    return;
-  }
-  box.innerHTML = SINNERS.map(s=>{
-    const row = plan.party[s.id] || {identity:'', note:''};
-    return `
-      <div class="party-row">
-        <div class="card-slot" id="card-${s.id}">${cardHTML(s, row.identity, orderOf(s.id))}</div>
-        <div class="stack">
-          <div class="sinner">${esc(s.name)}</div>
-          <input type="text" list="dl-${s.id}" data-party="${s.id}" data-field="identity" value="${esc(row.identity)}" placeholder="인격">
-          <datalist id="dl-${s.id}">${(roster[s.id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>
-          <input type="text" class="note" data-party="${s.id}" data-field="note" value="${esc(row.note)}" placeholder="역할 / 메모 (선택)">
-        </div>
-      </div>`;
+  document.getElementById('deckGrid').innerHTML = SINNERS.map(s=>`
+    <div class="deck-cell">
+      <div class="card-slot" id="card-${s.id}"></div>
+      <div class="skills" id="skills-${s.id}"></div>
+    </div>`).join('');
+  document.getElementById('egoGrid').innerHTML = SINNERS.map(s=>
+    `<div class="ego-tile" id="ego-${s.id}" data-ego-sinner="${s.id}"></div>`).join('');
+  updateAllCards();
+}
+function refreshPartyInputs(){ renderParty(); }
+function renderView(){
+  const v = plan.view;
+  document.body.classList.toggle('mode-deck', v.mode === 'deck');
+  document.body.classList.toggle('mode-order', v.mode === 'order');
+  document.body.classList.toggle('layout-side', v.layout === 'side');
+  document.querySelectorAll('[data-mode]').forEach(b=>{ const on = b.dataset.mode === v.mode; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  document.querySelectorAll('[data-layout]').forEach(b=>{ const on = b.dataset.layout === v.layout; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  document.getElementById('modeHint').textContent = v.mode === 'deck'
+    ? '덱 편집 모드: 인격 카드나 E.G.O 칸을 누르면 그 수감자의 인격, E.G.O, 메모를 고를 수 있습니다.'
+    : '순서 편성 모드: 카드를 누르는 순서대로 1~7번은 출전(SELECTED), 8~12번은 예비(BACKUP)로 지정됩니다. 다시 누르면 해제됩니다.';
+  updateAllCards();
+}
+
+/* ---------- 스킬 / E.G.O 표시 ---------- */
+// data/identity_skills.json : {sinnerId:{"인격 이름":{skills:[{type:'slash|pierce|blunt', sin:'wrath|…'}, 2스킬, 3스킬]}}}
+// data/ego.json             : {sinnerId:[{name:'E.G.O 이름', tier:'zayin|teth|he|waw|aleph', sin:'wrath|…'}]}
+// 두 파일이 비어 있으면 스킬은 회색 칸, E.G.O는 직접 입력으로만 동작합니다.
+let skillData = {}, egoData = {};
+function skillsOf(sid, text){
+  const t = String(text||'').trim();
+  if(!t) return null;
+  const e = (skillData[sid] || {})[nameOf(t)];
+  return e && Array.isArray(e.skills) ? e.skills : null;
+}
+const ATK_SVG = {
+  slash:'<svg viewBox="0 0 20 20"><path d="M3 16 C7 15 14 9 17 3 C16 9 11 15 4 18 Z" fill="currentColor"/></svg>',
+  pierce:'<svg viewBox="0 0 20 20"><path d="M10 2 L13 9 L11 9 L11 18 L9 18 L9 9 L7 9 Z" fill="currentColor"/></svg>',
+  blunt:'<svg viewBox="0 0 20 20"><rect x="4" y="3" width="12" height="7" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="2.4" height="9" fill="currentColor"/></svg>'
+};
+const ATK_KO = {slash:'참격', pierce:'관통', blunt:'타격'};
+function skillsHTML(sid, text){
+  const sk = skillsOf(sid, text);
+  return SKILL_COUNTS.map((n,i)=>{
+    const d = sk && sk[i];
+    if(!d || !ATK_SVG[d.type]) return `<span class="sk unknown" title="${i+1}스킬 ×${n} (스킬 정보 없음)">S${i+1}<span class="cnt">×${n}</span></span>`;
+    const sin = SINS[d.sin];
+    return `<span class="sk" style="--sin:${sin ? sin.color : '#3a3128'}" title="${i+1}스킬 ×${n} · ${ATK_KO[d.type]}${sin ? ' · '+sin.name : ''}">${ATK_SVG[d.type]}<span class="cnt">×${n}</span></span>`;
   }).join('');
 }
-function refreshPartyInputs(){
-  document.getElementById('party').innerHTML = '';
-  renderParty();
+function egoInfo(sid, name){
+  const n = String(name||'').trim();
+  return n ? (egoData[sid] || []).find(e=>e && e.name === n) || null : null;
 }
+function egoTileInner(s, row){
+  const ego = (row && row.ego) || {};
+  return `<div class="ego-head">${esc(s.name)}</div>` + EGO_TIERS.map(t=>{
+    const v = String(ego[t.id] || '').trim(), info = egoInfo(s.id, v), sin = info && SINS[info.sin];
+    return `<div class="ego-slot${v ? '' : ' empty'}"${sin ? ` style="--sin:${sin.color}"` : ''} title="${t.label}${v ? ' · '+esc(v) : ''}">
+      <span class="tier">${t.mark}</span><span class="en">${v ? esc(v) : '—'}</span></div>`;
+  }).join('');
+}
+// 출전(1~7번)으로 지정된 인격의 스킬 속성 합계(스킬 개수 반영). 순서를 정하지 않았으면 12명 전체 기준
+function renderSinSum(){
+  const box = document.getElementById('sinSum');
+  if(!box) return;
+  const ids = (plan.order || []).slice(0, ACTIVE_SLOTS);
+  const pool = ids.length ? ids : SINNERS.map(s=>s.id);
+  const sum = {}; let any = false;
+  pool.forEach(id=>{
+    const sk = skillsOf(id, (plan.party[id] || {}).identity);
+    if(!sk) return;
+    sk.slice(0, SKILL_COUNTS.length).forEach((d,i)=>{ if(d && SINS[d.sin]){ sum[d.sin] = (sum[d.sin] || 0) + SKILL_COUNTS[i]; any = true; } });
+  });
+  if(!any){ box.textContent = '스킬 속성 정보가 등록되면 죄악 속성 합계가 여기에 표시됩니다.'; return; }
+  box.innerHTML = `<span>${ids.length ? '출전 인원' : '전체'} 스킬 속성</span>` + Object.keys(SINS).map(k=>
+    `<span class="sin-pill" style="--sin:${SINS[k].color}" title="${SINS[k].name}"><i></i>${sum[k] || 0}</span>`).join('');
+}
+
+/* ---------- 덱 편집 창 ---------- */
+let editing = null;
+function openEditor(id){
+  const s = SINNERS.find(x=>x.id===id);
+  if(!s) return;
+  editing = id;
+  const row = partyRow(id);
+  document.getElementById('editTitle').textContent = s.name + ' 편성';
+  document.getElementById('editIdentity').value = row.identity;
+  document.getElementById('editNote').value = row.note;
+  document.getElementById('editIdList').innerHTML = (roster[id] || []).map(t=>`<option value="${esc(t)}"></option>`).join('');
+  document.getElementById('editEgo').innerHTML = EGO_TIERS.map(t=>{
+    const opts = (egoData[id] || []).filter(e=>e && e.tier === t.id).map(e=>`<option value="${esc(e.name)}"></option>`).join('');
+    return `<label for="ego-in-${t.id}">${t.label}</label>
+      <input type="text" id="ego-in-${t.id}" data-ego-tier="${t.id}" list="ego-dl-${t.id}" value="${esc(row.ego[t.id] || '')}" placeholder="${t.label} E.G.O" autocomplete="off">
+      <datalist id="ego-dl-${t.id}">${opts}</datalist>`;
+  }).join('');
+  renderPick();
+  const dlg = document.getElementById('editDlg');
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+}
+function renderPick(){
+  if(!editing) return;
+  const cur = partyRow(editing).identity;
+  const list = roster[editing] || [];
+  document.getElementById('editPick').innerHTML = list.length ? list.map(t=>{
+    const img = lookupImg(t);
+    return `<button type="button" data-pick="${esc(t)}" class="${t === cur ? 'on' : ''}" title="${esc(t)}"${img ? ` style="background-image:url('${esc(img).replace(/'/g,'%27')}')"` : ''}><span>${esc(nameOf(t))}</span></button>`;
+  }).join('') : '<p class="hint" style="grid-column:1/-1;margin:0;">인격 목록을 불러오지 못했습니다. 위 칸에 직접 입력해 주세요.</p>';
+}
+function partyRow(id){
+  const r = plan.party[id] = plan.party[id] || {};
+  if(typeof r.identity !== 'string') r.identity = '';
+  if(typeof r.note !== 'string') r.note = '';
+  if(!r.ego || typeof r.ego !== 'object') r.ego = {};
+  return r;
+}
+document.getElementById('editIdentity').addEventListener('input', e=>{
+  if(!editing) return;
+  partyRow(editing).identity = e.target.value; savePlan(); updateCard(editing); renderSinSum(); renderPick();
+});
+document.getElementById('editNote').addEventListener('input', e=>{
+  if(!editing) return;
+  partyRow(editing).note = e.target.value; savePlan();
+});
+document.getElementById('editEgo').addEventListener('input', e=>{
+  const tier = e.target.dataset.egoTier;
+  if(!editing || !tier) return;
+  partyRow(editing).ego[tier] = e.target.value; savePlan(); updateCard(editing);
+});
+document.getElementById('editPick').addEventListener('click', e=>{
+  const b = e.target.closest('[data-pick]');
+  if(!b || !editing) return;
+  partyRow(editing).identity = b.dataset.pick;
+  document.getElementById('editIdentity').value = b.dataset.pick;
+  savePlan(); updateCard(editing); renderSinSum(); renderPick();
+});
+document.getElementById('editClear').addEventListener('click', ()=>{
+  if(!editing) return;
+  plan.party[editing] = {identity:'', note:'', ego:{}};
+  savePlan(); updateCard(editing); renderSinSum();
+  openEditor(editing);
+});
+document.getElementById('editDlg').addEventListener('close', ()=>{ editing = null; });
+
 function renderFloors(){
   const box = document.getElementById('floors');
   box.innerHTML = plan.floors.map((f,i)=>`
@@ -692,7 +968,7 @@ function renderAll(){
   document.getElementById('pTitle').value = plan.title;
   document.getElementById('pGoal').value = plan.goal;
   document.getElementById('pMemo').value = plan.memo;
-  renderKeywords(); refreshPartyInputs(); renderFloors(); renderGifts(); renderTodos();
+  renderKeywords(); refreshPartyInputs(); renderView(); renderFloors(); renderGifts(); renderTodos();
 }
 
 /* ---------- 입력 처리 (이벤트 위임) ---------- */
@@ -786,20 +1062,99 @@ document.getElementById('loadRoulette').addEventListener('click', ()=>{
   savePlan(); refreshPartyInputs();
   toast('룰렛 결과 ' + n + '명을 불러왔습니다.');
 });
-// 카드를 클릭하면 편성 순서가 지정됩니다(다시 클릭하면 해제, 뒤 순서는 앞당겨짐)
-document.addEventListener('click', (e)=>{
-  const card = e.target.closest('.id-card');
-  const slot = card && card.closest('.card-slot');
-  if(!slot) return;
-  const id = slot.id.replace(/^card-/, '');
+// 카드 클릭: 덱 편집 모드면 편집 창, 순서 편성 모드면 순서 지정(다시 누르면 해제, 뒤 순서는 앞당겨짐)
+function onCard(id){
+  if(plan.view.mode === 'deck'){ openEditor(id); return; }
   plan.order = plan.order || [];
   const i = plan.order.indexOf(id);
   if(i >= 0) plan.order.splice(i, 1); else plan.order.push(id);
   savePlan(); updateAllCards();
+}
+document.getElementById('deckGrid').addEventListener('click', (e)=>{
+  const slot = e.target.closest('.card-slot');
+  if(slot) onCard(slot.id.replace(/^card-/, ''));
+});
+document.getElementById('deckGrid').addEventListener('keydown', (e)=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const slot = e.target.closest('.card-slot');
+  if(slot){ e.preventDefault(); onCard(slot.id.replace(/^card-/, '')); }
+});
+document.getElementById('egoGrid').addEventListener('click', (e)=>{
+  const tile = e.target.closest('[data-ego-sinner]');
+  if(tile && plan.view.mode === 'deck') openEditor(tile.dataset.egoSinner);
+});
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click', ()=>{ plan.view.mode = b.dataset.mode; savePlan(); renderView(); }));
+document.querySelectorAll('[data-layout]').forEach(b=>b.addEventListener('click', ()=>{ plan.view.layout = b.dataset.layout; savePlan(); renderView(); }));
+document.getElementById('resetOrder').addEventListener('click', ()=>{
+  if(!(plan.order || []).length) return;
+  plan.order = []; savePlan(); updateAllCards(); toast('편성 순서를 초기화했습니다.');
 });
 document.getElementById('clearParty').addEventListener('click', ()=>{
-  if(!confirm('파티 편성을 모두 비울까요?')) return;
+  if(!confirm('인격, E.G.O, 편성 순서를 모두 비울까요?')) return;
   plan.party = {}; plan.order = []; savePlan(); refreshPartyInputs();
+});
+
+/* ---------- 덱 코드 가져오기 / 내보내기 ---------- */
+const DECK_CODE_PREFIX = 'MDR1:';
+function encodeDeck(){
+  const party = {};
+  SINNERS.forEach(s=>{
+    const r = plan.party[s.id];
+    if(!r) return;
+    const ego = {};
+    EGO_TIERS.forEach(t=>{ const v = String((r.ego || {})[t.id] || '').trim(); if(v) ego[t.id] = v; });
+    const o = {};
+    if(r.identity) o.i = r.identity;
+    if(r.note) o.n = r.note;
+    if(Object.keys(ego).length) o.e = ego;
+    if(Object.keys(o).length) party[s.id] = o;
+  });
+  const json = JSON.stringify({p:party, o:plan.order || []});
+  return DECK_CODE_PREFIX + btoa(String.fromCharCode(...new TextEncoder().encode(json)));
+}
+function decodeDeck(code){
+  const raw = String(code||'').trim().replace(/\s+/g, '');
+  if(!raw.startsWith(DECK_CODE_PREFIX)) throw new Error('prefix');
+  const bin = atob(raw.slice(DECK_CODE_PREFIX.length));
+  const d = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c=>c.charCodeAt(0))));
+  const ids = SINNERS.map(s=>s.id), party = {};
+  Object.keys(d.p || {}).forEach(id=>{
+    if(!ids.includes(id)) return;
+    const o = d.p[id] || {}, ego = {};
+    EGO_TIERS.forEach(t=>{ if(o.e && typeof o.e[t.id] === 'string') ego[t.id] = o.e[t.id]; });
+    party[id] = {identity:String(o.i || ''), note:String(o.n || ''), ego};
+  });
+  const order = (Array.isArray(d.o) ? d.o : []).filter((id,i,a)=>ids.includes(id) && a.indexOf(id) === i).slice(0, SINNERS.length);
+  return {party, order};
+}
+let codeMode = 'export';
+function openCode(mode){
+  codeMode = mode;
+  const ta = document.getElementById('codeText');
+  document.getElementById('codeTitle').textContent = mode === 'export' ? '덱 내보내기' : '덱 가져오기';
+  document.getElementById('codeHint').textContent = mode === 'export'
+    ? '아래 덱 코드를 복사해서 친구에게 보내세요. 인격, E.G.O, 메모, 편성 순서가 담겨 있습니다.'
+    : '받은 덱 코드를 붙여 넣고 적용을 누르세요. 지금 덱 편성은 덮어쓰여집니다(층별 계획 등 다른 내용은 그대로).';
+  document.getElementById('codeAction').textContent = mode === 'export' ? '복사' : '적용';
+  ta.value = mode === 'export' ? encodeDeck() : '';
+  ta.readOnly = mode === 'export';
+  const dlg = document.getElementById('codeDlg');
+  if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  if(mode === 'export') ta.select(); else ta.focus();
+}
+document.getElementById('exportDeck').addEventListener('click', ()=>openCode('export'));
+document.getElementById('importDeck').addEventListener('click', ()=>openCode('import'));
+document.getElementById('codeAction').addEventListener('click', async ()=>{
+  const ta = document.getElementById('codeText'), dlg = document.getElementById('codeDlg');
+  if(codeMode === 'export'){
+    try{ await navigator.clipboard.writeText(ta.value); }catch(e){ fallbackCopy(ta.value); }
+    toast('덱 코드를 복사했습니다.'); dlg.close(); return;
+  }
+  let d;
+  try{ d = decodeDeck(ta.value); }catch(e){ toast('덱 코드를 읽을 수 없습니다. 코드 전체를 붙여 넣었는지 확인해 주세요.'); return; }
+  plan.party = d.party; plan.order = d.order;
+  savePlan(); refreshPartyInputs(); dlg.close();
+  toast('덱을 가져왔습니다.');
 });
 
 /* ---------- 텍스트 복사 / 초기화 ---------- */
@@ -808,13 +1163,17 @@ function buildPlanText(){
   L.push('■ ' + (plan.title || '거울 던전 플랜'));
   if(plan.goal) L.push('목표 : ' + plan.goal);
   if(plan.keywords.length) L.push('주력 키워드 : ' + plan.keywords.join(', '));
-  L.push('', '[파티 편성]');
+  L.push('', '[덱 편성]');
   SINNERS.forEach(s=>{
     const r = plan.party[s.id] || {};
     L.push(s.name + ' : ' + (r.identity || '(미정)') + (r.note ? '  - ' + r.note : ''));
+    const egos = EGO_TIERS.filter(t=>String((r.ego || {})[t.id] || '').trim()).map(t=>t.label + ' ' + r.ego[t.id].trim());
+    if(egos.length) L.push('   E.G.O : ' + egos.join(' / '));
   });
   if((plan.order || []).length){
-    L.push('편성 순서 : ' + plan.order.map((id,i)=>(i+1) + ' ' + (SINNERS.find(s=>s.id===id) || {name:id}).name).join(' → '));
+    const nm = id=>(SINNERS.find(s=>s.id===id) || {name:id}).name;
+    L.push('출전 : ' + plan.order.slice(0, ACTIVE_SLOTS).map((id,i)=>(i+1) + ' ' + nm(id)).join(' → '));
+    if(plan.order.length > ACTIVE_SLOTS) L.push('예비 : ' + plan.order.slice(ACTIVE_SLOTS).map((id,i)=>(i+1+ACTIVE_SLOTS) + ' ' + nm(id)).join(' → '));
   }
   L.push('', '[층별 계획]');
   plan.floors.forEach((f,i)=>{
@@ -865,6 +1224,7 @@ function startPlanner(){
   document.body.classList.remove('locked');
   renderAll();
   loadRoster();
+  loadDeckData();
 }
 async function checkAdminPassword(pw){
   const res = await fetch(ADMIN_API_BASE + '/login', {

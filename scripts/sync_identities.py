@@ -18,6 +18,7 @@ import re
 import sys
 import time
 import urllib.parse
+import xml.etree.ElementTree as ET
 
 import requests
 from bs4 import BeautifulSoup
@@ -30,6 +31,11 @@ USER_AGENT = "MirrorRouletteSync/1.0 (daily identity sync for a fan roulette sit
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEEN_PATH = os.path.join(ROOT, "data", "wiki_seen.json")
 AUTO_PATH = os.path.join(ROOT, "data", "auto_identities.json")
+PV_PATH = os.path.join(ROOT, "data", "pv_names.json")
+
+# 공식 유튜브 PV: 제목 예) "LimbusCompany [000] 오트쿠튀르:: 르루주 B2F 타래둥지 그레고르 / [000] 오트쿠튀르:: 르누아르 B3F 건조장 이상"
+# 채널 id는 이 영상 페이지에서 한 번 알아낸 뒤 data/pv_names.json에 저장해 둡니다.
+YOUTUBE_SEED_VIDEO = "mB3WZv079mA"
 
 # 위키 영문 수감자명 -> (사이트 id, 이미지 폴더, 파일명 접미사, 한국어 이름)
 SINNERS = [
@@ -165,6 +171,71 @@ def parse_gallery_page(html):
     return images
 
 
+def youtube_channel_id(pv):
+    if pv.get("channel_id"):
+        return pv["channel_id"]
+    html = get("https://www.youtube.com/watch?v=" + YOUTUBE_SEED_VIDEO).text
+    for pat in (r'"channelId":"(UC[0-9A-Za-z_-]{22})"', r'"externalChannelId":"(UC[0-9A-Za-z_-]{22})"',
+                r'youtube\.com/channel/(UC[0-9A-Za-z_-]{22})'):
+        m = re.search(pat, html)
+        if m:
+            pv["channel_id"] = m.group(1)
+            return pv["channel_id"]
+    raise RuntimeError("공식 유튜브 채널 id를 찾지 못했습니다")
+
+
+def parse_pv_title(title):
+    """PV 제목 -> [(등급 문자열, 한국어 인격명)]. 인격 PV가 아니면 빈 목록."""
+    out = []
+    for part in re.split(r"\s+/\s+", title):
+        m = re.search(r"\[(0{1,3})\]\s*(.+)$", part.strip())
+        if m:
+            name = re.sub(r"::\s+", "::", m.group(2)).strip()
+            out.append((m.group(1), norm(name)))
+    return out
+
+
+def fetch_pv_names(pv):
+    """채널 RSS(최근 영상 15개)에서 PV 인격명을 모아 pv["names"]에 누적합니다."""
+    cid = youtube_channel_id(pv)
+    xml = get("https://www.youtube.com/feeds/videos.xml?channel_id=" + cid).content
+    ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
+    known = {(n["sinner"], n["name"]) for n in pv.setdefault("names", [])}
+    ko2sid = {ko: sid for _, sid, _, _, ko in SINNERS}
+    for entry in ET.fromstring(xml).findall("a:entry", ns):
+        title = entry.findtext("a:title", "", ns)
+        vid = entry.findtext("yt:videoId", "", ns)
+        published = entry.findtext("a:published", "", ns)[:10]
+        for stars, name in parse_pv_title(title):
+            sid = ko2sid.get(name.split(" ")[-1])
+            if not sid or (sid, name) in known:
+                continue
+            pv["names"].append({"sinner": sid, "stars": stars, "name": name, "video": vid,
+                                "published": published, "used_by": ""})
+            known.add((sid, name))
+
+
+def match_pv(pv, sid, wiki_name):
+    """같은 수감자의 아직 안 쓴 PV 이름 중 위키 이름과 가장 잘 맞는 것을 고릅니다."""
+    # 최근 35일 안에 올라온 PV만 후보로 삼아, 오래전 PV 이름이 엉뚱하게 붙지 않게 함
+    cutoff = time.strftime("%Y-%m-%d", time.gmtime(time.time() - 35 * 86400))
+    cands = [n for n in pv.get("names", [])
+             if n["sinner"] == sid and not n["used_by"] and n["published"] >= cutoff]
+    if not cands:
+        return None
+    en = norm(wiki_name)
+    def score(n):
+        sc = 0
+        for tok in re.findall(r"[A-Z0-9]*\d[A-Z0-9]*", en):  # B3F 같은 공통 표기
+            if tok in n["name"]:
+                sc += 3
+        for e, k in KO_PHRASES:
+            if e in en and k.rstrip(":") in n["name"]:
+                sc += 2
+        return (sc, n["published"])
+    return max(cands, key=score)
+
+
 def guess_ko(name, sinner_en, sinner_ko):
     base = norm(name)
     if base.endswith(" " + sinner_en):
@@ -210,6 +281,9 @@ def write_json(path, obj):
         f.write("\n")
 
 
+PIPE = "\\|"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="파일을 쓰지 않고 찾은 내용만 출력")
@@ -222,6 +296,16 @@ def main():
     print(f"위키 인격 {len(rows)}개, 갤러리 이미지 {len(gallery)}개를 읽었습니다.")
     if len(rows) < 100:
         sys.exit(f"인격이 {len(rows)}개뿐입니다. 위키 페이지 구조가 바뀐 것 같아 중단합니다.")
+
+    pv = load_json(PV_PATH, {})
+    try:
+        time.sleep(1)
+        fetch_pv_names(pv)
+        print(f"유튜브 PV 인격명 {len(pv.get('names', []))}개를 알고 있습니다.")
+    except Exception as e:  # 유튜브 실패는 치명적이지 않음: 추정 이름으로 진행
+        print("유튜브 PV 확인 실패(추정 이름으로 진행): " + str(e))
+    if not args.dry_run:
+        write_json(PV_PATH, pv)
 
     seen_exists = os.path.exists(SEEN_PATH)
     seen = set(load_json(SEEN_PATH, []))
@@ -252,6 +336,10 @@ def main():
             unknown.append(r["name"])
             continue
         en, sid, folder, suffix, ko_sinner = sin
+        d = re.sub(r"\D", "", r["date"])
+        if len(d) == 8 and d > time.strftime("%Y%m%d", time.gmtime(time.time() + 9 * 3600)):
+            waiting.append(r["name"])  # 출시 전(한국 시간 기준) → 출시 후 추가
+            continue
         url = gallery.get(norm(r["name"]))
         if not url:
             waiting.append(r["name"])  # 아직 임시 이미지 → 다음 실행에서 재시도
@@ -263,15 +351,21 @@ def main():
             waiting.append(r["name"])
             continue
         rel = f"{folder}/{slug(r['name'], en, suffix)}{ext}"
-        ko, confident = guess_ko(r["name"], en, ko_sinner)
         stars = "0" * max(1, min(3, r["rarity"] or 1))
+        hit = match_pv(pv, sid, r["name"])
+        if hit:
+            ko, confident, stars = hit["name"], True, hit["stars"]
+            if not args.dry_run:
+                hit["used_by"] = r["name"]
+        else:
+            ko, confident = guess_ko(r["name"], en, ko_sinner)
         entry = {
             "sinner": sid,
             "text": f"[{stars}] | {ko}",
             "img": rel,
             "en": r["name"],
             "release": r["date"],
-            "ko_checked": False,
+            "ko_source": "youtube" if hit else "guess",
         }
         added.append((entry, confident))
         if not args.dry_run:
@@ -288,15 +382,16 @@ def main():
         print("수감자 판별 실패: " + n)
 
     if not args.dry_run and added:
+        write_json(PV_PATH, pv)
         write_json(AUTO_PATH, auto)
         write_json(SEEN_PATH, sorted(seen))
 
     if args.report:
         lines = ["위키에서 새 인격을 찾아 이미지를 내려받았습니다. **한국어 인격명이 공식 표기와 맞는지 확인**한 뒤 머지해 주세요.",
                  "이름이 다르면 `data/auto_identities.json`의 `text`를 고치면 됩니다.", "",
-                 "| 수감자 | 추정 한국어 이름 | 위키 이름 | 출시일 | 이미지 |", "|---|---|---|---|---|"]
+                 "| 수감자 | 한국어 이름 (출처) | 위키 이름 | 출시일 | 이미지 |", "|---|---|---|---|---|"]
         for e, ok in added:
-            lines.append(f"| {e['sinner']} | {e['text']}{'' if ok else ' ⚠️'} | {e['en']} | {e['release']} | `{e['img']}` |")
+            lines.append(f"| {e['sinner']} | {e['text'].replace('|', PIPE)} ({'공식 PV 제목' if e['ko_source'] == 'youtube' else '번역 추정 ⚠️' if not ok else '번역 추정'}) | {e['en']} | {e['release']} | `{e['img']}` |")
         if waiting:
             lines += ["", "아직 위키에 이미지가 없어 다음 실행에서 다시 확인할 인격: " + ", ".join(waiting)]
         if unknown:

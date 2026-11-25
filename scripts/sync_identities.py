@@ -167,6 +167,11 @@ def describe_page(html):
     return "\n".join(lines)
 
 
+def img_key(name):
+    """파일명과 인격명 비교용 키: '::'·밑줄·문장부호·대소문자 차이를 무시."""
+    return re.sub(r"[^a-z0-9]", "", norm(name).lower())
+
+
 def parse_gallery_page(html):
     """갤러리 페이지에서 인격명(파일명 기준) -> 원본 이미지 URL. _Uptied(동기화 후) 그림은 제외."""
     soup = BeautifulSoup(html, "html.parser")
@@ -181,7 +186,7 @@ def parse_gallery_page(html):
         stem = fname.rsplit(".", 1)[0]
         if stem.endswith("_Uptied") or stem.endswith("_Icon") or "Placeholder" in stem:
             continue
-        images[norm(stem.replace("_", " "))] = original_from_thumb(src)
+        images.setdefault(img_key(stem), original_from_thumb(src))
     return images
 
 
@@ -278,7 +283,12 @@ def identity_page_image(name):
         print(f"인격 문서 접속 실패({name}): {e}")
         return None
     found = parse_gallery_page(html)
-    return found.get(norm(name))
+    hit = found.get(img_key(name))
+    if not hit and DEBUG:
+        sinner = sinner_of(name)
+        cands = [u.rsplit("/", 1)[-1] for k, u in found.items() if sinner and img_key(sinner[0]) in k]
+        print(f"    ({name} 문서의 그림 후보: {', '.join(cands[:8]) or '없음'})")
+    return hit
 
 
 def guess_ko(name, sinner_en, sinner_ko):
@@ -326,6 +336,7 @@ def write_json(path, obj):
         f.write("\n")
 
 
+DEBUG = False
 PIPE = "\\|"
 
 
@@ -334,6 +345,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="파일을 쓰지 않고 찾은 내용만 출력")
     ap.add_argument("--report", help="PR 본문으로 쓸 마크다운 보고서 경로")
     args = ap.parse_args()
+    global DEBUG
+    DEBUG = args.dry_run
 
     data_html = get(DATA_PAGE).text
     rows = parse_data_page(data_html)
@@ -342,7 +355,7 @@ def main():
     print(f"위키 인격 {len(rows)}개, 갤러리 이미지 {len(gallery)}개를 읽었습니다.")
     if args.dry_run:
         for r in sorted(rows, key=lambda r: r["date"])[-6:]:
-            src = gallery.get(norm(r["name"])) or identity_page_image(r["name"])
+            src = gallery.get(img_key(r["name"])) or identity_page_image(r["name"])
             print(f"  최근 인격: {r['date']} [{r['rarity']}] {r['name']} / 이미지 {src or '없음'}")
     if len(rows) < 100:
         print(describe_page(data_html))
@@ -394,7 +407,7 @@ def main():
         if len(d) == 8 and d > time.strftime("%Y%m%d", time.gmtime(time.time() + 9 * 3600)):
             waiting.append(r["name"])  # 출시 전(한국 시간 기준) → 출시 후 추가
             continue
-        url = gallery.get(norm(r["name"])) or identity_page_image(r["name"])
+        url = gallery.get(img_key(r["name"])) or identity_page_image(r["name"])
         if not url:
             waiting.append(r["name"])  # 아직 임시 이미지 → 다음 실행에서 재시도
             continue

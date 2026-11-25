@@ -34,8 +34,8 @@ AUTO_PATH = os.path.join(ROOT, "data", "auto_identities.json")
 PV_PATH = os.path.join(ROOT, "data", "pv_names.json")
 
 # 공식 유튜브 PV: 제목 예) "LimbusCompany [000] 오트쿠튀르:: 르루주 B2F 타래둥지 그레고르 / [000] 오트쿠튀르:: 르누아르 B3F 건조장 이상"
-# 채널 id는 이 영상 페이지에서 한 번 알아낸 뒤 data/pv_names.json에 저장해 둡니다.
-YOUTUBE_SEED_VIDEO = "mB3WZv079mA"
+# 유튜브가 공개로 제공하는 채널 RSS 피드만 읽습니다(웹페이지는 읽지 않음).
+YOUTUBE_CHANNEL_ID = "UCpqyr6h4RCXCEswHlkSjykA"
 
 # 위키 영문 수감자명 -> (사이트 id, 이미지 폴더, 파일명 접미사, 한국어 이름)
 SINNERS = [
@@ -190,38 +190,6 @@ def parse_gallery_page(html):
     return images
 
 
-CHANNEL_ID_PATTERNS = (r'"channelId":"(UC[0-9A-Za-z_-]{22})"', r'"externalId":"(UC[0-9A-Za-z_-]{22})"',
-                       r'"externalChannelId":"(UC[0-9A-Za-z_-]{22})"', r'youtube\.com/channel/(UC[0-9A-Za-z_-]{22})')
-
-
-def youtube_channel_id(pv):
-    """채널 id를 알아냅니다. 영상 페이지는 GitHub 서버에서 429로 막히는 일이 있어
-    oEmbed(채널 주소) → 채널 페이지 → 영상 페이지 순으로 시도하고, 찾으면 저장해 둡니다."""
-    if pv.get("channel_id"):
-        return pv["channel_id"]
-    watch = "https://www.youtube.com/watch?v=" + YOUTUBE_SEED_VIDEO
-    pages = []
-    try:
-        meta = get("https://www.youtube.com/oembed?format=json&url=" + urllib.parse.quote(watch, safe="")).json()
-        if meta.get("author_url"):
-            pages.append(meta["author_url"])
-    except Exception as e:
-        print("oEmbed 실패: " + str(e))
-    pages.append(watch)
-    for url in pages:
-        try:
-            html = get(url).text
-        except Exception as e:
-            print(f"{url} 접속 실패: {e}")
-            continue
-        for pat in CHANNEL_ID_PATTERNS:
-            m = re.search(pat, html)
-            if m:
-                pv["channel_id"] = m.group(1)
-                return pv["channel_id"]
-    raise RuntimeError("공식 유튜브 채널 id를 찾지 못했습니다")
-
-
 def parse_pv_title(title):
     """PV 제목 -> [(등급 문자열, 한국어 인격명)]. 인격 PV가 아니면 빈 목록."""
     out = []
@@ -235,7 +203,7 @@ def parse_pv_title(title):
 
 def fetch_pv_names(pv):
     """채널 RSS(최근 영상 15개)에서 PV 인격명을 모아 pv["names"]에 누적합니다."""
-    cid = youtube_channel_id(pv)
+    cid = YOUTUBE_CHANNEL_ID
     xml = get("https://www.youtube.com/feeds/videos.xml?channel_id=" + cid).content
     ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
     known = {(n["sinner"], n["name"]) for n in pv.setdefault("names", [])}
@@ -367,7 +335,6 @@ def main():
         fetch_pv_names(pv)
         print(f"유튜브 PV 인격명 {len(pv.get('names', []))}개를 알고 있습니다.")
         if args.dry_run:
-            print("  유튜브 채널 id: " + str(pv.get("channel_id")))
             for n in pv.get("names", [])[-6:]:
                 print(f"  PV 인격명: {n['published']} [{n['stars']}] {n['name']}")
     except Exception as e:  # 유튜브 실패는 치명적이지 않음: 추정 이름으로 진행

@@ -8,7 +8,7 @@
   아직 번역 파일에 없는 신규 인격은 data/auto_identities.json(공식 PV 제목 기반 이름)으로 보완하고,
   data/name_overrides.json 에 직접 적은 이름({"identities": {위키 영문: 한국어}, "ego": {...}})이 가장 우선합니다.
 - 스킬 1·2·3의 죄악 속성과 공격 유형: limbuscompany.wiki.gg 인격 문서(robots.txt가 허용하는 /wiki/ 경로만).
-  인격 문서는 처음 한 번만 읽고, 이후에는 새 인격만 읽습니다.
+  주 1회(목요일 인게임 패치 다음 날) 실행하며, 패치로 바뀐 스킬도 반영되도록 인격 문서를 매번 다시 읽습니다.
 - E.G.O 등급(ZAYIN~ALEPH)과 죄악 속성: 위키 List_of_E.G.O/Data 표.
 
 출력
@@ -287,7 +287,7 @@ def main():
                     known[e["en"]] = e.get("skills")
 
     skills_out = {sid: {} for sid, _ in SINNERS}
-    added, partial, unnamed = [], [], []
+    added, changed, partial, unnamed = [], [], [], []
     pages = 0
     for r in rows:
         hit = id_map.get(key(r["en"]))
@@ -295,20 +295,25 @@ def main():
             unnamed.append(r["en"])
             continue
         sid, ko = hit
-        skills = known.get(r["en"])
-        if not complete(skills) and pages < args.max_pages and r["href"].startswith("/wiki/"):
+        prev = known.get(r["en"])
+        skills = prev
+        # 주 1회 실행: 패치로 바뀐 스킬도 반영되도록 인격 문서를 매번 다시 읽고, 읽기에 실패하면 이전 값을 유지
+        if pages < args.max_pages and r["href"].startswith("/wiki/"):
             pages += 1
             time.sleep(1)
             try:
-                skills = parse_identity_skills(get(WIKI + r["href"]).text)
+                read = parse_identity_skills(get(WIKI + r["href"]).text)
             except Exception as e:
                 print(f"인격 문서 읽기 실패({r['en']}): {e}")
-                skills = None
-            # 문서에서 못 읽은 속성은 Data 표의 S1~S3 속성으로 채움(공격 유형은 비워 둠)
-            skills = [s if s else ({"type": "", "sin": r["sins"][i]} if r["sins"][i] else None)
-                      for i, s in enumerate(skills or [None, None, None])]
+                read = [None, None, None]
+            # 문서에서 못 읽은 스킬은 이전 값, 그것도 없으면 Data 표의 S1~S3 속성(공격 유형은 비워 둠)
+            old = prev if isinstance(prev, list) and len(prev) == 3 else [None, None, None]
+            skills = [read[i] or (old[i] if old[i] and old[i].get("type") else None)
+                      or ({"type": "", "sin": r["sins"][i]} if r["sins"][i] else None) for i in range(3)]
             if r["en"] not in known:
                 added.append(f"{ko} ({r['en']})")
+            elif complete(prev) and skills != prev:
+                changed.append(f"{ko} ({r['en']})")
         if not skills or not any(skills):
             partial.append(r["en"])
             continue
@@ -359,6 +364,8 @@ def main():
                  f"- 인격 {n_id}개, E.G.O {n_ego}개"]
         if added:
             lines.append(f"- 새로 읽은 인격 {len(added)}개: " + ", ".join(added[:40]) + (" 외" if len(added) > 40 else ""))
+        if changed:
+            lines.append("- 스킬 정보가 바뀐 인격(패치 반영): " + ", ".join(changed))
         if partial:
             lines.append("- 스킬 정보가 일부 비어 있는 인격(위키 갱신 후 다시 채움): " + ", ".join(partial))
         if unnamed:

@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "sinner": "yisang",
+    "text": "[000] | 오트쿠튀르::르누아르 B3F 건조장 이상",
+    "img": "image_yisang/le_noir_b3f_drying_room_yisang.png",
+    "en": "Haute Couture::Le Noir B3F Drying Room Yi Sang",
+    "release": "2026.11.26",
+    "ko_source": "youtube"
+  },
+  {
+    "sinner": "gregor",
+    "text": "[000] | 오트쿠튀르::르루주 B2F 타래둥지 그레고르",
+    "img": "image_gregor/le_rouge_b2f_skein_nest_gregor.png",
+    "en": "Haute Couture::Le Rouge B2F Skein Nest Gregor",
+    "release": "2026.11.26",
+    "ko_source": "youtube"
+  }
+]
